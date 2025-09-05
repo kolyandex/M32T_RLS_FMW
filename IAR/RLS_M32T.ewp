@@ -354,6 +354,7 @@
                     <state>$PROJ_DIR$\..\LIN_stack_S12_4_6_6\LIN_Stack\diagnostic</state>
                     <state>$PROJ_DIR$\..\LIN_stack_S12_4_6_6\LIN_Stack\bsp\AUTOBAUD</state>
                     <state>$PROJ_DIR$\..\LIN_stack_S12_4_6_6\LIN_Stack\bsp\UART</state>
+                    <state>$PROJ_DIR$\MLX75308</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2249,9 +2250,24 @@
         </group>
     </group>
     <group>
+        <name>MLX75308</name>
+        <file>
+            <name>$PROJ_DIR$\MLX75308\mlx75308.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\MLX75308\mlx75308.h</name>
+        </file>
+    </group>
+    <group>
         <name>Sources</name>
         <file>
             <name>$PROJ_DIR$\Sources\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\spi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\spi.h</name>
         </file>
     </group>
     <group>

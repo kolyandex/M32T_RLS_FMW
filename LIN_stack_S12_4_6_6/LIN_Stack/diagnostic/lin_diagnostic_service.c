@@ -147,6 +147,49 @@ void lin_diagservice_read_by_identifier()
             break;
     } /* End of switch */
 }
+
+void lin_diagservice_read_data_by_identifier()
+{
+    l_u16 id;    
+    lin_tl_pdu_data *lin_tl_pdu;
+
+    /* Multi frame support */
+#if (_TL_FRAME_SUPPORT_ == _TL_MULTI_FRAME_)
+    l_u16 length;
+    l_u8 data[10];
+    /* get pdu from rx queue */
+    ld_receive_message(&length, data+2);
+    lin_tl_pdu = (lin_tl_pdu_data *)data;
+#else /* Single frame support */
+    lin_tl_pdu = tl_current_rx_pdu_ptr;
+#endif /* End (_TL_FRAME_SUPPORT_ == _TL_MULTI_FRAME_) */
+
+    id = (*lin_tl_pdu)[3] << 8;
+    id |= (*lin_tl_pdu)[4];
+
+    switch (id)
+    {
+        case 0x1301:
+        case 0x1302:
+        case 0x130A:
+        case 0x130B:
+        case 0xF10A:
+        case 0xF180:
+        case 0xF187:
+        case 0xF188:
+        case 0xF18A:
+        case 0xF18B:
+        case 0xF18C:
+        case 0xF191:
+        case 0xF193:
+        case 0xF195:
+        lin_tl_make_slaveres_pdu(SERVICE_READ_DATA_BY_IDENTIFY, POSITIVE, id);
+        break;        
+        default:
+        lin_tl_make_slaveres_pdu(SERVICE_READ_DATA_BY_IDENTIFY, NEGATIVE, SUBFUNCTION_NOT_SUPPORTED);
+        break;
+    } /* End of switch */
+}
 #if LIN_PROTOCOL == PROTOCOL_21
 
 void lin_diagservice_assign_frame_id_range()

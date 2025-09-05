@@ -29,14 +29,16 @@ network {
       file                       = "M32T_LIN.ldf";    /* Name of LDF file */
       device                     = k_uart1;
       support_sid {
-         READ_BY_IDENTIFIER      = 0xb2;
-         ASSIGN_FRAME_ID_RANGE   = 0xb7;
+         //READ_BY_IDENTIFIER      = 0xb2;
+         //ASSIGN_FRAME_ID_RANGE   = 0xb7;
+         //SAVE_CONFIGURATION      = 0xb6;
+         //DATA_DUMP               = 0xb4;
+         //CONDITIONAL_CHANGE_NAD  = 0xb3;
+         //ASSIGN_NAD              = 0xb0;
+		 DIAG_SESSION_CONTROL    = 0x10;		 
          READ_DATA_BY_IDENTIFIER = 0x22;
-         SAVE_CONFIGURATION      = 0xb6;
-         DATA_DUMP               = 0xb4;
-         CONDITIONAL_CHANGE_NAD  = 0xb3;
-         ASSIGN_NAD              = 0xb0;
          WRITE_DATA_BY_IDENTIFIER = 0x2e;
+		 IO_CONTROL              = 0x31;		 
       }
    }
 }

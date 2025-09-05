@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Fri Sep 05 09:53:30 NOVT 2025
+* @date      Fri Sep 05 16:10:26 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -254,8 +254,8 @@ lin_message_status tl_tx_msg_status;                  /* cooked tx status */
 
 /****************************Support SID Initialization ***********************/
 
-const l_u8 lin_diag_services_supported[_DIAG_NUMBER_OF_SERVICES_] = {0xB2,0xB7,0x22,0xB6,0xB4,0xB3,0xB0,0x2E};
-l_u8 lin_diag_services_flag[_DIAG_NUMBER_OF_SERVICES_] = {0,0,0,0,0,0,0,0};
+const l_u8 lin_diag_services_supported[_DIAG_NUMBER_OF_SERVICES_] = {0x10,0x22,0x2E,0x31};
+l_u8 lin_diag_services_flag[_DIAG_NUMBER_OF_SERVICES_] = {0,0,0,0};
 
 l_u8 tl_slaveresp_cnt = 0;
 /*This ld_read_by_id_callout() function is used when the master node transmits a read by

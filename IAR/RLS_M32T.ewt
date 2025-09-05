@@ -2930,9 +2930,24 @@
         </group>
     </group>
     <group>
+        <name>MLX75308</name>
+        <file>
+            <name>$PROJ_DIR$\MLX75308\mlx75308.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\MLX75308\mlx75308.h</name>
+        </file>
+    </group>
+    <group>
         <name>Sources</name>
         <file>
             <name>$PROJ_DIR$\Sources\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\spi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\spi.h</name>
         </file>
     </group>
     <group>

@@ -26,7 +26,7 @@
  * 20111005     v1.1    Added code for save configuration request and response
  *
  *****************************************************************************/
-
+#include "derivative.h"
 #include "lin_commontl_proto.h"
 #include "lin_diagnostic_service.h"
 
@@ -54,11 +54,11 @@ void lin_tl_make_slaveres_pdu
     /* [IN] type of response */
     l_u8 res_type,
     /* [IN] Error code in case of negative response, if positive = 0 */
-    l_u8 error_code
+    l_u32 error_code
 
 )
 {
-    lin_tl_pdu_data lin_tl_pdu;
+    l_u8 lin_tl_pdu[32];
     l_u8 i;
 
     /* Pack data to response PDU */
@@ -96,6 +96,119 @@ void lin_tl_make_slaveres_pdu
                 lin_tl_pdu[7] = product_id.variant;
                 break;
             #endif /* End (LIN_PROTOCOL == PROTOCOL_J2602) */
+            case SERVICE_READ_DATA_BY_IDENTIFY:
+            {
+                int len = 0;
+                char *data = 0;
+                int data_len = 0;
+
+                if (res_type != POSITIVE)
+                {
+                    lin_tl_pdu[2] = RES_NEGATIVE;
+                    lin_tl_pdu[3] = sid;
+                    lin_tl_pdu[4] = GENERAL_REJECT;
+                    len = 3;
+                }
+                else
+                {
+                    /* SID */
+                    lin_tl_pdu[2] = RES_POSITIVE + sid;
+                    lin_tl_pdu[3] = error_code >> 8;
+                    lin_tl_pdu[4] = error_code >> 0;
+                    len = 3;
+                    
+                    switch (error_code)
+                    {
+                    case 0x1301:
+                        lin_tl_pdu[5] = dac_level_ir_ch_a;
+                        len++;
+                        break;
+                    case 0x1302:
+                        lin_tl_pdu[5] = dac_level_ir_ch_b;
+                        len++;
+                        break;
+                    case 0x130A:
+                        lin_tl_pdu[5] = IR_Channel_A_data[0] >> 0;
+                        lin_tl_pdu[6] = IR_Channel_A_data[0] >> 8;
+                        len += 2;
+                        break;
+                    case 0x130B:
+                        lin_tl_pdu[5] = IR_Channel_B_data[0] >> 0;
+                        lin_tl_pdu[6] = IR_Channel_B_data[0] >> 8;
+                        len += 2;
+                        break;
+                    case 0xF10A:
+                        data = "803000029AA  ";
+                        data_len = 13;
+                        break;
+                    case 0xF187:
+                        data = "803000029AA  ";
+                        data_len = 13;
+                        break;
+                    case 0xF188:
+                        data = "00.03.04";
+                        data_len = 8;
+                        break;
+                    case 0xF191:
+                        data = "0.2.1";
+                        data_len = 5;
+                        break;
+                    case 0xF18A:
+                        data = "9HH";
+                        data_len = 3;
+                        break;
+                    case 0xF18B:
+                        data = "   ";
+                        data_len = 3;
+                        break;
+                    case 0xF18C:
+                        data = "         ";
+                        data_len = 9;
+                        break;
+                    case 0xF193:
+                        data = "1.0      ";
+                        data_len = 9;
+                        break;
+                    case 0xF195:
+                        data = "2.3.5    ";
+                        data_len = 9;
+                        break;
+                    case 0xF180:
+                        data = "\x12\x00\x41";
+                        data_len = 3;
+                        break;
+                    default:
+                        lin_tl_pdu[2] = RES_NEGATIVE;
+                        lin_tl_pdu[3] = sid;
+                        lin_tl_pdu[4] = GENERAL_REJECT;
+                        len = 3;
+                        break;
+                    }
+                    if (data && data_len)
+                    {
+                        for (int i = 0; i < data_len; i++)
+                        {
+                            lin_tl_pdu[5 + i] = data[i];
+                        }
+                        len += data_len;
+                    }
+                }
+
+                /* PCI type */
+                lin_tl_pdu[1] = len;
+                ld_send_message(len, &lin_tl_pdu[2]);
+                
+                return;
+                /*if (len > 6)
+                {
+
+                }
+                else
+                {
+
+                }*/
+                break;
+            }
             case SERVICE_READ_BY_IDENTIFY:
                 /* PCI type */
                 lin_tl_pdu[1] = PCI_RES_READ_BY_IDENTIFY;
@@ -612,6 +725,14 @@ void lin_tl_attach_service()
         sid_supported_flag = 0;
         switch (sid)
         {
+        case SERVICE_READ_DATA_BY_IDENTIFY:
+          {
+            if (3U == pci_length)
+            {
+              lin_diagservice_read_data_by_identifier();
+            }
+            break;
+          }
             case SERVICE_READ_BY_IDENTIFY:    /* Mandatory for TL LIN 2.1 & 2.0, Optional for J2602 */
                 if (6U == pci_length)
                 {

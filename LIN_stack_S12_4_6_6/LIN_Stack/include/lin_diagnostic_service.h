@@ -62,6 +62,7 @@
 * @see  #lin_tl_make_slaveres_pdu
 *//*END*----------------------------------------------------------------------*/
 void lin_diagservice_read_by_identifier(void);
+void lin_diagservice_read_data_by_identifier(void);
 
 #if LIN_PROTOCOL == PROTOCOL_21
 

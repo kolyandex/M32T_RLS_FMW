@@ -1069,7 +1069,7 @@ void ld_send_message(l_u16 length, const l_u8* const data)
                 message_size = ((length - 5) / 6) + 2;
             }
         }
-
+        tl_slaveresp_cnt = message_size;
         if (message_size <= (lin_tl_tx_queue.queue_max_size - lin_tl_tx_queue.queue_current_size))
         {
             /* update information of message in queue */
