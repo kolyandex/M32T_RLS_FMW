@@ -174,6 +174,8 @@ void lin_application_timer_FTM2()
 	NVIC_ICPR |= 1 << ((INT_FTM2-16)%32);
 	NVIC_ISER |= 1 << ((INT_FTM2-16)%32);
 }
+
+volatile static float BatteryVoltageLin = .0f; 
 void main(void)
 {
     __init_hardware();
@@ -191,29 +193,30 @@ void main(void)
 	NVIC_ISER |= 1 << (vector_number%32);
 	lin_application_timer_FTM2();
     for (;;){
+      BatteryVoltageLin = (float)l_u8_rd_LI0_BCM_BatteryVoltage() / 10.f;
   	  /* Check if temp signal is updated */
-  	  if (l_flg_tst_LI0_Motor1Selection_flag()){
-  	      /* Clear this flag... */
-  	      l_flg_clr_LI0_Motor1Selection_flag();
-  	      /* Store selection data */
-  	      Motor1_Selection = l_u8_rd_LI0_Motor1Selection();
-  	      /* The application will change Motor selection in case 
-  	       the temperature is greater than maximum value to release motor power
-  	       This will be transfered by sporadic frame type in LIN bus */
-  	     l_u8_wr_LI0_Motor1Temp(Motor1_temp); 
-  	     /* Check if power off motor due to high temperature */
-  	     if (Motor1_Selection == MOTOR_SELECTION_STOP) {
-  	     /*---------- add code here to stop motor ------------*/            
-
-  	     }
- 			if (Motor1_Selection == MOTOR_SELECTION_INCREASE){
- 				//LED2_ON;
- 				
- 			} 
- 			if (Motor1_Selection == MOTOR_SELECTION_DECREASE){
- 				//LED2_OFF;
- 			}
-  	  }
+//  	  if (l_flg_tst_LI0_Motor1Selection_flag()){
+//  	      /* Clear this flag... */
+//  	      l_flg_clr_LI0_Motor1Selection_flag();
+//  	      /* Store selection data */
+//  	      Motor1_Selection = l_u8_rd_LI0_Motor1Selection();
+//  	      /* The application will change Motor selection in case 
+//  	       the temperature is greater than maximum value to release motor power
+//  	       This will be transfered by sporadic frame type in LIN bus */
+//  	     l_u8_wr_LI0_Motor1Temp(Motor1_temp); 
+//  	     /* Check if power off motor due to high temperature */
+//  	     if (Motor1_Selection == MOTOR_SELECTION_STOP) {
+//  	     /*---------- add code here to stop motor ------------*/            
+//
+//  	     }
+// 			if (Motor1_Selection == MOTOR_SELECTION_INCREASE){
+// 				//LED2_ON;
+// 				
+// 			} 
+// 			if (Motor1_Selection == MOTOR_SELECTION_DECREASE){
+// 				//LED2_OFF;
+// 			}
+//  	  }
 
     }
 }

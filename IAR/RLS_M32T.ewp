@@ -2241,6 +2241,9 @@
         <group>
             <name>transport</name>
             <file>
+                <name>$PROJ_DIR$\..\LIN_stack_S12_4_6_6\LIN_Stack\transport\lin_commontl_api.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\LIN_stack_S12_4_6_6\LIN_Stack\transport\lin_commontl_proto.c</name>
             </file>
         </group>

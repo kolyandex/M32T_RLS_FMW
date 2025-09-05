@@ -2,7 +2,7 @@
 * 
 * Freescale Semiconductor Inc.
 * (c) Copyright 2013-2016 Freescale Semiconductor, Inc.
-* Copyright 2016-2021 NXP
+* Copyright 2016-2025 NXP
 * ALL RIGHTS RESERVED.
 * 
 ****************************************************************************//*!
@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Tue Feb 23 09:55:17 ICT 2021
+* @date      Fri Sep 05 09:53:30 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -31,7 +31,7 @@ l_u8 lin_save_configuration_flg = 0;
 lin_word_status_str lin_word_status;
 l_u8 lin_current_pid;
 
-const l_signal_handle LI0_response_error_signal = LI0_Motor1LinError;
+const l_signal_handle LI0_response_error_signal = LI0_SIG_Error;
 
 volatile l_u8 buffer_backup_data[8];
 
@@ -40,33 +40,83 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
 {
 
 
-  0xff /* 0 : 11111111 */ /* start of frame LI0_MotorsControl */
+  0x00 /* 0 : 00000000 */ /* start of frame LI0_BCM_55 */
 
-  ,0x62 /* 1 : 01100010 */
-  ,0xfd /* 2 : 11111101 */
+  ,0x0f /* 1 : 00001111 */
+  ,0xff /* 2 : 11111111 */
+  ,0xff /* 3 : 11111111 */
+  ,0xff /* 4 : 11111111 */
+  ,0xff /* 5 : 11111111 */
+  ,0xff /* 6 : 11111111 */
+  ,0xff /* 7 : 11111111 */
 
 
-  ,0xfc /* 3 : 11111100 */ /* start of frame LI0_Motor1Control */
+  ,0x01 /* 8 : 00000001 */ /* start of frame LI0_RLS_8E */
 
-
-  ,0x05 /* 4 : 00000101 */ /* start of frame LI0_Motor1State_Cycl */
-
-  ,0x00 /* 5 : 00000000 */
+  ,0x81 /* 9 : 10000001 */
   
-  ,0x00 /* 6 : 00000000 */
+  ,0x01 /* 10 : 00000001 */
   
-  ,0x00 /* 7 : 00000000 */
+  ,0xff /* 11 : 11111111 */
   
-  ,0x00 /* 8 : 00000000 */
+  ,0xff /* 12 : 11111111 */
   
-  ,0xfe /* 9 : 11111110 */
+  ,0xff /* 13 : 11111111 */
+  
+  ,0xff /* 14 : 11111111 */
+  
+  ,0xff /* 15 : 11111111 */
   
 
-  ,0x76 /* 10 : 01110110 */ /* start of frame LI0_Motor1State_Event */
+  ,0xfb /* 16 : 11111011 */ /* start of frame LI0_BCM_D6 */
 
-  ,0x05 /* 11 : 00000101 */
+  ,0xff /* 17 : 11111111 */
   
-  ,0x01 /* 12 : 00000001 */
+  ,0xff /* 18 : 11111111 */
+  
+  ,0xff /* 19 : 11111111 */
+  
+  ,0xff /* 20 : 11111111 */
+  
+  ,0xff /* 21 : 11111111 */
+  
+  ,0xff /* 22 : 11111111 */
+  
+  ,0xff /* 23 : 11111111 */
+  
+
+  ,0xff /* 24 : 11111111 */ /* start of frame LI0_BCM_85 */
+
+  ,0xff /* 25 : 11111111 */
+  
+  ,0xff /* 26 : 11111111 */
+  
+  ,0xff /* 27 : 11111111 */
+  
+  ,0xf0 /* 28 : 11110000 */
+  
+  ,0x00 /* 29 : 00000000 */
+  
+  ,0xff /* 30 : 11111111 */
+  
+  ,0x00 /* 31 : 00000000 */
+  
+
+  ,0xff /* 32 : 11111111 */ /* start of frame LI0_BCM_11 */
+
+  ,0xff /* 33 : 11111111 */
+  
+  ,0x00 /* 34 : 00000000 */
+  
+  ,0xff /* 35 : 11111111 */
+  
+  ,0x1f /* 36 : 00011111 */
+  
+  ,0xff /* 37 : 11111111 */
+  
+  ,0xff /* 38 : 11111111 */
+  
+  ,0xff /* 39 : 11111111 */
   
 };
 
@@ -75,17 +125,22 @@ l_u8    lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] =
 {
 
 
-  0xFF /* 0: start of flag frame LI0_MotorsControl */
+  0xFF /* 0: start of flag frame LI0_BCM_55 */
 
 
 
-  ,0xFF /* 1: start of flag frame LI0_Motor1Control */
+  ,0xFF /* 1: start of flag frame LI0_RLS_8E */
+
+  ,0xFF /* 2: */
+  
+
+  ,0xFF /* 3: start of flag frame LI0_BCM_D6 */
 
 
-  ,0xFF /* 2: start of flag frame LI0_Motor1State_Cycl */
+  ,0xFF /* 4: start of flag frame LI0_BCM_85 */
 
 
-  ,0xFF /* 3: start of flag frame LI0_Motor1State_Event */
+  ,0xFF /* 5: start of flag frame LI0_BCM_11 */
 
 };
 
@@ -94,23 +149,18 @@ l_u8    lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] =
 l_u8 lin_diag_signal_tbl[16];
 /*****************************event trigger frame*****************************/
 
-const l_u8 LI0_ETF_MotorStates_info_data = LI0_Motor1State_Event ;  /* frame data */
-
-
 /**********************************  Frame table **********************************/
 const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
 
-    { LIN_FRM_UNCD, 3, LIN_RES_SUB, 0, 0, 1   , (l_u8*)0 }
+    { LIN_FRM_UNCD, 8, LIN_RES_SUB, 0, 0, 1   , (l_u8*)0 }
 
-   ,{ LIN_FRM_UNCD, 1, LIN_RES_SUB, 3, 1, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 8, 1, 2 , (l_u8*)&LI0_response_error_signal }
   
-   ,{ LIN_FRM_UNCD, 6, LIN_RES_PUB, 4, 2, 1 , (l_u8*)&LI0_response_error_signal }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 16, 3, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_UNCD, 3, LIN_RES_PUB, 10, 3, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 24, 4, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_EVNT, 3, LIN_RES_PUB, 0, 0, 0 , (l_u8*)&LI0_ETF_MotorStates_info_data }
-  
-   ,{ LIN_FRM_SPRDC, 1, LIN_RES_SUB, 0, 0, 0 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 32, 5, 1 , (l_u8*)0 }
   
    ,{ LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0 , (l_u8*)0 }
   
@@ -120,9 +170,9 @@ const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
 
 /*********************************** Frame flag Initialization **********************/
 /*************************** Frame flag for send/receive successfully ***************/
-l_bool lin_frame_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
+l_bool lin_frame_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
 /*************************** Frame flag for updating signal in frame ****************/
-volatile l_u8 lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
+volatile l_u8 lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
 
 
 /**************************** Lin configuration Initialization ***********************/
@@ -130,31 +180,70 @@ volatile l_u8 lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 
 
 const l_u16 lin_max_frame_res_timeout_val[8]={
 
-9, 12, 15, 18, 21, 23, 26, 29
+6, 7, 9, 10, 12, 13, 15, 16
 
 };
 
 
-l_u8 lin_configuration_RAM[LIN_SIZE_OF_CFG]= {0x00, 0x2D, 0x30, 0x33, 0x36, 0x3A, 0xFF, 0x3C, 0x3D ,0xFF};
+l_u8 lin_configuration_RAM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x3C, 0x3D ,0xFF};
 
 
-const l_u16  lin_configuration_ROM[LIN_SIZE_OF_CFG]= {0x00, 0x2D, 0x30, 0x33, 0x36, 0x3A, 0xFF, 0x3C, 0x3D ,0xFFFF};
+const l_u16  lin_configuration_ROM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x3C, 0x3D ,0xFFFF};
 
 /***************************************** Node Attribute*****************************************/
 
-l_u8 lin_configured_NAD = 0x02;    /*<configured_NAD>*/
-const l_u8 lin_initial_NAD    =0x0A;    /*<initial_NAD>*/
-const lin_product_id product_id = {0x001E, 0x0001, 0x0000 };  /* {<supplier_id>,<function_id>,<variant>} */
-const l_signal_handle response_error =  LI0_Motor1LinError;
+l_u8 lin_configured_NAD = 0x01;    /*<configured_NAD>*/
+const l_u8 lin_initial_NAD    =0x01;    /*<initial_NAD>*/
+const lin_product_id product_id = {0x00FA, 0x0001, 0x0000 };  /* {<supplier_id>,<function_id>,<variant>} */
+const l_signal_handle response_error =  LI0_SIG_Error;
 const l_u8 num_frame_have_esignal = 1;                                 /*number of frame contain error signal*/
-const l_u16 lin_response_error_byte_offset[1] = {LIN_BYTE_OFFSET_LI0_Motor1LinError};                  /*<interface_name>_< response_error>*/
-const l_u8 lin_response_error_bit_offset[1] = {LIN_BIT_OFFSET_LI0_Motor1LinError};                  /*<interface_name>_< response_error>*/
-
-
+const l_u16 lin_response_error_byte_offset[1] = {LIN_BYTE_OFFSET_LI0_SIG_Error};                  /*<interface_name>_< response_error>*/
+const l_u8 lin_response_error_bit_offset[1] = {LIN_BIT_OFFSET_LI0_SIG_Error};                  /*<interface_name>_< response_error>*/
 
 /************************** TL Layer and Diagnostic: SINGLE interface **************************/
-lin_tl_pdu_data tx_single_pdu_data = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-lin_tl_pdu_data rx_single_pdu_data = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+/* QUEUE information */
+lin_tl_pdu_data tl_tx_queue_data[MAX_QUEUE_SIZE];    /*transmit queue data */
+lin_tl_pdu_data tl_rx_queue_data[MAX_QUEUE_SIZE];    /*receive queue data */
+
+lin_transport_layer_queue lin_tl_tx_queue = {
+0,                                                /* the first element of queue */
+0,                                                /* the last element of queue */
+LD_QUEUE_EMPTY,                                   /* status of queue */
+0,                                                /* curernt size of queue */
+MAX_QUEUE_SIZE,                                   /* size of queue */
+tl_tx_queue_data,                                 /* data of queue */
+};
+lin_transport_layer_queue lin_tl_rx_queue = {
+0,                                                /* the first element of queue */
+0,                                                /* the last element of queue */
+LD_QUEUE_EMPTY,                                   /* status of queue */
+0,                                                /* curernt size of queue */
+MAX_QUEUE_SIZE,                                   /* size of queue */
+tl_rx_queue_data,                                 /* data of queue */
+};
+/* message information in transmit queue */
+l_u16 tl_rx_msg_index;                                /* index of message in queue */
+l_u16 tl_rx_msg_size;                                 /* Size of message in queue */
+/* message information in receive queue */
+l_u16 tl_tx_msg_index;                                /* index of message in queue */
+l_u16 tl_tx_msg_size;                                 /* Size of message in queue */
+lin_last_cfg_result tl_last_cfg_result;               /* Status of the last configuration service in LIN 2.0, J2602 */
+l_u8 tl_last_RSID;                                    /* RSID of the last node configuration service */
+l_u8 tl_ld_error_code;                                /* Error code in case of positive response */
+l_u8 tl_no_of_pdu;                                    /* number of received pdu */
+l_u8 tl_frame_counter;                                /* frame counter in received message */
+lin_message_timeout_type tl_check_timeout_type;       /* timeout type */
+l_u16 tl_check_timeout;                               /* timeout counter*/
+l_u8 *tl_ident_data;                                  /* To store address of RAM area contain response */
+
+lin_diagnostic_state tl_diag_state = LD_DIAG_IDLE;
+lin_service_status tl_service_status =  LD_SERVICE_IDLE ; /* service status */
+lin_message_status tl_receive_msg_status;             /* receive message status */
+lin_message_status tl_rx_msg_status;                  /* cooked rx status */
+lin_message_status tl_tx_msg_status;                  /* cooked tx status */
+
+
+
 
 
 
@@ -165,11 +254,9 @@ lin_tl_pdu_data rx_single_pdu_data = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 
 /****************************Support SID Initialization ***********************/
 
-const l_u8 lin_diag_services_supported[_DIAG_NUMBER_OF_SERVICES_] = {0xB2,0xB7,0xB0,0xB3,0xB6};
-l_u8 lin_diag_services_flag[_DIAG_NUMBER_OF_SERVICES_] = {0,0,0,0,0};
+const l_u8 lin_diag_services_supported[_DIAG_NUMBER_OF_SERVICES_] = {0xB2,0xB7,0x22,0xB6,0xB4,0xB3,0xB0,0x2E};
+l_u8 lin_diag_services_flag[_DIAG_NUMBER_OF_SERVICES_] = {0,0,0,0,0,0,0,0};
 
-lin_tl_pdu_data *tl_current_tx_pdu_ptr;
-lin_tl_pdu_data *tl_current_rx_pdu_ptr;
 l_u8 tl_slaveresp_cnt = 0;
 /*This ld_read_by_id_callout() function is used when the master node transmits a read by
  identifier request with an identifier in the user defined area (id from 32 to 63).

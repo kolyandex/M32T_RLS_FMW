@@ -2,7 +2,7 @@
 * 
 * Freescale Semiconductor Inc.
 * (c) Copyright 2013-2016 Freescale Semiconductor, Inc.
-* Copyright 2016-2021 NXP
+* Copyright 2016-2025 NXP
 * ALL RIGHTS RESERVED.
 * 
 ****************************************************************************//*!
@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Tue Feb 23 09:55:16 ICT 2021
+* @date      Fri Sep 05 09:53:30 NOVT 2025
 *
 * @brief     Hardware configuration file
 *

@@ -364,7 +364,8 @@ void lin_handle_error
             /* do nothing here */
             break;
         /* Frame error */
-        case LIN_LLD_FRAME_ERR:
+#warning FIND WHY //LIN_LLD_FRAME_ERR - error happens all time
+        //case LIN_LLD_FRAME_ERR:
         case LIN_LLD_CHECKSUM_ERR:
         case LIN_LLD_READBACK_ERR:
         case LIN_LLD_NODATA_TIMEOUT:
