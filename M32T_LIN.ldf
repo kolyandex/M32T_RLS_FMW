@@ -1,0 +1,107 @@
+
+
+LIN_description_file;
+LIN_protocol_version = "2.1";
+LIN_language_version = "2.1";
+LIN_speed = 19.2 kbps;
+
+Nodes {
+  Master: BCM_MASTER_NODE, 1 ms, 0 ms ;
+  Slaves: RLS_SLAVE_NODE ;
+}
+
+Signals {
+  BCM_AutoWipersThreshold: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  BCM_AmbientLightOn: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  RLS_FrontWipersMode: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  SIG_Error: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+}
+
+Diagnostic_signals {
+  MasterReqB0: 8, 0 ;
+  MasterReqB1: 8, 0 ;
+  MasterReqB2: 8, 0 ;
+  MasterReqB3: 8, 0 ;
+  MasterReqB4: 8, 0 ;
+  MasterReqB5: 8, 0 ;
+  MasterReqB6: 8, 0 ;
+  MasterReqB7: 8, 0 ;
+  SlaveRespB0: 8, 0 ;
+  SlaveRespB1: 8, 0 ;
+  SlaveRespB2: 8, 0 ;
+  SlaveRespB3: 8, 0 ;
+  SlaveRespB4: 8, 0 ;
+  SlaveRespB5: 8, 0 ;
+  SlaveRespB6: 8, 0 ;
+  SlaveRespB7: 8, 0 ;
+}
+
+
+
+Frames {
+  BCM_55: 21, BCM_MASTER_NODE, 8 {
+    BCM_AutoWipersThreshold, 0 ;
+  }
+  BCM_D6: 22, BCM_MASTER_NODE, 8 {
+    BCM_AmbientLightOn, 2 ;
+  }
+  RLS_8E: 14, RLS_SLAVE_NODE, 8 {
+    RLS_FrontWipersMode, 6 ;
+    SIG_Error, 48 ;
+  }
+}
+
+
+
+Diagnostic_frames {
+  MasterReq: 0x3c {
+    MasterReqB0, 0 ;
+    MasterReqB1, 8 ;
+    MasterReqB2, 16 ;
+    MasterReqB3, 24 ;
+    MasterReqB4, 32 ;
+    MasterReqB5, 40 ;
+    MasterReqB6, 48 ;
+    MasterReqB7, 56 ;
+  }
+  SlaveResp: 0x3d {
+    SlaveRespB0, 0 ;
+    SlaveRespB1, 8 ;
+    SlaveRespB2, 16 ;
+    SlaveRespB3, 24 ;
+    SlaveRespB4, 32 ;
+    SlaveRespB5, 40 ;
+    SlaveRespB6, 48 ;
+    SlaveRespB7, 56 ;
+  }
+}
+
+Node_attributes {
+  RLS_SLAVE_NODE{
+    LIN_protocol = "2.1" ;
+    configured_NAD = 0x1 ;
+    initial_NAD = 0x1 ;
+    product_id = 0xFA, 0x1, 0 ;
+    response_error = SIG_Error ;
+    P2_min = 50 ms ;
+    ST_min = 0 ms ;
+    N_As_timeout = 1000 ms ;
+    N_Cr_timeout = 1000 ms ;
+    configurable_frames {
+      BCM_55 ;
+      RLS_8E ;
+      BCM_D6 ;
+    }
+  }
+}
+
+Schedule_tables {
+ ScheduleTable {
+    RLS_8E delay 10 ms ;
+    BCM_D6 delay 10 ms ;
+    BCM_55 delay 10 ms ;
+  }
+}
+
+
+
