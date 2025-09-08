@@ -745,7 +745,7 @@ void ld_send_message(l_u16 length, const l_u8* const data);
 *
 * @see #ld_get_raw
 *//*END*----------------------------------------------------------------------*/
-void ld_receive_message(l_u16* const length, l_u8* const data);
+void ld_receive_message(l_u16* const length, l_u8* const data, const l_u32 max_len);
 /*FUNCTION*--------------------------------------------------------------*//**
 * @fn l_u8 ld_tx_status ()
 * @brief The call returns the status of the last made call to ld_send_message.

@@ -64,7 +64,7 @@ void lin_diagservice_read_by_identifier()
     l_u16 length;
     l_u8 data[10];
     /* get pdu from rx queue */
-    ld_receive_message(&length, data+2);
+    ld_receive_message(&length, data+2, sizeof(data) - 2);
     lin_tl_pdu = (lin_tl_pdu_data *)data;
 #else /* Single frame support */
     lin_tl_pdu = tl_current_rx_pdu_ptr;
@@ -156,9 +156,9 @@ void lin_diagservice_read_data_by_identifier()
     /* Multi frame support */
 #if (_TL_FRAME_SUPPORT_ == _TL_MULTI_FRAME_)
     l_u16 length;
-    l_u8 data[10];
+    l_u8 data[16];
     /* get pdu from rx queue */
-    ld_receive_message(&length, data+2);
+    ld_receive_message(&length, data+2, sizeof(data) - 2);
     lin_tl_pdu = (lin_tl_pdu_data *)data;
 #else /* Single frame support */
     lin_tl_pdu = tl_current_rx_pdu_ptr;
@@ -169,6 +169,7 @@ void lin_diagservice_read_data_by_identifier()
 
     switch (id)
     {
+        case 0x1300:
         case 0x1301:
         case 0x1302:
         case 0x130A:
@@ -202,7 +203,7 @@ void lin_diagservice_assign_frame_id_range()
     l_u16 length;
     l_u8 data[10];
     /* get pdu from rx queue */
-    ld_receive_message(&length, data+2);
+    ld_receive_message(&length, data+2, sizeof(data) - 2);
     lin_tl_pdu = (lin_tl_pdu_data *)data;
 #else /* Single frame support */
     lin_tl_pdu = tl_current_rx_pdu_ptr;
@@ -498,7 +499,7 @@ void lin_diagsrv_functional_service(void)
     l_u16 length;
     l_u8 data[10];
     /* get pdu from rx queue */
-    ld_receive_message(&length, data);
+    ld_receive_message(&length, data, sizeof(data) - 2);
 
     /* do something here */
 }

@@ -2,13 +2,17 @@
 
 #include "spi.h"
 #include "derivative.h" /* include peripheral declarations */
+#include "table_lookup.h"
+
+extern const s_table_2d_uint16_uint32 * TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_CHANNELS];
 
 unsigned char dac_level_ir_ch_a = 128;
 unsigned char dac_level_ir_ch_b = 128;
 
 unsigned short IR_Channel_A_data[6];
 unsigned short IR_Channel_B_data[6];
-static unsigned short Ambient_light_channel_data[3];
+unsigned short Ambient_light_channel_data[TOTAL_AMB_LIGHT_CHANNELS];
+unsigned int AmbientLIghtLevelsScaled[TOTAL_AMB_LIGHT_CHANNELS];
 static unsigned short IR_Channel_data_SRC;
 
 #define CS_SET (GPIOA_PCOR |= 0x2000u)
@@ -416,9 +420,11 @@ void mlx_read_ambient_light()
         sum_array[1] += mlx_read_buffer[2];
         sum_array[2] += mlx_read_buffer[3];
     }
-    Ambient_light_channel_data[0] = sum_array[0] >> 1;
-    Ambient_light_channel_data[1] = sum_array[1] >> 1;
-    Ambient_light_channel_data[2] = sum_array[2] >> 1;
+    for (int i = 0; i < TOTAL_AMB_LIGHT_CHANNELS; i++)
+    {
+        Ambient_light_channel_data[i] = sum_array[i] >> 1;
+        AmbientLIghtLevelsScaled[i] = LookupTable2d_uint16_uint32(Ambient_light_channel_data[i], TBL_RawAmbientLightData[i]);
+    }
 }
 
 void mlx_calibration(void)

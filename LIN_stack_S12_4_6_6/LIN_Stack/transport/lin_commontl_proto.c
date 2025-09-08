@@ -119,6 +119,21 @@ void lin_tl_make_slaveres_pdu
                     
                     switch (error_code)
                     {
+                    case 0x1300:
+                        lin_tl_pdu[5] = IR_Channel_A_data[0] >> 8;
+                        lin_tl_pdu[6] = IR_Channel_A_data[0] >> 0;
+                        len += 2;
+                        lin_tl_pdu[7] = IR_Channel_B_data[0] >> 8;
+                        lin_tl_pdu[8] = IR_Channel_B_data[0] >> 0;
+                        len += 2;
+                        for (int i = 0; i < TOTAL_AMB_LIGHT_CHANNELS; i++)
+                        {
+                          lin_tl_pdu[9 + i*2] = Ambient_light_channel_data[i] >> 8;
+                          lin_tl_pdu[10 + i*2] = Ambient_light_channel_data[i] >> 0;
+                          len += 2;
+                        }
+                        break;
+                        
                     case 0x1301:
                         lin_tl_pdu[5] = dac_level_ir_ch_a;
                         len++;
@@ -730,6 +745,10 @@ void lin_tl_attach_service()
             if (3U == pci_length)
             {
               lin_diagservice_read_data_by_identifier();
+            }
+            else
+            {
+              lin_tl_make_slaveres_pdu(sid, NEGATIVE, SERVICE_NOT_SUPPORTED);
             }
             break;
           }

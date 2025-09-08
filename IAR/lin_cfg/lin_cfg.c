@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Fri Sep 05 16:10:26 NOVT 2025
+* @date      Mon Sep 08 09:00:17 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -42,7 +42,7 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
 
   0x00 /* 0 : 00000000 */ /* start of frame LI0_BCM_55 */
 
-  ,0x0f /* 1 : 00001111 */
+  ,0xf0 /* 1 : 11110000 */
   ,0xff /* 2 : 11111111 */
   ,0xff /* 3 : 11111111 */
   ,0xff /* 4 : 11111111 */
@@ -51,11 +51,11 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   ,0xff /* 7 : 11111111 */
 
 
-  ,0x01 /* 8 : 00000001 */ /* start of frame LI0_RLS_8E */
+  ,0x80 /* 8 : 10000000 */ /* start of frame LI0_RLS_8E */
 
   ,0x81 /* 9 : 10000001 */
   
-  ,0x01 /* 10 : 00000001 */
+  ,0x80 /* 10 : 10000000 */
   
   ,0xff /* 11 : 11111111 */
   
@@ -68,7 +68,7 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   ,0xff /* 15 : 11111111 */
   
 
-  ,0xfb /* 16 : 11111011 */ /* start of frame LI0_BCM_D6 */
+  ,0xdf /* 16 : 11011111 */ /* start of frame LI0_BCM_D6 */
 
   ,0xff /* 17 : 11111111 */
   
@@ -93,7 +93,7 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0xff /* 27 : 11111111 */
   
-  ,0xf0 /* 28 : 11110000 */
+  ,0x0f /* 28 : 00001111 */
   
   ,0x00 /* 29 : 00000000 */
   
@@ -110,7 +110,7 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0xff /* 35 : 11111111 */
   
-  ,0x1f /* 36 : 00011111 */
+  ,0xf8 /* 36 : 11111000 */
   
   ,0xff /* 37 : 11111111 */
   

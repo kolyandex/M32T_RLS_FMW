@@ -6,6 +6,7 @@
 #include "lin.h"
 #include "spi.h"
 #include "mlx75308.h"
+#include "lin_data.h"
 /**********************************************************************************************
  * Constants and macros
  **********************************************************************************************/
@@ -55,15 +56,6 @@
 #define OUTPUT_TOGGLE(port, register_num) XOUTPUT_TOGGLE(port, register_num)
 #define XOUTPUT_TOGGLE(port, register_num) GPIO##port##_PTOR |= 1 << register_num
 
-#define MOTOR_SELECTION_INCREASE 1
-#define MOTOR_SELECTION_DECREASE 2
-#define MOTOR_SELECTION_STOP 3
-/**********************************************************************************************
- * Global variables
- **********************************************************************************************/
-l_u8 LIN_counter = 0, LED_counter = 0;
-l_u8 Motor1_temp = 30;
-l_u8 Motor1_Selection;
 /***********************************************************************************************
  *
  * @brief    CLK_Init - Initialize the clocks to run at 20 MHz from the 10Mhz external XTAL
@@ -175,7 +167,8 @@ void lin_application_timer_FTM2()
   NVIC_ISER |= 1 << ((INT_FTM2 - 16) % 32);
 }
 
-volatile static unsigned char BatteryVoltageLin_x10;
+unsigned char BatteryVoltageLin_x10;
+short VehicleSpeed;
 volatile static int LED_A_DATA, LED_B_DATA;
 void __init_hardware();
 
@@ -293,6 +286,8 @@ void main(void)
     {
       LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
       LED_B_DATA = mlx_read_data_by_id(LED_B, 8, 1000);
+      mlx_read_ambient_light();
+      lin_proc_data_100ms();
       period &= ~PERIOD_100MS;
     }
     if (period & PERIOD_200MS)
@@ -301,13 +296,12 @@ void main(void)
     }
     if (period & PERIOD_500MS)
     {
-      mlx_read_ambient_light();
       period &= ~PERIOD_500MS;
     }
     if (period & PERIOD_1000MS)
     {
-      period &= ~PERIOD_1000MS;
-      BatteryVoltageLin_x10 = l_u8_rd_LI0_BCM_BatteryVoltage();
+      period &= ~PERIOD_1000MS;      
+      //mlx_calibration();
     }
   }
 }

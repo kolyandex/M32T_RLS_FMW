@@ -1169,7 +1169,7 @@ void ld_send_message(l_u16 length, const l_u8* const data)
     } /* end of (LD_COMPLETED == tl_conf->tl_message_status) */
 }
 
-void ld_receive_message(l_u16* const length, l_u8* const data)
+void ld_receive_message(l_u16* const length, l_u8* const data, const l_u32 max_len)
 {
 
     lin_tl_pdu_data pdu;
@@ -1203,6 +1203,10 @@ void ld_receive_message(l_u16* const length, l_u8* const data)
         /* Single frame */
         case SF:
             tmp_length = pdu[1] & 0x0f;
+            if (tmp_length > max_len)
+            {
+              tmp_length = max_len;
+            }
             *length = tmp_length;
             data[0] = pdu[2];
             for (i = 1; i < tmp_length; i++)
@@ -1213,6 +1217,10 @@ void ld_receive_message(l_u16* const length, l_u8* const data)
         /* First frame */
         case FF:
             tmp_length = (pdu[1] & 0x0F) * 256 + pdu[2];
+            if (tmp_length > max_len)
+            {
+              tmp_length = max_len;
+            }
             *length = tmp_length;
             data[0] = pdu[3];
             for (i = 1; i < 5; i++)

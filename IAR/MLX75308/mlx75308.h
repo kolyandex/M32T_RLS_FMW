@@ -10,6 +10,8 @@ typedef enum
 } e_read_data_type;
 
 
+#define TOTAL_AMB_LIGHT_CHANNELS 3
+
 
 
 void mlx_init(void);

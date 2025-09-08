@@ -1753,7 +1753,7 @@ extern l_u8 ld_raw_tx_status(void);
 extern l_u8 ld_raw_rx_status(void);
 /* COOKED APIs */
 extern void ld_send_message(l_u16 length, const l_u8* const data);
-extern void ld_receive_message(l_u16* const length, l_u8* const data);
+extern void ld_receive_message(l_u16* const length, l_u8* const data, const l_u32 max_len);
 extern l_u8 ld_tx_status(void);
 extern l_u8 ld_rx_status(void);
 
