@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Mon Sep 08 09:00:17 NOVT 2025
+* @date      Mon Sep 08 11:25:03 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -105,7 +105,7 @@ typedef enum {
   
    , LI0_RLS_AmbientLightLevel_pow
   
-   , LI0_RLS_Unknown_0
+   , LI0_RLS_AmbientLightDiffRelated
   
    , LI0_RLS_Unknown_2
   
@@ -261,11 +261,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow    0U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_Unknown_0    9U
-#define LIN_BIT_OFFSET_LI0_RLS_Unknown_0    1U
-#define LIN_SIGNAL_SIZE_LI0_RLS_Unknown_0    2U
-#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_0    1U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_0    6U
+#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    9U
+#define LIN_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
+#define LIN_SIGNAL_SIZE_LI0_RLS_AmbientLightDiffRelated    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    6U
 
 
 #define LIN_BYTE_OFFSET_LI0_RLS_Unknown_2    9U
@@ -522,19 +522,19 @@ typedef enum {
 
 
  
-/* static access macros for signal LI0_RLS_Unknown_0 */
+/* static access macros for signal LI0_RLS_AmbientLightDiffRelated */
  
-#define l_u8_rd_LI0_RLS_Unknown_0() \
-    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_0]) >> 1U) & 0x03U))
+#define l_u8_rd_LI0_RLS_AmbientLightDiffRelated() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated]) >> 1U) & 0x03U))
 
 
-#define l_u8_wr_LI0_RLS_Unknown_0(A) \
+#define l_u8_wr_LI0_RLS_AmbientLightDiffRelated(A) \
     { \
-    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_0] = \
-    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_0] & 0xf9U) | \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated] & 0xf9U) | \
     (((A) << 1U) & 0x06U)); \
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_0); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated); \
     }
 
 
@@ -809,12 +809,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightLevel_pow],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow)
 
-#define l_flg_tst_LI0_RLS_Unknown_0_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_0)
-#define l_flg_clr_LI0_RLS_Unknown_0_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_0)
+#define l_flg_tst_LI0_RLS_AmbientLightDiffRelated_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated)
+#define l_flg_clr_LI0_RLS_AmbientLightDiffRelated_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated)
 
 #define l_flg_tst_LI0_RLS_Unknown_2_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_2],\

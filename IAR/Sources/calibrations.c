@@ -33,7 +33,7 @@ __root const s_table_2d_uint16_uint8 TBL_ADC_Conv CAL_SEC_TBL_DEF =
 __root static __CONST uint16_t scale_RawAmbientLightData_0[] CAL_SEC = {9000, 12891, 13288, 17128, 18488, 19727, 20671, 21173, 21903, 22883, 23956, 25445, 27212, 29000, 30500, 32000};
 __root static __CONST uint32_t table_RawAmbientLightData_0[] CAL_SEC = {0, 110, 245, 450, 800, 2026, 4000, 5600, 8500, 11000, 19000, 33000, 45000, 70000, 100000, 127000};
 
-__root const s_table_2d_uint16_uint32 TBL_RawAmbientLightData_0 CAL_SEC_TBL_DEF =
+__root const s_table_2d_uint16_uint32 TBL_HUD_AmbientLight CAL_SEC_TBL_DEF =
     {
         .type = TABLE_TYPE_2D,
         .sc_count = SIZEOF_ARR(scale_RawAmbientLightData_0),
@@ -62,7 +62,7 @@ __root const s_table_2d_uint16_uint32 TBL_RawAmbientLightData_2 CAL_SEC_TBL_DEF 
 
 __root const s_table_2d_uint16_uint32 * TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_CHANNELS] = 
 {
-    &TBL_RawAmbientLightData_0,
+    &TBL_HUD_AmbientLight,
     &TBL_RawAmbientLightData_1,
     &TBL_RawAmbientLightData_2
 };

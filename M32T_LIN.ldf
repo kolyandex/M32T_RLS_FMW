@@ -20,7 +20,7 @@ Signals {
   RLS_AutoLightOn_1: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_Unknown_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel_pow: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_Unknown_0: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_AmbientLightDiffRelated: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_Unknown_2: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel: 7, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   BCM_WipersSwPos: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
@@ -75,7 +75,7 @@ Frames {
     RLS_AutoLightOn_1, 4 ;
     RLS_Unknown_1, 7 ;
     RLS_AmbientLightLevel_pow, 12 ;
-    RLS_Unknown_0, 9 ;
+    RLS_AmbientLightDiffRelated, 9 ;
     RLS_Unknown_2, 14 ;
     RLS_AmbientLightLevel, 16 ;
     RLS_LinError, 11 ;

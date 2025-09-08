@@ -15,8 +15,8 @@ unsigned short Ambient_light_channel_data[TOTAL_AMB_LIGHT_CHANNELS];
 unsigned int AmbientLIghtLevelsScaled[TOTAL_AMB_LIGHT_CHANNELS];
 static unsigned short IR_Channel_data_SRC;
 
-#define CS_SET (GPIOA_PCOR |= 0x2000u)
-#define CS_RESET (GPIOA_PSOR |= 0x2000u)
+#define CS_SET (GPIOA_PCOR |= (1 << (5 + 8)))
+#define CS_RESET (GPIOA_PSOR |= (1 << (5 + 8)))
 
 static void delay_soft(int t)
 {

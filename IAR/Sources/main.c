@@ -39,10 +39,10 @@
 #define PORT_H B
 
 #define CONFIG_PIN_AS_GPIO(port, register_number, mode) XCONFIG_PIN_AS_GPIO(port, register_number, mode)
-#define XCONFIG_PIN_AS_GPIO(port, register_number, mode) (mode == 0) ? (GPIO##port##_PDDR |= 0 << register_number) : (GPIO##port##_PDDR |= 1 << register_number)
+#define XCONFIG_PIN_AS_GPIO(port, register_number, mode) (mode == 0) ? (GPIO##port##_PDDR &= ~(1 << register_number)) : (GPIO##port##_PDDR |= 1 << register_number)
 
 #define ENABLE_INPUT(port, pin_number) XENABLE_INPUT(port, pin_number)
-#define XENABLE_INPUT(port, pin_number) GPIO##port##_PIDR ^= 1 << pin_number
+#define XENABLE_INPUT(port, pin_number) GPIO##port##_PIDR &= ~(1 << pin_number)
 
 #define ENABLE_PULLUP(port, pin_number) XENABLE_PULLUP(port, pin_number)
 #define XENABLE_PULLUP(port, pin_number) PORT_PUE0 |= PORT_PUE0_PT##port##PE##pin_number##_MASK
@@ -81,66 +81,55 @@ void Clk_Init()
  ************************************************************************************************/
 void GPIO_Init()
 {
-  //		CONFIG_PIN_AS_GPIO(PORT_C,16,OUTPUT); /* Configure LED 0 (PTC0) as an output */
-  //		CONFIG_PIN_AS_GPIO(PORT_C,17,OUTPUT); /* Configure LED 1 (PTC1) as an output */
-  //		CONFIG_PIN_AS_GPIO(PORT_C,18,OUTPUT); /* Configure LED 2 (PTC2) as an output */
-  //		CONFIG_PIN_AS_GPIO(PORT_C,19,OUTPUT); /* Configure LED 3 (PTC3) as an output */
   //
-  //		CONFIG_PIN_AS_GPIO(PORT_D,24,INPUT); /* Configure BTN0 (PTD0) as an input */
-  //		CONFIG_PIN_AS_GPIO(PORT_D,25,INPUT); /* Configure BTN1 (PTD1) as an input */
-  //		ENABLE_INPUT(PORT_D,24);			 /* Enable input SW1*/
-  //		ENABLE_INPUT(PORT_D,25);			/*  Enable input SW2*/
-
-  //		LED0_OFF;							/* Turn off LED0 */
-  //		LED1_OFF;							/* Turn off LED1 */
-  //		LED2_OFF;							/* Turn off LED2 */
-  //		LED3_OFF;							/* Turn off LED3 */
-
-  CONFIG_PIN_AS_GPIO(PORT_B, 7, OUTPUT); /* Configure pin control LIN transceiver enable as an output */
-                                         //		CONFIG_PIN_AS_GPIO(PORT_B,11,OUTPUT); /* Configure pin control LIN transceiver wakeup as an output */
-  OUTPUT_SET(PORT_B, 7);                 /* Enable LIN transceiver */
-  //		OUTPUT_CLEAR(PORT_B,11);              /* Disable wakeup LIN transceiver */
-  GPIOA_PDDR |= 0x8000u;
-  GPIOA_PSOR |= 0x8000u;
-  GPIOA_PDDR &= 0xFFFFBFFF;
-  GPIOA_PIDR &= 0xFFFFBFFF;
-  GPIOA_PDDR &= 0xF7FFFFFF;
-  GPIOA_PIDR &= 0xF7FFFFFF;
-  GPIOA_PDDR |= 0x40u;
-  GPIOA_PSOR |= 0x40u;
-  GPIOA_PDDR |= 0x80u;
-  GPIOA_PSOR |= 0x80u;
-  PORT_PUEL |= 0x80u;
-  GPIOA_PDDR |= 0x2000u;
-  GPIOA_PSOR |= 0x2000u;
-  PORT_PUEL |= 0x2000u;
-  SIM_SOPT &= 0xFFFFFFFD;
-  GPIOA_PDDR &= 0xFFFFFFFB;
-  GPIOA_PIDR &= 0xFFFFFFFB;
-  GPIOA_PDDR &= 0xFFFFFFF7;
-  GPIOA_PIDR &= 0xFFFFFFF7;
-  GPIOA_PDDR &= 0xFFFFFFFE;
-  GPIOA_PIDR &= 0xFFFFFFFE;
-  GPIOA_PDDR |= 2u;
-  GPIOA_PSOR |= 2u;
-  GPIOA_PDDR &= 0xFFFEFFFF;
-  GPIOA_PIDR &= 0xFFFEFFFF;
-  GPIOA_PDDR &= 0xFFFDFFFF;
-  GPIOA_PIDR &= 0xFFFDFFFF;
-  GPIOA_PDDR &= 0xFFFBFFFF;
-  GPIOA_PIDR &= 0xFFFBFFFF;
-  GPIOA_PDDR &= 0xFFDFFFFF;
-  GPIOA_PIDR &= 0xFFDFFFFF;
-  GPIOA_PDDR &= 0xFFBFFFFF;
-  GPIOA_PIDR &= 0xFFBFFFFF;
-  GPIOA_PDDR |= 0x800000u;
-  GPIOA_PSOR |= 0x800000u;
-  GPIOA_PDDR &= 0xFEFFFFFF;
-  GPIOA_PIDR &= 0xFEFFFFFF;
-  GPIOA_PDDR &= 0xFDFFFFFF;
-  GPIOA_PIDR &= 0xFDFFFFFF;
-  GPIOA_PDDR &= 0xFBFFFFFF;
-  GPIOA_PIDR &= 0xFBFFFFFF;
+  CONFIG_PIN_AS_GPIO(PORT_B, (7 + 8), OUTPUT); // PTB7 - LIN EN
+  OUTPUT_SET(PORT_B, (7 + 8));
+  //
+  CONFIG_PIN_AS_GPIO(PORT_B, (6 + 8), INPUT); // PTB6 - MLX DR
+  ENABLE_INPUT(PORT_B, (6 + 8));
+  //
+  CONFIG_PIN_AS_GPIO(PORT_D, (3 + 24), INPUT); // PTD3- MLX MR
+  ENABLE_INPUT(PORT_D, (3 + 24));
+  //
+  CONFIG_PIN_AS_GPIO(PORT_A, 6, OUTPUT); // PTA6 - MLX WT
+  OUTPUT_SET(PORT_A, 6);
+  //
+  CONFIG_PIN_AS_GPIO(PORT_A, 7, OUTPUT); // PTA7 - MLX WKUP
+  OUTPUT_SET(PORT_A, 7);
+  PORT_PUEL |= (1 << 7);
+  //
+  CONFIG_PIN_AS_GPIO(PORT_B, (5 + 8), OUTPUT); // PTB5 - MLX CS
+  OUTPUT_SET(PORT_B, (5 + 8));
+  PORT_PUEL |= (1 << (5 + 8));
+  //
+  SIM_SOPT &= ~SIM_SOPT_NMIE_MASK;
+  //
+  CONFIG_PIN_AS_GPIO(PORT_A, 2, INPUT); // NOT USED
+  ENABLE_INPUT(PORT_A, 2);
+  CONFIG_PIN_AS_GPIO(PORT_A, 3, INPUT); // NOT USED
+  ENABLE_INPUT(PORT_A, 3);
+  CONFIG_PIN_AS_GPIO(PORT_A, 0, INPUT); // NOT USED
+  ENABLE_INPUT(PORT_A, 0);
+  CONFIG_PIN_AS_GPIO(PORT_A, 1, OUTPUT); // NOT USED
+  OUTPUT_SET(PORT_A, 1);
+  CONFIG_PIN_AS_GPIO(PORT_C, (0 + 16), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_C, (0 + 16));
+  CONFIG_PIN_AS_GPIO(PORT_C, (1 + 16), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_C, (1 + 16));
+  CONFIG_PIN_AS_GPIO(PORT_C, (2 + 16), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_C, (2 + 16));
+  CONFIG_PIN_AS_GPIO(PORT_C, (5 + 16), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_C, (5 + 16));
+  CONFIG_PIN_AS_GPIO(PORT_C, (6 + 16), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_C, (6 + 16));
+  CONFIG_PIN_AS_GPIO(PORT_C, (7 + 16), OUTPUT); // NOT USED
+  OUTPUT_SET(PORT_C, (7 + 16));  
+  CONFIG_PIN_AS_GPIO(PORT_D, (0 + 24), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_D, (0 + 24));
+  CONFIG_PIN_AS_GPIO(PORT_D, (1 + 24), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_D, (1 + 24));
+  CONFIG_PIN_AS_GPIO(PORT_D, (2 + 24), INPUT); // NOT USED
+  ENABLE_INPUT(PORT_D, (2 + 24));
 }
 /***********************************************************************************************
  *
