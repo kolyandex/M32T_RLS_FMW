@@ -56,6 +56,10 @@
 #define OUTPUT_TOGGLE(port, register_num) XOUTPUT_TOGGLE(port, register_num)
 #define XOUTPUT_TOGGLE(port, register_num) GPIO##port##_PTOR |= 1 << register_num
 
+__root static const unsigned char SCFTRIM @ 0x000003FE = 0x01;
+__root static const unsigned char SCTRIM @ 0x000003FF = 0x52;
+
+
 /***********************************************************************************************
  *
  * @brief    CLK_Init - Initialize the clocks to run at 20 MHz from the 10Mhz external XTAL
@@ -66,7 +70,8 @@
 void Clk_Init()
 {
   ICS_C1 |= ICS_C1_IRCLKEN_MASK; /* Enable the internal reference clock*/
-  ICS_C3 = 0x52;                 /* Reference clock frequency = 39.0625 KHz*/
+  ICS_C3 = SCTRIM;                 /* Reference clock frequency = 39.0625 KHz*/
+  ICS_C4 = ICS_C4 & 0xFE | SCFTRIM;
   while (!(ICS_S & ICS_S_LOCK_MASK))
     ;                       /* Wait for PLL lock, now running at 40 MHz (1024 * 39.0625Khz) */
   ICS_C2 |= ICS_C2_BDIV(1); /*BDIV=2, Bus clock = 20 MHz*/
