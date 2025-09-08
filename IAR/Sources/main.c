@@ -7,6 +7,7 @@
 #include "spi.h"
 #include "mlx75308.h"
 #include "lin_data.h"
+#include "a_light.h"
 /**********************************************************************************************
  * Constants and macros
  **********************************************************************************************/
@@ -264,6 +265,8 @@ void main(void)
   lin_application_timer_FTM2();
   spi_init();
   mlx_init();
+  mlx_read_ambient_light();
+  a_light_init();
   PeriodsInit();
   for (;;)
   {
@@ -290,6 +293,7 @@ void main(void)
     }
     if (period & PERIOD_500MS)
     {
+      a_light_poll_500ms();
       period &= ~PERIOD_500MS;
     }
     if (period & PERIOD_1000MS)

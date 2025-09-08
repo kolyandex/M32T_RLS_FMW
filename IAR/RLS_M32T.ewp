@@ -370,7 +370,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -379,7 +379,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -1186,6 +1186,12 @@
     <group>
         <name>Sources</name>
         <file>
+            <name>$PROJ_DIR$\Sources\a_light.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\a_light.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\calibrations.c</name>
         </file>
         <file>
@@ -1196,6 +1202,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\Sources\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\sma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\sma.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\Sources\spi.c</name>

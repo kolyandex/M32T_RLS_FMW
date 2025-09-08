@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Mon Sep 08 11:25:03 NOVT 2025
+* @date      Mon Sep 08 23:21:59 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -67,7 +67,7 @@
 #define _TL_FRAME_SUPPORT_      _TL_MULTI_FRAME_
 
 /* frame buffer size */
-#define LIN_FRAME_BUF_SIZE          40
+#define LIN_FRAME_BUF_SIZE          34
 #define LIN_FLAG_BUF_SIZE           6
 
 /**********************************************************************/
@@ -81,7 +81,7 @@ typedef enum {
 /***************               Signals              *******************/
 /**********************************************************************/
 /* Number of signals */
-#define LIN_NUM_OF_SIGS  22
+#define LIN_NUM_OF_SIGS  26
 /* List of signals */
 typedef enum {
 
@@ -107,7 +107,7 @@ typedef enum {
   
    , LI0_RLS_AmbientLightDiffRelated
   
-   , LI0_RLS_Unknown_2
+   , LI0_RLS_RainDetectedCloseWindows
   
    , LI0_RLS_AmbientLightLevel
   
@@ -117,7 +117,7 @@ typedef enum {
   
    , LI0_BCM_LightSwitchPos
   
-   , LI0_BCM_Unknown
+   , LI0_BCM_WipersInOperationNow
   
    , LI0_BCM_VehicleSpeed
   
@@ -130,6 +130,14 @@ typedef enum {
    , LI0_BCM_11_Unk_1
   
    , LI0_BCM_11_Unk_2
+  
+   , LI0_RLS_8E_Alw_1
+  
+   , LI0_RLS_8E_Alw_1_0
+  
+   , LI0_RLS_8E_Alw_0
+  
+   , LI0_BCM_85_IgnState
   
 } l_signal_handle;
 /**********************************************************************/
@@ -205,81 +213,81 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_AutoWipersThreshold    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_AmbientLightOn    16U
+#define LIN_BYTE_OFFSET_LI0_BCM_AmbientLightOn    10U
 #define LIN_BIT_OFFSET_LI0_BCM_AmbientLightOn    5U
 #define LIN_SIGNAL_SIZE_LI0_BCM_AmbientLightOn    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_AmbientLightOn    3U
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_AmbientLightOn    0U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_FrontWipersMode    8U
+#define LIN_BYTE_OFFSET_LI0_RLS_FrontWipersMode    2U
 #define LIN_BIT_OFFSET_LI0_RLS_FrontWipersMode    0U
 #define LIN_SIGNAL_SIZE_LI0_RLS_FrontWipersMode    2U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_FrontWipersMode    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_FrontWipersMode    0U
 
 
-#define LIN_BYTE_OFFSET_LI0_SIG_Error    8U
+#define LIN_BYTE_OFFSET_LI0_SIG_Error    2U
 #define LIN_BIT_OFFSET_LI0_SIG_Error    3U
 #define LIN_SIGNAL_SIZE_LI0_SIG_Error    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_SIG_Error    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_SIG_Error    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_FrontWipersAutoModeEnabled    8U
+#define LIN_BYTE_OFFSET_LI0_RLS_FrontWipersAutoModeEnabled    2U
 #define LIN_BIT_OFFSET_LI0_RLS_FrontWipersAutoModeEnabled    2U
 #define LIN_SIGNAL_SIZE_LI0_RLS_FrontWipersAutoModeEnabled    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_FrontWipersAutoModeEnabled    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_FrontWipersAutoModeEnabled    1U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AutoLightOn_0    8U
+#define LIN_BYTE_OFFSET_LI0_RLS_AutoLightOn_0    2U
 #define LIN_BIT_OFFSET_LI0_RLS_AutoLightOn_0    5U
 #define LIN_SIGNAL_SIZE_LI0_RLS_AutoLightOn_0    2U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AutoLightOn_0    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_AutoLightOn_0    4U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AutoLightOn_1    8U
+#define LIN_BYTE_OFFSET_LI0_RLS_AutoLightOn_1    2U
 #define LIN_BIT_OFFSET_LI0_RLS_AutoLightOn_1    4U
 #define LIN_SIGNAL_SIZE_LI0_RLS_AutoLightOn_1    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AutoLightOn_1    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_AutoLightOn_1    3U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_Unknown_1    8U
+#define LIN_BYTE_OFFSET_LI0_RLS_Unknown_1    2U
 #define LIN_BIT_OFFSET_LI0_RLS_Unknown_1    7U
 #define LIN_SIGNAL_SIZE_LI0_RLS_Unknown_1    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_1    1U
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_1    5U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightLevel_pow    9U
+#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightLevel_pow    3U
 #define LIN_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow    4U
 #define LIN_SIGNAL_SIZE_LI0_RLS_AmbientLightLevel_pow    2U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightLevel_pow    2U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow    0U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow    1U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    9U
+#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    3U
 #define LIN_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
 #define LIN_SIGNAL_SIZE_LI0_RLS_AmbientLightDiffRelated    2U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    6U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    7U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_Unknown_2    9U
-#define LIN_BIT_OFFSET_LI0_RLS_Unknown_2    6U
-#define LIN_SIGNAL_SIZE_LI0_RLS_Unknown_2    1U
-#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_2    2U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_2    1U
+#define LIN_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows    3U
+#define LIN_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows    6U
+#define LIN_SIGNAL_SIZE_LI0_RLS_RainDetectedCloseWindows    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows    2U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightLevel    10U
+#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightLevel    4U
 #define LIN_BIT_OFFSET_LI0_RLS_AmbientLightLevel    0U
 #define LIN_SIGNAL_SIZE_LI0_RLS_AmbientLightLevel    7U
 #define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightLevel    2U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel    2U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel    4U
 
 
 #define LIN_BYTE_OFFSET_LI0_BCM_WipersSwPos    0U
@@ -303,53 +311,81 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_LightSwitchPos    3U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_Unknown    1U
-#define LIN_BIT_OFFSET_LI0_BCM_Unknown    3U
-#define LIN_SIGNAL_SIZE_LI0_BCM_Unknown    1U
-#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_Unknown    0U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_Unknown    4U
+#define LIN_BYTE_OFFSET_LI0_BCM_WipersInOperationNow    1U
+#define LIN_BIT_OFFSET_LI0_BCM_WipersInOperationNow    3U
+#define LIN_SIGNAL_SIZE_LI0_BCM_WipersInOperationNow    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_WipersInOperationNow    0U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_WipersInOperationNow    4U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_VehicleSpeed    28U
+#define LIN_BYTE_OFFSET_LI0_BCM_VehicleSpeed    22U
 #define LIN_BIT_OFFSET_LI0_BCM_VehicleSpeed    4U
 #define LIN_SIGNAL_SIZE_LI0_BCM_VehicleSpeed    12U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_VehicleSpeed    4U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_VehicleSpeed    0U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_VehicleSpeed    1U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_BatteryVoltage    31U
+#define LIN_BYTE_OFFSET_LI0_BCM_BatteryVoltage    25U
 #define LIN_BIT_OFFSET_LI0_BCM_BatteryVoltage    0U
 #define LIN_SIGNAL_SIZE_LI0_BCM_BatteryVoltage    8U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_BatteryVoltage    4U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_BatteryVoltage    1U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_BatteryVoltage    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_LinError    9U
+#define LIN_BYTE_OFFSET_LI0_RLS_LinError    3U
 #define LIN_BIT_OFFSET_LI0_RLS_LinError    3U
 #define LIN_SIGNAL_SIZE_LI0_RLS_LinError    1U
-#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_LinError    1U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_LinError    7U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_LinError    2U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_LinError    0U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0    36U
+#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0    30U
 #define LIN_BIT_OFFSET_LI0_BCM_11_Unk_0    0U
 #define LIN_SIGNAL_SIZE_LI0_BCM_11_Unk_0    2U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_0    5U
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_0    1U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_1    36U
+#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_1    30U
 #define LIN_BIT_OFFSET_LI0_BCM_11_Unk_1    2U
 #define LIN_SIGNAL_SIZE_LI0_BCM_11_Unk_1    1U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_1    5U
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_1    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_2    34U
+#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_2    28U
 #define LIN_BIT_OFFSET_LI0_BCM_11_Unk_2    0U
 #define LIN_SIGNAL_SIZE_LI0_BCM_11_Unk_2    8U
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_2    5U
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_2    0U
+
+
+#define LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1    3U
+#define LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1    7U
+#define LIN_SIGNAL_SIZE_LI0_RLS_8E_Alw_1    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1    2U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1    3U
+
+
+#define LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0    4U
+#define LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1_0    7U
+#define LIN_SIGNAL_SIZE_LI0_RLS_8E_Alw_1_0    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0    2U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1_0    5U
+
+
+#define LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0    3U
+#define LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0    0U
+#define LIN_SIGNAL_SIZE_LI0_RLS_8E_Alw_0    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0    1U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0    6U
+
+
+#define LIN_BYTE_OFFSET_LI0_BCM_85_IgnState    21U
+#define LIN_BIT_OFFSET_LI0_BCM_85_IgnState    0U
+#define LIN_SIGNAL_SIZE_LI0_BCM_85_IgnState    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState    4U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState    0U
 
 
 
@@ -538,21 +574,21 @@ typedef enum {
     }
 
 
-/* static access macros for signal LI0_RLS_Unknown_2 */
+/* static access macros for signal LI0_RLS_RainDetectedCloseWindows */
 
  
-#define l_bool_rd_LI0_RLS_Unknown_2() \
-    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_2], \
-    LIN_BIT_OFFSET_LI0_RLS_Unknown_2))
+#define l_bool_rd_LI0_RLS_RainDetectedCloseWindows() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows], \
+    LIN_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows))
 
-#define l_bool_wr_LI0_RLS_Unknown_2(A) \
+#define l_bool_wr_LI0_RLS_RainDetectedCloseWindows(A) \
     {(A) ? \
-    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_2], \
-    LIN_BIT_OFFSET_LI0_RLS_Unknown_2)):\
-    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Unknown_2], \
-    LIN_BIT_OFFSET_LI0_RLS_Unknown_2));\
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_2],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_2);}
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows], \
+    LIN_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows], \
+    LIN_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows);}
  
 /* static access macros for signal LI0_RLS_AmbientLightLevel */
  
@@ -621,21 +657,21 @@ typedef enum {
     }
 
 
-/* static access macros for signal LI0_BCM_Unknown */
+/* static access macros for signal LI0_BCM_WipersInOperationNow */
 
  
-#define l_bool_rd_LI0_BCM_Unknown() \
-    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_Unknown], \
-    LIN_BIT_OFFSET_LI0_BCM_Unknown))
+#define l_bool_rd_LI0_BCM_WipersInOperationNow() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_WipersInOperationNow], \
+    LIN_BIT_OFFSET_LI0_BCM_WipersInOperationNow))
 
-#define l_bool_wr_LI0_BCM_Unknown(A) \
+#define l_bool_wr_LI0_BCM_WipersInOperationNow(A) \
     {(A) ? \
-    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_Unknown], \
-    LIN_BIT_OFFSET_LI0_BCM_Unknown)):\
-    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_Unknown], \
-    LIN_BIT_OFFSET_LI0_BCM_Unknown));\
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_Unknown],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_Unknown);}
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_WipersInOperationNow], \
+    LIN_BIT_OFFSET_LI0_BCM_WipersInOperationNow)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_WipersInOperationNow], \
+    LIN_BIT_OFFSET_LI0_BCM_WipersInOperationNow));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_WipersInOperationNow],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_WipersInOperationNow);}
  
 /* static access macros for signal LI0_BCM_VehicleSpeed */
  
@@ -742,6 +778,68 @@ typedef enum {
     }
 
 
+/* static access macros for signal LI0_RLS_8E_Alw_1 */
+
+ 
+#define l_bool_rd_LI0_RLS_8E_Alw_1() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1))
+
+#define l_bool_wr_LI0_RLS_8E_Alw_1(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1);}
+/* static access macros for signal LI0_RLS_8E_Alw_1_0 */
+
+ 
+#define l_bool_rd_LI0_RLS_8E_Alw_1_0() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1_0))
+
+#define l_bool_wr_LI0_RLS_8E_Alw_1_0(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1_0)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_1_0));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1_0);}
+/* static access macros for signal LI0_RLS_8E_Alw_0 */
+
+ 
+#define l_bool_rd_LI0_RLS_8E_Alw_0() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0))
+
+#define l_bool_wr_LI0_RLS_8E_Alw_0(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
+    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0);}
+ 
+/* static access macros for signal LI0_BCM_85_IgnState */
+ 
+#define l_u8_rd_LI0_BCM_85_IgnState() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState]) >> 0U) & 0x03U))
+
+
+#define l_u8_wr_LI0_BCM_85_IgnState(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState] & 0xfcU) | \
+    (((A) << 0U) & 0x03U)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState); \
+    }
+
+
 
 
 /* Signal flag APIs */
@@ -816,12 +914,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated)
 
-#define l_flg_tst_LI0_RLS_Unknown_2_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_2],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_2)
-#define l_flg_clr_LI0_RLS_Unknown_2_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Unknown_2],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_Unknown_2)
+#define l_flg_tst_LI0_RLS_RainDetectedCloseWindows_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows)
+#define l_flg_clr_LI0_RLS_RainDetectedCloseWindows_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_RainDetectedCloseWindows)
 
 #define l_flg_tst_LI0_RLS_AmbientLightLevel_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightLevel],\
@@ -851,12 +949,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_LightSwitchPos],\
          LIN_FLAG_BIT_OFFSET_LI0_BCM_LightSwitchPos)
 
-#define l_flg_tst_LI0_BCM_Unknown_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_Unknown],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_Unknown)
-#define l_flg_clr_LI0_BCM_Unknown_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_Unknown],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_Unknown)
+#define l_flg_tst_LI0_BCM_WipersInOperationNow_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_WipersInOperationNow],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_WipersInOperationNow)
+#define l_flg_clr_LI0_BCM_WipersInOperationNow_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_WipersInOperationNow],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_WipersInOperationNow)
 
 #define l_flg_tst_LI0_BCM_VehicleSpeed_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_VehicleSpeed],\
@@ -899,6 +997,34 @@ typedef enum {
 #define l_flg_clr_LI0_BCM_11_Unk_2_flag() \
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_2],\
          LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_2)
+
+#define l_flg_tst_LI0_RLS_8E_Alw_1_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1)
+#define l_flg_clr_LI0_RLS_8E_Alw_1_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1)
+
+#define l_flg_tst_LI0_RLS_8E_Alw_1_0_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1_0)
+#define l_flg_clr_LI0_RLS_8E_Alw_1_0_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_1_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_1_0)
+
+#define l_flg_tst_LI0_RLS_8E_Alw_0_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0)
+#define l_flg_clr_LI0_RLS_8E_Alw_0_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0)
+
+#define l_flg_tst_LI0_BCM_85_IgnState_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState)
+#define l_flg_clr_LI0_BCM_85_IgnState_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState)
 
 
 

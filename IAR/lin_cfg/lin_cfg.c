@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Mon Sep 08 11:25:03 NOVT 2025
+* @date      Mon Sep 08 23:21:59 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -43,20 +43,27 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   0x00 /* 0 : 00000000 */ /* start of frame LI0_BCM_55 */
 
   ,0xf0 /* 1 : 11110000 */
-  ,0xff /* 2 : 11111111 */
-  ,0xff /* 3 : 11111111 */
-  ,0xff /* 4 : 11111111 */
+
+
+  ,0x84 /* 2 : 10000100 */ /* start of frame LI0_RLS_8E */
+
+  ,0x86 /* 3 : 10000110 */
+  
+  ,0x80 /* 4 : 10000000 */
+  
   ,0xff /* 5 : 11111111 */
+  
   ,0xff /* 6 : 11111111 */
+  
   ,0xff /* 7 : 11111111 */
-
-
-  ,0x80 /* 8 : 10000000 */ /* start of frame LI0_RLS_8E */
-
-  ,0x81 /* 9 : 10000001 */
   
-  ,0x80 /* 10 : 10000000 */
+  ,0xff /* 8 : 11111111 */
   
+  ,0xff /* 9 : 11111111 */
+  
+
+  ,0xdf /* 10 : 11011111 */ /* start of frame LI0_BCM_D6 */
+
   ,0xff /* 11 : 11111111 */
   
   ,0xff /* 12 : 11111111 */
@@ -67,56 +74,43 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0xff /* 15 : 11111111 */
   
-
-  ,0xdf /* 16 : 11011111 */ /* start of frame LI0_BCM_D6 */
-
+  ,0xff /* 16 : 11111111 */
+  
   ,0xff /* 17 : 11111111 */
   
-  ,0xff /* 18 : 11111111 */
-  
+
+  ,0xff /* 18 : 11111111 */ /* start of frame LI0_BCM_85 */
+
   ,0xff /* 19 : 11111111 */
   
   ,0xff /* 20 : 11111111 */
   
-  ,0xff /* 21 : 11111111 */
+  ,0xfc /* 21 : 11111100 */
   
-  ,0xff /* 22 : 11111111 */
+  ,0x0f /* 22 : 00001111 */
   
-  ,0xff /* 23 : 11111111 */
+  ,0x00 /* 23 : 00000000 */
+  
+  ,0xff /* 24 : 11111111 */
+  
+  ,0x00 /* 25 : 00000000 */
   
 
-  ,0xff /* 24 : 11111111 */ /* start of frame LI0_BCM_85 */
+  ,0xff /* 26 : 11111111 */ /* start of frame LI0_BCM_11 */
 
-  ,0xff /* 25 : 11111111 */
-  
-  ,0xff /* 26 : 11111111 */
-  
   ,0xff /* 27 : 11111111 */
   
-  ,0x0f /* 28 : 00001111 */
+  ,0x00 /* 28 : 00000000 */
   
-  ,0x00 /* 29 : 00000000 */
+  ,0xff /* 29 : 11111111 */
   
-  ,0xff /* 30 : 11111111 */
+  ,0xf8 /* 30 : 11111000 */
   
-  ,0x00 /* 31 : 00000000 */
+  ,0xff /* 31 : 11111111 */
   
-
-  ,0xff /* 32 : 11111111 */ /* start of frame LI0_BCM_11 */
-
+  ,0xff /* 32 : 11111111 */
+  
   ,0xff /* 33 : 11111111 */
-  
-  ,0x00 /* 34 : 00000000 */
-  
-  ,0xff /* 35 : 11111111 */
-  
-  ,0xf8 /* 36 : 11111000 */
-  
-  ,0xff /* 37 : 11111111 */
-  
-  ,0xff /* 38 : 11111111 */
-  
-  ,0xff /* 39 : 11111111 */
   
 };
 
@@ -152,15 +146,15 @@ l_u8 lin_diag_signal_tbl[16];
 /**********************************  Frame table **********************************/
 const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
 
-    { LIN_FRM_UNCD, 8, LIN_RES_SUB, 0, 0, 1   , (l_u8*)0 }
+    { LIN_FRM_UNCD, 2, LIN_RES_SUB, 0, 0, 1   , (l_u8*)0 }
 
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 8, 1, 2 , (l_u8*)&LI0_response_error_signal }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 2, 1, 2 , (l_u8*)&LI0_response_error_signal }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 16, 3, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 10, 3, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 24, 4, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 18, 4, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 32, 5, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 26, 5, 1 , (l_u8*)0 }
   
    ,{ LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0 , (l_u8*)0 }
   

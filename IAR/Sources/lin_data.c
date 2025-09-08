@@ -1,6 +1,11 @@
 #include "lin_data.h"
 #include "intrinsics.h"
 #include "lin.h"
+#include "derivative.h"
+
+e_wipers_lever_pos WipersSwPos = W_OFF;
+e_light_sw_pos LightSwPos = LSW_OFF;
+
 void lin_proc_data_100ms(void)
 {
     __disable_interrupt();
@@ -37,11 +42,13 @@ void lin_proc_data_100ms(void)
 
     l_u8_wr_LI0_RLS_AmbientLightLevel_pow(amb_pow);
     l_u8_wr_LI0_RLS_AmbientLightLevel(amb_lvl);
-
-
+    l_u8_wr_LI0_RLS_AutoLightOn_0(TurnOnLights);
+    l_bool_wr_LI0_RLS_AutoLightOn_1(TurnOnLights);
 
     BatteryVoltageLin_x10 = l_u8_rd_LI0_BCM_BatteryVoltage();
     VehicleSpeed = l_u16_rd_LI0_BCM_VehicleSpeed() * 3 / 40;
+    WipersSwPos = l_u8_rd_LI0_BCM_WipersSwPos();
+    LightSwPos = l_u8_rd_LI0_BCM_LightSwitchPos();
 
     __enable_interrupt();
 }

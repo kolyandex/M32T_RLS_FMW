@@ -15,24 +15,28 @@ Signals {
   BCM_AmbientLightOn: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   RLS_FrontWipersMode: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   SIG_Error: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_FrontWipersAutoModeEnabled: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_FrontWipersAutoModeEnabled: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AutoLightOn_0: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AutoLightOn_1: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_Unknown_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel_pow: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_AmbientLightDiffRelated: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_Unknown_2: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_AmbientLightDiffRelated: 2, 3, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_RainDetectedCloseWindows: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel: 7, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   BCM_WipersSwPos: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_Washer: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_LightSwitchPos: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
-  BCM_Unknown: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  BCM_WipersInOperationNow: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_VehicleSpeed: 12, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_BatteryVoltage: 8, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   RLS_LinError: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   BCM_11_Unk_0: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_1: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_2: 8, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  RLS_8E_Alw_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_8E_Alw_1_0: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_8E_Alw_0: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  BCM_85_IgnState: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
 }
 
 Diagnostic_signals {
@@ -57,12 +61,12 @@ Diagnostic_signals {
 
 
 Frames {
-  BCM_55: 21, BCM_MASTER_NODE, 8 {
+  BCM_55: 21, BCM_MASTER_NODE, 2 {
     BCM_AutoWipersThreshold, 5 ;
     BCM_WipersSwPos, 0 ;
     BCM_Washer, 3 ;
     BCM_LightSwitchPos, 8 ;
-    BCM_Unknown, 11 ;
+    BCM_WipersInOperationNow, 11 ;
   }
   BCM_D6: 22, BCM_MASTER_NODE, 8 {
     BCM_AmbientLightOn, 5 ;
@@ -76,13 +80,17 @@ Frames {
     RLS_Unknown_1, 7 ;
     RLS_AmbientLightLevel_pow, 12 ;
     RLS_AmbientLightDiffRelated, 9 ;
-    RLS_Unknown_2, 14 ;
+    RLS_RainDetectedCloseWindows, 14 ;
     RLS_AmbientLightLevel, 16 ;
     RLS_LinError, 11 ;
+    RLS_8E_Alw_1, 15 ;
+    RLS_8E_Alw_1_0, 23 ;
+    RLS_8E_Alw_0, 8 ;
   }
   BCM_85: 5, BCM_MASTER_NODE, 8 {
     BCM_VehicleSpeed, 36 ;
     BCM_BatteryVoltage, 56 ;
+    BCM_85_IgnState, 24 ;
   }
   BCM_11: 17, BCM_MASTER_NODE, 8 {
     BCM_11_Unk_0, 32 ;
@@ -154,8 +162,15 @@ Signal_encoding_types {
   BCM_BatteryVoltage_Encoding {
     physical_value, 0, 0, 0.1, 0, "V" ;
   }
+  BCM_85_IgnState_Encoding {
+    logical_value, 0, "IGN_OFF" ;
+    logical_value, 1, "IGN_ACC" ;
+    logical_value, 2, "IGN_ON" ;
+    logical_value, 3, "IGN_ENGINE_START_PROCESS" ;
+  }
 }
 
 Signal_representation {
+  BCM_85_IgnState_Encoding: BCM_85_IgnState ;
   BCM_BatteryVoltage_Encoding: BCM_BatteryVoltage ;
 }

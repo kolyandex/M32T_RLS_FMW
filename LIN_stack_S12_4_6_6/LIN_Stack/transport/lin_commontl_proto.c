@@ -96,6 +96,13 @@ void lin_tl_make_slaveres_pdu
                 lin_tl_pdu[7] = product_id.variant;
                 break;
             #endif /* End (LIN_PROTOCOL == PROTOCOL_J2602) */
+            case SERVICE_SESSION_CONTROL:
+            {
+                lin_tl_pdu[1] = 2;
+                lin_tl_pdu[2] = RES_POSITIVE + sid;
+                lin_tl_pdu[3] = error_code;
+                break;
+            }
             case SERVICE_READ_DATA_BY_IDENTIFY:
             {
                 int len = 0;
@@ -116,22 +123,30 @@ void lin_tl_make_slaveres_pdu
                     lin_tl_pdu[3] = error_code >> 8;
                     lin_tl_pdu[4] = error_code >> 0;
                     len = 3;
+
+                    unsigned char * b = &lin_tl_pdu[5];
+                    data_len = 0;
                     
                     switch (error_code)
                     {
                     case 0x1300:
-                        lin_tl_pdu[5] = IR_Channel_A_data[0] >> 8;
-                        lin_tl_pdu[6] = IR_Channel_A_data[0] >> 0;
-                        len += 2;
-                        lin_tl_pdu[7] = IR_Channel_B_data[0] >> 8;
-                        lin_tl_pdu[8] = IR_Channel_B_data[0] >> 0;
-                        len += 2;
+                        b[data_len++] = IR_Channel_A_data[0] >> 8;
+                        b[data_len++] = IR_Channel_A_data[0] >> 0;
+                        b[data_len++] = IR_Channel_B_data[0] >> 8;
+                        b[data_len++] = IR_Channel_B_data[0] >> 0;
                         for (int i = 0; i < TOTAL_AMB_LIGHT_CHANNELS; i++)
                         {
-                          lin_tl_pdu[9 + i*2] = Ambient_light_channel_data[i] >> 8;
-                          lin_tl_pdu[10 + i*2] = Ambient_light_channel_data[i] >> 0;
-                          len += 2;
+                          b[data_len++] = Ambient_light_channel_data[i] >> 8;
+                          b[data_len++] = Ambient_light_channel_data[i] >> 0;
                         }
+                        b[data_len++] = l_long_avg >> 8;
+                        b[data_len++] = l_long_avg >> 0;
+                        b[data_len++] = l_short_avg >> 8;
+                        b[data_len++] = l_short_avg >> 0;
+                        b[data_len++] = LightSwPos;
+                        b[data_len++] = WipersSwPos;
+                        len += data_len;
+                        data_len = 0;
                         break;
                         
                     case 0x1301:
@@ -750,6 +765,11 @@ void lin_tl_attach_service()
             {
               lin_tl_make_slaveres_pdu(sid, NEGATIVE, SERVICE_NOT_SUPPORTED);
             }
+            break;
+          }
+          case SERVICE_SESSION_CONTROL:
+          {              
+            lin_tl_make_slaveres_pdu(sid, POSITIVE, 0);            
             break;
           }
             case SERVICE_READ_BY_IDENTIFY:    /* Mandatory for TL LIN 2.1 & 2.0, Optional for J2602 */

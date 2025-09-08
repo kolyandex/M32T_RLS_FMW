@@ -1519,6 +1519,12 @@
     <group>
         <name>Sources</name>
         <file>
+            <name>$PROJ_DIR$\Sources\a_light.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\a_light.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\calibrations.c</name>
         </file>
         <file>
@@ -1529,6 +1535,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\Sources\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\sma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\sma.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\Sources\spi.c</name>

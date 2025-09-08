@@ -620,7 +620,7 @@ void lin_lld_uart_rx_isr
                 /******************************
                 *** 4.3 SLAVE: Receiving PID
                 *******************************/
-                case RECV_PID:
+                case RECV_PID:                    
                     /* checkparity and extrait PID */
                     current_id = lin_process_parity(tmp_byte, CHECK_PARITY);
                     /* Keep the PID */
