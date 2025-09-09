@@ -14,5 +14,12 @@ typedef enum
     LSW_TAILLIGHTS,
     LSW_ON
 } e_light_sw_pos;
+typedef enum
+{
+    IGN_OFF = 0,
+    IGN_ACC = 1,
+    IGN_ON = 2,
+    IGN_ENGINE_START_PROCESS = 3
+} e_ign_state;
 
 void lin_proc_data_100ms(void);

@@ -5,6 +5,8 @@
 
 e_wipers_lever_pos WipersSwPos = W_OFF;
 e_light_sw_pos LightSwPos = LSW_OFF;
+e_ign_state IgnState = IGN_ON;
+unsigned char RainDetectedCloseWindowsRequest = 0; 
 
 void lin_proc_data_100ms(void)
 {
@@ -40,6 +42,12 @@ void lin_proc_data_100ms(void)
         }
     }
 
+    if (IgnState >= IGN_ON)
+    {
+        RainDetectedCloseWindowsRequest = 0;
+    }
+
+    l_bool_wr_LI0_RLS_RainDetectedCloseWindows(RainDetectedCloseWindowsRequest);
     l_u8_wr_LI0_RLS_AmbientLightLevel_pow(amb_pow);
     l_u8_wr_LI0_RLS_AmbientLightLevel(amb_lvl);
     l_u8_wr_LI0_RLS_AutoLightOn_0(TurnOnLights);
@@ -49,6 +57,7 @@ void lin_proc_data_100ms(void)
     VehicleSpeed = l_u16_rd_LI0_BCM_VehicleSpeed() * 3 / 40;
     WipersSwPos = l_u8_rd_LI0_BCM_WipersSwPos();
     LightSwPos = l_u8_rd_LI0_BCM_LightSwitchPos();
+    IgnState = l_u8_rd_LI0_BCM_IgnState();
 
     __enable_interrupt();
 }

@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Mon Sep 08 23:21:59 NOVT 2025
+* @date      Tue Sep 09 23:30:50 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -137,7 +137,7 @@ typedef enum {
   
    , LI0_RLS_8E_Alw_0
   
-   , LI0_BCM_85_IgnState
+   , LI0_BCM_IgnState
   
 } l_signal_handle;
 /**********************************************************************/
@@ -381,11 +381,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0    6U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_85_IgnState    21U
-#define LIN_BIT_OFFSET_LI0_BCM_85_IgnState    0U
-#define LIN_SIGNAL_SIZE_LI0_BCM_85_IgnState    2U
-#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState    4U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState    0U
+#define LIN_BYTE_OFFSET_LI0_BCM_IgnState    21U
+#define LIN_BIT_OFFSET_LI0_BCM_IgnState    0U
+#define LIN_SIGNAL_SIZE_LI0_BCM_IgnState    3U
+#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_IgnState    4U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_IgnState    0U
 
 
 
@@ -824,19 +824,19 @@ typedef enum {
     LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0);}
  
-/* static access macros for signal LI0_BCM_85_IgnState */
+/* static access macros for signal LI0_BCM_IgnState */
  
-#define l_u8_rd_LI0_BCM_85_IgnState() \
-    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState]) >> 0U) & 0x03U))
+#define l_u8_rd_LI0_BCM_IgnState() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_IgnState]) >> 0U) & 0x07U))
 
 
-#define l_u8_wr_LI0_BCM_85_IgnState(A) \
+#define l_u8_wr_LI0_BCM_IgnState(A) \
     { \
-    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState] = \
-    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_85_IgnState] & 0xfcU) | \
-    (((A) << 0U) & 0x03U)); \
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState); \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_IgnState] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_IgnState] & 0xf8U) | \
+    (((A) << 0U) & 0x07U)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_IgnState); \
     }
 
 
@@ -1019,12 +1019,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0)
 
-#define l_flg_tst_LI0_BCM_85_IgnState_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState)
-#define l_flg_clr_LI0_BCM_85_IgnState_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_85_IgnState],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_85_IgnState)
+#define l_flg_tst_LI0_BCM_IgnState_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_IgnState)
+#define l_flg_clr_LI0_BCM_IgnState_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_IgnState],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_IgnState)
 
 
 

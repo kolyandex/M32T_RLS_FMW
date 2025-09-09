@@ -23,3 +23,4 @@ extern unsigned short l_long_avg;
 extern unsigned short l_short_avg;
 extern e_wipers_lever_pos WipersSwPos;
 extern e_light_sw_pos LightSwPos;
+extern unsigned char RainDetectedCloseWindowsRequest;
