@@ -8,6 +8,7 @@
 #include "mlx75308.h"
 #include "lin_data.h"
 #include "a_light.h"
+#include "a_wipe.h"
 /**********************************************************************************************
  * Constants and macros
  **********************************************************************************************/
@@ -57,9 +58,8 @@
 #define OUTPUT_TOGGLE(port, register_num) XOUTPUT_TOGGLE(port, register_num)
 #define XOUTPUT_TOGGLE(port, register_num) GPIO##port##_PTOR |= 1 << register_num
 
-__root static const unsigned char SCFTRIM @ 0x000003FE = 0x01;
-__root static const unsigned char SCTRIM @ 0x000003FF = 0x52;
-
+__root static const unsigned char SCFTRIM @0x000003FE = 0x01;
+__root static const unsigned char SCTRIM @0x000003FF = 0x52;
 
 /***********************************************************************************************
  *
@@ -71,7 +71,7 @@ __root static const unsigned char SCTRIM @ 0x000003FF = 0x52;
 void Clk_Init()
 {
   ICS_C1 |= ICS_C1_IRCLKEN_MASK; /* Enable the internal reference clock*/
-  ICS_C3 = SCTRIM;                 /* Reference clock frequency = 39.0625 KHz*/
+  ICS_C3 = SCTRIM;               /* Reference clock frequency = 39.0625 KHz*/
   ICS_C4 = ICS_C4 & 0xFE | SCFTRIM;
   while (!(ICS_S & ICS_S_LOCK_MASK))
     ;                       /* Wait for PLL lock, now running at 40 MHz (1024 * 39.0625Khz) */
@@ -129,7 +129,7 @@ void GPIO_Init()
   CONFIG_PIN_AS_GPIO(PORT_C, (6 + 16), INPUT); // NOT USED
   ENABLE_INPUT(PORT_C, (6 + 16));
   CONFIG_PIN_AS_GPIO(PORT_C, (7 + 16), OUTPUT); // NOT USED
-  OUTPUT_SET(PORT_C, (7 + 16));  
+  OUTPUT_SET(PORT_C, (7 + 16));
   CONFIG_PIN_AS_GPIO(PORT_D, (0 + 24), INPUT); // NOT USED
   ENABLE_INPUT(PORT_D, (0 + 24));
   CONFIG_PIN_AS_GPIO(PORT_D, (1 + 24), INPUT); // NOT USED
@@ -266,7 +266,10 @@ void main(void)
   spi_init();
   mlx_init();
   mlx_read_ambient_light();
+  LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
+  LED_B_DATA = mlx_read_data_by_id(LED_B, 8, 1000);
   a_light_init();
+  a_wipe_init();
   PeriodsInit();
   for (;;)
   {
@@ -285,6 +288,7 @@ void main(void)
       LED_B_DATA = mlx_read_data_by_id(LED_B, 8, 1000);
       mlx_read_ambient_light();
       lin_proc_data_100ms();
+      a_wipe_poll_100ms();
       period &= ~PERIOD_100MS;
     }
     if (period & PERIOD_200MS)
@@ -298,8 +302,8 @@ void main(void)
     }
     if (period & PERIOD_1000MS)
     {
-      period &= ~PERIOD_1000MS;      
-      //mlx_calibration();
+      period &= ~PERIOD_1000MS;
+      // mlx_calibration();
     }
   }
 }

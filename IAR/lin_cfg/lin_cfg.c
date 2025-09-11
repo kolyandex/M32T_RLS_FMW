@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Tue Sep 09 23:30:50 NOVT 2025
+* @date      Thu Sep 11 13:00:23 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -51,7 +51,7 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0x80 /* 4 : 10000000 */
   
-  ,0xff /* 5 : 11111111 */
+  ,0x0f /* 5 : 00001111 */
   
   ,0xff /* 6 : 11111111 */
   
@@ -79,19 +79,19 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   ,0xff /* 17 : 11111111 */
   
 
-  ,0xff /* 18 : 11111111 */ /* start of frame LI0_BCM_85 */
+  ,0x3f /* 18 : 00111111 */ /* start of frame LI0_BCM_85 */
 
   ,0xff /* 19 : 11111111 */
   
   ,0xff /* 20 : 11111111 */
   
-  ,0xf8 /* 21 : 11111000 */
+  ,0x00 /* 21 : 00000000 */
   
-  ,0x0f /* 22 : 00001111 */
+  ,0x00 /* 22 : 00000000 */
   
   ,0x00 /* 23 : 00000000 */
   
-  ,0xff /* 24 : 11111111 */
+  ,0x80 /* 24 : 10000000 */
   
   ,0x00 /* 25 : 00000000 */
   
@@ -102,11 +102,11 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0x00 /* 28 : 00000000 */
   
-  ,0xff /* 29 : 11111111 */
+  ,0x00 /* 29 : 00000000 */
   
   ,0xf8 /* 30 : 11111000 */
   
-  ,0xff /* 31 : 11111111 */
+  ,0x80 /* 31 : 10000000 */
   
   ,0xff /* 32 : 11111111 */
   
@@ -127,15 +127,19 @@ l_u8    lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] =
 
   ,0xFF /* 2: */
   
+  ,0xFF /* 3: */
+  
 
-  ,0xFF /* 3: start of flag frame LI0_BCM_D6 */
+  ,0xFF /* 4: start of flag frame LI0_BCM_D6 */
 
 
-  ,0xFF /* 4: start of flag frame LI0_BCM_85 */
+  ,0xFF /* 5: start of flag frame LI0_BCM_85 */
 
 
-  ,0xFF /* 5: start of flag frame LI0_BCM_11 */
+  ,0xFF /* 6: start of flag frame LI0_BCM_11 */
 
+  ,0xFF /* 7: */
+  
 };
 
 /*************************** Flag set when signal is updated ******************/
@@ -148,13 +152,13 @@ const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
 
     { LIN_FRM_UNCD, 2, LIN_RES_SUB, 0, 0, 1   , (l_u8*)0 }
 
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 2, 1, 2 , (l_u8*)&LI0_response_error_signal }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_PUB, 2, 1, 3 , (l_u8*)&LI0_response_error_signal }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 10, 3, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 10, 4, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 18, 4, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 18, 5, 1 , (l_u8*)0 }
   
-   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 26, 5, 1 , (l_u8*)0 }
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 26, 6, 2 , (l_u8*)0 }
   
    ,{ LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0 , (l_u8*)0 }
   

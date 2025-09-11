@@ -20,7 +20,7 @@ static unsigned short IR_Channel_data_SRC;
 
 static void delay_soft(int t)
 {
-    signed int v1;
+    volatile signed int v1;
     for (; t; --t)
     {
         v1 = 3200;

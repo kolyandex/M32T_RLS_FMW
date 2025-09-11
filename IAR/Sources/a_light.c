@@ -18,8 +18,8 @@ void a_light_init(void)
 void a_light_poll_500ms(void)
 {
     float v = (float)Ambient_light_channel_data[1];
-    float long_time_avg = SMA_GetFlt(&light_long_time_average, v);
-    float short_time_avg = SMA_GetFlt(&light_short_time_average, v);
+    float long_time_avg = SMA_GetFlt(&light_long_time_average, v, 1);
+    float short_time_avg = SMA_GetFlt(&light_short_time_average, v, 1);
     l_long_avg = (unsigned short)long_time_avg;
     l_short_avg = (unsigned short)short_time_avg;
 }

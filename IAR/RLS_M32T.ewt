@@ -1525,6 +1525,12 @@
             <name>$PROJ_DIR$\Sources\a_light.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\Sources\a_wipe.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\a_wipe.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\calibrations.c</name>
         </file>
         <file>

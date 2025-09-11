@@ -8,4 +8,4 @@ typedef struct
 }s_sma_flt;
 
 void SMA_InitFlt(s_sma_flt * ctx, float initial_val, unsigned int counts);
-float SMA_GetFlt(s_sma_flt *ctx, float val);
+float SMA_GetFlt(s_sma_flt *ctx, float val, int counts);
