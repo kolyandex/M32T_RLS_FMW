@@ -7,6 +7,7 @@
 #include <SKEAZN642.h>
 #include "mlx75308.h"
 #include "lin_data.h"
+#include "stdbool.h"
 #define SIZEOF_ARR(X) (sizeof(X) / sizeof(X[0]))
 
 extern uint32_t SystTick;
@@ -23,4 +24,5 @@ extern unsigned short l_long_avg;
 extern unsigned short l_short_avg;
 extern e_wipers_lever_pos WipersSwPos;
 extern e_light_sw_pos LightSwPos;
-extern unsigned char RainDetectedCloseWindowsRequest;
+extern bool RainDetectedCloseWindowsRequest;
+extern bool WipersInOperationNow;

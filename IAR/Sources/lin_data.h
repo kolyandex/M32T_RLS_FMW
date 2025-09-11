@@ -22,4 +22,13 @@ typedef enum
     IGN_ENGINE_START_PROCESS = 3
 } e_ign_state;
 
+typedef enum
+{
+    WM_OFF = 0,
+    WM_1_TIME = 1,
+    WM_SLOW = 2,
+    WM_FAST = 3
+} e_wipers_mode;
+
 void lin_proc_data_100ms(void);
+void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time);

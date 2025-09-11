@@ -208,9 +208,16 @@ Signal_encoding_types {
   BCM_BatteryVoltage_Encoding {
     physical_value, 0, 0, 0.1, 0, "V" ;
   }
+  RLS_FrontWipersMode_Encoding {
+    logical_value, 0, "WIPERS_OFF" ;
+    logical_value, 1, "WIPERS_1_TIME" ;
+    logical_value, 2, "WIPERS_SLOW" ;
+    logical_value, 3, "WIPERS_FAST" ;
+  }
 }
 
 Signal_representation {
   BCM_85_IgnState_Encoding: BCM_IgnState ;
   BCM_BatteryVoltage_Encoding: BCM_BatteryVoltage ;
+  RLS_FrontWipersMode_Encoding: RLS_FrontWipersMode ;
 }
