@@ -9,6 +9,7 @@
 #include "lin_data.h"
 #include "a_light.h"
 #include "a_wipe.h"
+#include "eeprom.h"
 /**********************************************************************************************
  * Constants and macros
  **********************************************************************************************/
@@ -250,11 +251,22 @@ static void PeriodsPoll(void)
   }
 }
 
+//static char test_write_string[] = "TEST EEPROM DATA STRING";
+//static char test_read_string[sizeof(test_write_string)];
+
 void main(void)
 {
   __init_hardware();
   l_u8 vector_number;
   Clk_Init();
+  eeprom_init(MCU_BUS_FREQ);
+
+
+  //eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
+  //eeprom_write(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
+
+
+
   GPIO_Init();
   l_sys_init();
   l_ifc_init(LI0);

@@ -1534,6 +1534,12 @@
             <name>$PROJ_DIR$\Sources\calibrations.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\Sources\eeprom.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\eeprom.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\lin_data.c</name>
         </file>
         <file>
