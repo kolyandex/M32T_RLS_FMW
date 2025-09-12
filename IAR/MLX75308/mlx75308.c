@@ -4,7 +4,7 @@
 #include "derivative.h" /* include peripheral declarations */
 #include "table_lookup.h"
 
-extern const s_table_2d_uint16_uint32 * TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_CHANNELS];
+extern const s_table_2d_uint16_uint32 *TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_CHANNELS];
 
 unsigned char dac_level_ir_ch_a = 128;
 unsigned char dac_level_ir_ch_b = 128;
@@ -81,6 +81,30 @@ signed int write_register(unsigned int val, e_user_reg reg)
     spi_tx_rx(tmp);
     CS_RESET;
     return 1;
+}
+
+void mlx_sleep(void)
+{
+    wait_dr();
+    CS_SET;
+    spi_tx_rx(0xE1);
+    spi_tx_rx(0);
+    CS_RESET;
+    wait_dr();
+    CS_SET;
+    spi_tx_rx(0xA3);
+    spi_tx_rx(0);
+    CS_RESET;
+    spi_sleep();
+}
+void mlx_wakeup(void)
+{
+    spi_wakeup();
+    wait_dr();
+    CS_SET;
+    spi_tx_rx(0xE4);
+    spi_tx_rx(0);
+    CS_RESET;
 }
 
 void regs_proc(int a, int val)

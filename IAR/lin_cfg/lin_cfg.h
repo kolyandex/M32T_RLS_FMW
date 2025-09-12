@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Thu Sep 11 13:00:23 NOVT 2025
+* @date      Fri Sep 12 14:38:01 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -125,7 +125,7 @@ typedef enum {
   
    , LI0_RLS_LinError
   
-   , LI0_BCM_11_Unk_0
+   , LI0_BCM_AllWindowsClosedFlag
   
    , LI0_BCM_11_Unk_1
   
@@ -143,7 +143,7 @@ typedef enum {
   
    , LI0_BCM_11_Unk_4
   
-   , LI0_BCM_11_Unk_5
+   , LI0_BCM_CloseWindowsRequest
   
    , LI0_BCM_11_Unk_6
   
@@ -379,11 +379,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_LinError    0U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0    30U
-#define LIN_BIT_OFFSET_LI0_BCM_11_Unk_0    0U
-#define LIN_SIGNAL_SIZE_LI0_BCM_11_Unk_0    2U
-#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_0    6U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_0    7U
+#define LIN_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag    30U
+#define LIN_BIT_OFFSET_LI0_BCM_AllWindowsClosedFlag    0U
+#define LIN_SIGNAL_SIZE_LI0_BCM_AllWindowsClosedFlag    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag    6U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_AllWindowsClosedFlag    7U
 
 
 #define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_1    30U
@@ -442,11 +442,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_4    2U
 
 
-#define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_5    29U
-#define LIN_BIT_OFFSET_LI0_BCM_11_Unk_5    2U
-#define LIN_SIGNAL_SIZE_LI0_BCM_11_Unk_5    1U
-#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_5    6U
-#define LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_5    3U
+#define LIN_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest    29U
+#define LIN_BIT_OFFSET_LI0_BCM_CloseWindowsRequest    2U
+#define LIN_SIGNAL_SIZE_LI0_BCM_CloseWindowsRequest    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest    6U
+#define LIN_FLAG_BIT_OFFSET_LI0_BCM_CloseWindowsRequest    3U
 
 
 #define LIN_BYTE_OFFSET_LI0_BCM_11_Unk_6    29U
@@ -910,19 +910,19 @@ typedef enum {
     LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_LinError],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_LinError);}
  
-/* static access macros for signal LI0_BCM_11_Unk_0 */
+/* static access macros for signal LI0_BCM_AllWindowsClosedFlag */
  
-#define l_u8_rd_LI0_BCM_11_Unk_0() \
-    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0]) >> 0U) & 0x03U))
+#define l_u8_rd_LI0_BCM_AllWindowsClosedFlag() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag]) >> 0U) & 0x03U))
 
 
-#define l_u8_wr_LI0_BCM_11_Unk_0(A) \
+#define l_u8_wr_LI0_BCM_AllWindowsClosedFlag(A) \
     { \
-    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0] = \
-    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_0] & 0xfcU) | \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag] & 0xfcU) | \
     (((A) << 0U) & 0x03U)); \
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_0); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_AllWindowsClosedFlag); \
     }
 
 
@@ -1060,21 +1060,21 @@ typedef enum {
     LIN_BIT_OFFSET_LI0_BCM_11_Unk_4));\
     LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_4],\
          LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_4);}
-/* static access macros for signal LI0_BCM_11_Unk_5 */
+/* static access macros for signal LI0_BCM_CloseWindowsRequest */
 
  
-#define l_bool_rd_LI0_BCM_11_Unk_5() \
-    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_5], \
-    LIN_BIT_OFFSET_LI0_BCM_11_Unk_5))
+#define l_bool_rd_LI0_BCM_CloseWindowsRequest() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest], \
+    LIN_BIT_OFFSET_LI0_BCM_CloseWindowsRequest))
 
-#define l_bool_wr_LI0_BCM_11_Unk_5(A) \
+#define l_bool_wr_LI0_BCM_CloseWindowsRequest(A) \
     {(A) ? \
-    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_5], \
-    LIN_BIT_OFFSET_LI0_BCM_11_Unk_5)):\
-    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_11_Unk_5], \
-    LIN_BIT_OFFSET_LI0_BCM_11_Unk_5));\
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_5],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_5);}
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest], \
+    LIN_BIT_OFFSET_LI0_BCM_CloseWindowsRequest)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest], \
+    LIN_BIT_OFFSET_LI0_BCM_CloseWindowsRequest));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_CloseWindowsRequest);}
 /* static access macros for signal LI0_BCM_11_Unk_6 */
 
  
@@ -1487,12 +1487,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_LinError],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_LinError)
 
-#define l_flg_tst_LI0_BCM_11_Unk_0_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_0)
-#define l_flg_clr_LI0_BCM_11_Unk_0_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_0)
+#define l_flg_tst_LI0_BCM_AllWindowsClosedFlag_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_AllWindowsClosedFlag)
+#define l_flg_clr_LI0_BCM_AllWindowsClosedFlag_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_AllWindowsClosedFlag],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_AllWindowsClosedFlag)
 
 #define l_flg_tst_LI0_BCM_11_Unk_1_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_1],\
@@ -1550,12 +1550,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_4],\
          LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_4)
 
-#define l_flg_tst_LI0_BCM_11_Unk_5_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_5],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_5)
-#define l_flg_clr_LI0_BCM_11_Unk_5_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_5],\
-         LIN_FLAG_BIT_OFFSET_LI0_BCM_11_Unk_5)
+#define l_flg_tst_LI0_BCM_CloseWindowsRequest_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_CloseWindowsRequest)
+#define l_flg_clr_LI0_BCM_CloseWindowsRequest_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_CloseWindowsRequest],\
+         LIN_FLAG_BIT_OFFSET_LI0_BCM_CloseWindowsRequest)
 
 #define l_flg_tst_LI0_BCM_11_Unk_6_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_11_Unk_6],\

@@ -17,3 +17,5 @@ typedef enum
 void mlx_init(void);
 int mlx_read_data_by_id(e_read_data_type data, int tries, int max_val);
 void mlx_read_ambient_light();
+void mlx_sleep(void);
+void mlx_wakeup(void);

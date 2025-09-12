@@ -4,16 +4,15 @@
 
 static void delay(int result)
 {
-  for ( ; result; --result )
-    ;
+    for (; result; --result)
+        ;
 }
 
 void set_spi_baud(unsigned int a1, unsigned int a2)
 {
-    unsigned int v2;  // r1
-    signed int v3;    // r2
-    unsigned char v4; // r0
-
+    unsigned int v2;
+    signed int v3;
+    unsigned char v4;
     v2 = a1 / a2;
     v3 = 0;
 LABEL_2:
@@ -36,6 +35,14 @@ LABEL_2:
     }
     SPI0_BR = v3 & 0xF | 16 * v4 & 0x70;
 }
+void spi_sleep(void)
+{
+    SPI0_C1 &= ~SPI_C1_SPE_MASK;
+}
+void spi_wakeup(void)
+{
+    SPI0_C1 |= SPI_C1_SPE_MASK;
+}
 void spi_init(void)
 {
     SIM_SCGC |= SIM_SCGC_SPI0_MASK;
@@ -46,7 +53,8 @@ void spi_init(void)
     SPI0_C1 |= SPI_C1_SPE_MASK;
 }
 int spi_tx_rx(int d)
-{    signed int v1; // r6
+{
+    signed int v1;
     while (!(SPI0_S & SPI_S_SPTEF_MASK))
         ;
     SPI0_D = d;

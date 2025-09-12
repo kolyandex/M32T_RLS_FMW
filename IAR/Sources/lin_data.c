@@ -99,6 +99,11 @@ void lin_proc_data_100ms(void)
         RainDetectedCloseWindowsRequest = 0;
     }
 
+    if (l_u8_rd_LI0_BCM_AllWindowsClosedFlag())
+    {
+        RainDetectedCloseWindowsRequest = 0;
+    }
+
     if (WipersSwPos != W_AUTO)
     {
         wipers_mode_counter = 0;
@@ -123,7 +128,7 @@ void lin_proc_data_100ms(void)
 
     if (wipers_sw_pos_prev != WipersSwPos)
     {
-        if (WipersSwPos == W_AUTO)
+        if ((WipersSwPos == W_AUTO) && (IgnState == IGN_ON))
         {
             lin_wipers_set_mode(WM_1_TIME, 0);
         }

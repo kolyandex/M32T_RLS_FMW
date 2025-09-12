@@ -1546,6 +1546,12 @@
             <name>$PROJ_DIR$\Sources\lin_data.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\Sources\low_power.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\low_power.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\main.c</name>
         </file>
         <file>

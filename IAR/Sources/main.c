@@ -1,7 +1,3 @@
-/*
- * main implementation: use this 'C' sample to create your own application
- *
- */
 #include "derivative.h" /* include peripheral declarations */
 #include "lin.h"
 #include "spi.h"
@@ -10,54 +6,7 @@
 #include "a_light.h"
 #include "a_wipe.h"
 #include "eeprom.h"
-/**********************************************************************************************
- * Constants and macros
- **********************************************************************************************/
-// #define LED0_TOGGLE		OUTPUT_TOGGLE(PORT_C,16)
-// #define LED1_TOGGLE		OUTPUT_TOGGLE(PORT_C,17)
-// #define LED2_TOGGLE		OUTPUT_TOGGLE(PORT_C,18)
-// #define LED3_TOGGLE		OUTPUT_TOGGLE(PORT_C,19)
-//
-// #define LED0_OFF		OUTPUT_CLEAR(PORT_C,16);
-// #define LED1_OFF		OUTPUT_CLEAR(PORT_C,17);
-// #define LED2_OFF		OUTPUT_CLEAR(PORT_C,18);
-// #define LED3_OFF		OUTPUT_CLEAR(PORT_C,19);
-//
-// #define LED0_ON			OUTPUT_SET(PORT_C,16);
-// #define LED1_ON			OUTPUT_SET(PORT_C,17);
-// #define LED2_ON			OUTPUT_SET(PORT_C,18);
-// #define LED3_ON			OUTPUT_SET(PORT_C,19);
-
-#define OUTPUT 1
-#define INPUT 0
-
-#define PORT_A A
-#define PORT_B A
-#define PORT_C A
-#define PORT_D A
-
-#define PORT_E B
-#define PORT_F B
-#define PORT_G B
-#define PORT_H B
-
-#define CONFIG_PIN_AS_GPIO(port, register_number, mode) XCONFIG_PIN_AS_GPIO(port, register_number, mode)
-#define XCONFIG_PIN_AS_GPIO(port, register_number, mode) (mode == 0) ? (GPIO##port##_PDDR &= ~(1 << register_number)) : (GPIO##port##_PDDR |= 1 << register_number)
-
-#define ENABLE_INPUT(port, pin_number) XENABLE_INPUT(port, pin_number)
-#define XENABLE_INPUT(port, pin_number) GPIO##port##_PIDR &= ~(1 << pin_number)
-
-#define ENABLE_PULLUP(port, pin_number) XENABLE_PULLUP(port, pin_number)
-#define XENABLE_PULLUP(port, pin_number) PORT_PUE0 |= PORT_PUE0_PT##port##PE##pin_number##_MASK
-
-#define OUTPUT_SET(port, register_num) XOUTPUT_SET(port, register_num)
-#define XOUTPUT_SET(port, register_num) GPIO##port##_PSOR |= 1 << register_num
-
-#define OUTPUT_CLEAR(port, register_num) XOUTPUT_CLEAR(port, register_num)
-#define XOUTPUT_CLEAR(port, register_num) GPIO##port##_PCOR |= 1 << register_num
-
-#define OUTPUT_TOGGLE(port, register_num) XOUTPUT_TOGGLE(port, register_num)
-#define XOUTPUT_TOGGLE(port, register_num) GPIO##port##_PTOR |= 1 << register_num
+#include "low_power.h"
 
 __root static const unsigned char SCFTRIM @0x000003FE = 0x01;
 __root static const unsigned char SCTRIM @0x000003FF = 0x52;
@@ -251,31 +200,22 @@ static void PeriodsPoll(void)
   }
 }
 
-//static char test_write_string[] = "TEST EEPROM DATA STRING";
-//static char test_read_string[sizeof(test_write_string)];
+// static char test_write_string[] = "TEST EEPROM DATA STRING";
+// static char test_read_string[sizeof(test_write_string)];
 
 void main(void)
 {
   __init_hardware();
-  l_u8 vector_number;
   Clk_Init();
   eeprom_init(MCU_BUS_FREQ);
 
-
-  //eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
-  //eeprom_write(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
-
-
+  // eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
+  // eeprom_write(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
 
   GPIO_Init();
-  l_sys_init();
-  l_ifc_init(LI0);
-  ld_init();
-  vector_number = INT_UART0 - 16;
-  NVIC_ICPR |= 1 << (vector_number % 32);
-  NVIC_ISER |= 1 << (vector_number % 32);
-  lin_application_timer_FTM2();
   spi_init();
+  wakeup();
+  
   mlx_init();
   mlx_read_ambient_light();
   LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
@@ -285,6 +225,7 @@ void main(void)
   PeriodsInit();
   for (;;)
   {
+    low_power_poll();
     PeriodsPoll();
     if (period & PERIOD_10MS)
     {
@@ -314,6 +255,7 @@ void main(void)
     }
     if (period & PERIOD_1000MS)
     {
+      low_power_poll_1000ms();
       period &= ~PERIOD_1000MS;
       // mlx_calibration();
     }

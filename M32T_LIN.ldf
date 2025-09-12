@@ -30,7 +30,7 @@ Signals {
   BCM_VehicleSpeed: 12, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_BatteryVoltage: 8, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   RLS_LinError: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  BCM_11_Unk_0: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  BCM_AllWindowsClosedFlag: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_1: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_CLM_SomeTemp_1DE_2: 8, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   RLS_8E_Alw_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
@@ -39,7 +39,7 @@ Signals {
   BCM_IgnState: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_3: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_4: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
-  BCM_11_Unk_5: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  BCM_CloseWindowsRequest: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_6: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_7: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_8: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
@@ -121,12 +121,12 @@ Frames {
     BCM_85_Time_Year, 48 ;
   }
   BCM_11: 17, BCM_MASTER_NODE, 8 {
-    BCM_11_Unk_0, 32 ;
+    BCM_AllWindowsClosedFlag, 32 ;
     BCM_11_Unk_1, 34 ;
     BCM_11_CLM_SomeTemp_1DE_2, 16 ;
     BCM_11_Unk_3, 24 ;
     BCM_11_Unk_4, 25 ;
-    BCM_11_Unk_5, 26 ;
+    BCM_CloseWindowsRequest, 26 ;
     BCM_11_Unk_6, 27 ;
     BCM_11_Unk_7, 28 ;
     BCM_11_Unk_8, 31 ;
@@ -214,10 +214,15 @@ Signal_encoding_types {
     logical_value, 2, "WIPERS_SLOW" ;
     logical_value, 3, "WIPERS_FAST" ;
   }
+  BCM_AllWindowsClosedFlag_Encoding {
+    logical_value, 0, "Any window is opened" ;
+    logical_value, 1, "All windows are closed" ;
+  }
 }
 
 Signal_representation {
   BCM_85_IgnState_Encoding: BCM_IgnState ;
+  BCM_AllWindowsClosedFlag_Encoding: BCM_AllWindowsClosedFlag ;
   BCM_BatteryVoltage_Encoding: BCM_BatteryVoltage ;
   RLS_FrontWipersMode_Encoding: RLS_FrontWipersMode ;
 }
