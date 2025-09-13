@@ -5,7 +5,7 @@
 #include "lin_data.h"
 #include "a_light.h"
 #include "a_wipe.h"
-#include "eeprom.h"
+#include "flash.h"
 #include "low_power.h"
 
 __root static const unsigned char SCFTRIM @0x000003FE = 0x01;
@@ -207,15 +207,15 @@ void main(void)
 {
   __init_hardware();
   Clk_Init();
-  eeprom_init(MCU_BUS_FREQ);
+  flash_init(MCU_BUS_FREQ);
 
   // eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
-  // eeprom_write(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
+  // eeprom_program(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
 
   GPIO_Init();
   spi_init();
   wakeup();
-  
+
   mlx_init();
   mlx_read_ambient_light();
   LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
