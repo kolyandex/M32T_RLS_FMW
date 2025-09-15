@@ -1741,6 +1741,17 @@ typedef struct FTMRH_MemMap {
  * @}
  */ /* end of group FTMRH_Register_Accessor_Macros */
 
+#define FLASH_START_ADDR   0x00000000U
+/* 32K */
+#define FLASH_END_ADDR     0x00007FFFU
+#define FLASH_SECTOR_SIZE  512U
+#define FLASH_ALIGNMENT    4U
+
+#define EEPROM_START_ADDR  0x10000000U
+/* 256 */
+#define EEPROM_END_ADDR    0x100000FFU
+#define EEPROM_SECTOR_SIZE 2U
+#define EEPROM_ALIGNMENT   2U
 
 /* ----------------------------------------------------------------------------
    -- FTMRH Register Masks
@@ -1785,9 +1796,12 @@ typedef struct FTMRH_MemMap {
 #define FTMRH_FERCNFG_DFDIE_MASK                 0x2u
 #define FTMRH_FERCNFG_DFDIE_SHIFT                1
 /* FSTAT Bit Fields */
-#define FTMRH_FSTAT_MGSTAT_MASK                  0x3u
-#define FTMRH_FSTAT_MGSTAT_SHIFT                 0
-#define FTMRH_FSTAT_MGSTAT(x)                    (((uint8_t)(((uint8_t)(x))<<FTMRH_FSTAT_MGSTAT_SHIFT))&FTMRH_FSTAT_MGSTAT_MASK)
+#define FTMRH_FSTAT_MGSTAT0_MASK                 0x1u
+#define FTMRH_FSTAT_MGSTAT0_SHIFT                0
+#define FTMRH_FSTAT_MGSTAT0(x)                   (((uint8_t)(((uint8_t)(x))<<FTMRH_FSTAT_MGSTAT0_SHIFT))&FTMRH_FSTAT_MGSTAT0_MASK)
+#define FTMRH_FSTAT_MGSTAT1_MASK                 0x2u
+#define FTMRH_FSTAT_MGSTAT1_SHIFT                1
+#define FTMRH_FSTAT_MGSTAT1(x)                   (((uint8_t)(((uint8_t)(x))<<FTMRH_FSTAT_MGSTAT1_SHIFT))&FTMRH_FSTAT_MGSTAT1_MASK)
 #define FTMRH_FSTAT_MGBUSY_MASK                  0x8u
 #define FTMRH_FSTAT_MGBUSY_SHIFT                 3
 #define FTMRH_FSTAT_FPVIOL_MASK                  0x10u
