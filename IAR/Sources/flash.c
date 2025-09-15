@@ -66,7 +66,7 @@ uint16_t flash_init(uint32_t freq)
       break;
     }
 
-    if (FTMRH_FCLKDIV & FTMRH_FCLKDIV_FDIVLCK_MASK != 0U)
+    if ((FTMRH_FCLKDIV & FTMRH_FCLKDIV_FDIVLCK_MASK) != 0U)
     {
       err = FLASH_ERR_INIT_FDIV;
       break;
