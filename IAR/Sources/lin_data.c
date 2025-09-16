@@ -34,6 +34,12 @@ static const s_w_mode_relations w_mode_relations[] =
         {.current_mode = WM_FAST, .new_mode = WM_OFF},
 };
 
+/**
+ * @brief lin_wipers_set_mode
+ * 
+ * @param mode 
+ * @param time counts in 100ms intervals
+ */
 void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time)
 {
     if (mode == WM_1_TIME)

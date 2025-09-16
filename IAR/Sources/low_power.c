@@ -50,6 +50,7 @@ void wakeup(void)
     NVIC_ISER |= 1 << (vector_number % 32);
     lin_application_timer_FTM2();
     mlx_wakeup();
+    init_rls_data();
 }
 
 void low_power_poll_1000ms(void)

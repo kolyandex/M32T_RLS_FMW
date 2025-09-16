@@ -114,7 +114,6 @@ void lin_application_timer_FTM2()
 
 unsigned char BatteryVoltageLin_x10;
 short VehicleSpeed;
-volatile static int LED_A_DATA, LED_B_DATA;
 void __init_hardware();
 
 #define TICKS_PERIOD 1000
@@ -203,6 +202,14 @@ static void PeriodsPoll(void)
 // static char test_write_string[] = "TEST EEPROM DATA STRING";
 // static char test_read_string[sizeof(test_write_string)];
 
+void init_rls_data(void)
+{
+  mlx_read_ambient_light();
+  mlx_read_data_by_id(LED_A, 8, 1000);
+  mlx_read_data_by_id(LED_B, 8, 1000);
+  a_light_init();
+  a_wipe_init();
+}
 void main(void)
 {
   __init_hardware();
@@ -215,13 +222,8 @@ void main(void)
   GPIO_Init();
   spi_init();
   wakeup();
-
   mlx_init();
-  mlx_read_ambient_light();
-  LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
-  LED_B_DATA = mlx_read_data_by_id(LED_B, 8, 1000);
-  a_light_init();
-  a_wipe_init();
+  init_rls_data();
   PeriodsInit();
   for (;;)
   {
@@ -237,8 +239,8 @@ void main(void)
     }
     if (period & PERIOD_100MS)
     {
-      LED_A_DATA = mlx_read_data_by_id(LED_A, 8, 1000);
-      LED_B_DATA = mlx_read_data_by_id(LED_B, 8, 1000);
+      mlx_read_data_by_id(LED_A, 8, 1000);
+      mlx_read_data_by_id(LED_B, 8, 1000);
       mlx_read_ambient_light();
       lin_proc_data_100ms();
       a_wipe_poll_100ms();

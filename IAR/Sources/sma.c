@@ -35,3 +35,7 @@ float SMA_GetFlt(s_sma_flt *ctx, float val, int counts)
     }
     return ctx->val;
 }
+void SMA_SetFlt(s_sma_flt *ctx, float val)
+{
+    ctx->val = val;
+}
