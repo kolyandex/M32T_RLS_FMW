@@ -56,7 +56,7 @@ static unsigned int read_register(e_user_reg reg)
 {
     unsigned int result;
     int tmp = (reg << 12) | 0x8E0000;
-    // wdt_reload();
+    wdt_reload();
     wait_dr();
     CS_SET;
     spi_tx_rx(tmp >> 16);
@@ -73,7 +73,7 @@ signed int write_register(unsigned int val, e_user_reg reg)
 {
     unsigned int r = (unsigned int)reg;
     unsigned int tmp = 4 * ((val >> 7) ^ (r ^ (r >> 1) ^ (r >> 2) ^ (r >> 3) ^ (val >> 6) ^ (val >> 5) ^ (val >> 4) ^ (val >> 3) ^ (val >> 2) ^ (val >> 1) ^ val) & 1 | 2 * (r & 1 ^ (r << 30 >> 31) ^ (r >> 2) & 1 ^ (r >> 3) & 1 ^ val & 1 ^ (val << 30 >> 31) ^ (val << 29 >> 31) ^ (val << 28 >> 31) ^ (val << 27 >> 31) ^ (val << 26 >> 31) ^ (val >> 6) & 1 ^ (val >> 7) ^ 1 | 2 * (r | 16 * val)));
-    // wdt_reload();
+    wdt_reload();
     wait_dr();
     CS_SET;
     spi_tx_rx(0x87);
@@ -114,7 +114,7 @@ void regs_proc(int a, int val)
     switch (a)
     {
     case 1:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_SetAna) & 0x0F;
         if (val)
         {
@@ -123,7 +123,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_SetAna);
         break;
     case 2:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_SetAna) & 0xFE;
         if (val)
         {
@@ -171,7 +171,7 @@ void regs_proc(int a, int val)
         write_register(tmp, r);
         break;
     case 9:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_SetPF) & 0x0F;
         if (val)
         {
@@ -196,7 +196,7 @@ void regs_proc(int a, int val)
         write_register(val, r);
         break;
     case 14:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_SetPF) & 0xF7;
         if (val)
         {
@@ -205,7 +205,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_SetPF);
         break;
     case 15:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_Rst) & 0x0F;
         if (val)
         {
@@ -214,7 +214,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_Rst);
         break;
     case 16:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_DCComp1) & 0xF0;
         if (val)
         {
@@ -223,7 +223,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_DCComp1);
         break;
     case 17:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_DCComp2) & 0x0F;
         if (val)
         {
@@ -232,7 +232,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_DCComp2);
         break;
     case 18:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_DCComp2) & 0xF0;
         if (val)
         {
@@ -241,7 +241,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_DCComp2);
         break;
     case 19:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_Tabm) & 0x0F;
         if (val)
         {
@@ -250,7 +250,7 @@ void regs_proc(int a, int val)
         write_register(tmp, REG_Tabm);
         break;
     case 20:
-        // wdt_reload();
+        wdt_reload();
         tmp = read_register(REG_SetAna) & 0xF9;
         if (val)
         {
@@ -283,7 +283,7 @@ int read_data_by_type(int type)
         ++len;
     if (type & 1)
         ++len;
-    // wdt_reload();
+    wdt_reload();
     wait_dr();
     CS_SET;
     int tmp = (spi_tx_rx(0xC3) << 8) | spi_tx_rx(0);
@@ -306,7 +306,7 @@ void start_measurements(unsigned int a1)
     unsigned int v1 = a1 & 0xFFFF; // r4
     if ((a1 & 0xF000) == 0xD000)
         v1 = (a1 << 24 >> 31) ^ ((a1 << 24 >> 30) ^ (a1 << 24 >> 29) ^ (a1 << 24 >> 28) ^ (a1 << 24 >> 27) ^ (a1 << 24 >> 26) ^ (a1 << 24 >> 25)) & 1 | a1;
-    // wdt_reload();
+    wdt_reload();
     wait_dr();
     CS_SET;
     spi_tx_rx(v1 >> 8);
@@ -331,7 +331,7 @@ int read_data(int a1)
     if (a1 & 8)
         v2 |= 0x2Au; // LED B
     start_measurements(v2 | 0xD000);
-    // wdt_reload();
+    wdt_reload();
     delay_soft(3);
     return read_data_by_type(v1);
 }
@@ -354,7 +354,7 @@ int mlx_read_data_by_id(e_read_data_type data, int probes, int max_diff)
     int sum_buf[3] = {0, 0, 0};
     for (int i = 0; i < probes; i++)
     {
-        // wdt_reload();
+        wdt_reload();
         read_data(data);
         diff = (mlx_read_buffer[3] >= mlx_read_buffer[1]) ? (mlx_read_buffer[3] - mlx_read_buffer[1]) : (mlx_read_buffer[1] - mlx_read_buffer[3]);
         if (is_mlx_calibrated)
@@ -427,10 +427,10 @@ void mlx_read_ambient_light()
     for (int i = 0; i < 2; i++)
     {
         start_measurements(0xD040u); // M5: setting this bit high enables the read-out of the three ambient light channels
-        // wdt_reload();
+        wdt_reload();
         delay_soft(3);
         mlx_read_buffer[3] = 0;
-        // wdt_reload();
+        wdt_reload();
         wait_dr();
         CS_SET;
         mlx_read_buffer[0] = spi_tx_rx(0xC3) & 0xFF;
@@ -553,6 +553,7 @@ void mlx_calibration(void)
 }
 void mlx_init(void)
 {
+    wdt_reload();
     wait_dr();
     CS_SET;
     spi_tx_rx(0xF0); // Chip reset
@@ -586,7 +587,7 @@ void mlx_init(void)
     regs_proc(18, 2);
     regs_proc(19, 1);
     regs_proc(14, 1);
-
+    wdt_reload();
     IR_Channel_A_data[0] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
     IR_Channel_B_data[0] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
     IR_Channel_A_data[1] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
@@ -603,6 +604,7 @@ void mlx_init(void)
     {
         for (int i = 0; i < 128; i++)
         {
+            wdt_reload();
             mlx_calibration();
         }
     }

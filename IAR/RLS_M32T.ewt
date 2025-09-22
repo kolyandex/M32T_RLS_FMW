@@ -1588,19 +1588,10 @@
     <group>
         <name>Startup_Code</name>
         <file>
-            <name>$PROJ_DIR$\Project_Settings\Startup_Code\__arm_end.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Project_Settings\Startup_Code\__arm_start.c</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\Project_Settings\Startup_Code\kinetis_sysinit.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\Project_Settings\Startup_Code\kinetis_sysinit.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Project_Settings\Startup_Code\runtime_configuration.h</name>
         </file>
     </group>
 </project>

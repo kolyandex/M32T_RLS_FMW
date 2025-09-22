@@ -64,5 +64,6 @@ void low_power_poll(void)
         lin_goto_sleep_flg = 0;
         go_to_sleep();
         wakeup();
+        wakeup_event();
     }
 }

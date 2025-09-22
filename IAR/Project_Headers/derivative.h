@@ -2,14 +2,13 @@
  * Note: This file is recreated by the project wizard whenever the MCU is
  *       changed and should not be edited by hand
  */
-
+#pragma once
 /* Include the derivative-specific header file */
 #include <SKEAZN642.h>
 #include "mlx75308.h"
 #include "lin_data.h"
 #include "stdbool.h"
 #define SIZEOF_ARR(X) (sizeof(X) / sizeof(X[0]))
-
 
 #define OUTPUT 1
 #define INPUT 0
@@ -66,3 +65,19 @@ extern bool RtcInterruptFare;
 
 void lin_application_timer_FTM2();
 void init_rls_data(void);
+void wdt_reload(void);
+void wakeup_event(void);
+
+/**
+ * Temporary variables for debugging purposes only
+ */
+typedef struct
+{
+  unsigned int val;
+  unsigned int xor_val;
+} s_diag_data_var;
+
+extern unsigned int SIM_SRSID_val;
+extern s_diag_data_var reset_counter;
+extern s_diag_data_var wdt_reset_counter;
+extern s_diag_data_var wakeup_counter;

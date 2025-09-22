@@ -169,6 +169,7 @@ void lin_diagservice_read_data_by_identifier()
 
     switch (id)
     {
+        case 0x0001:
         case 0x1300:
         case 0x1301:
         case 0x1302:

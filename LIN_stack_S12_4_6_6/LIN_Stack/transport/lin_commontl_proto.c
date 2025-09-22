@@ -129,6 +129,31 @@ void lin_tl_make_slaveres_pdu
                     
                     switch (error_code)
                     {
+                    case 0x0001:
+                        b[data_len++] = reset_counter.val >> 24;
+                        b[data_len++] = reset_counter.val >> 16;
+                        b[data_len++] = reset_counter.val >> 8;
+                        b[data_len++] = reset_counter.val >> 0;
+
+                        b[data_len++] = wdt_reset_counter.val >> 24;
+                        b[data_len++] = wdt_reset_counter.val >> 16;
+                        b[data_len++] = wdt_reset_counter.val >> 8;
+                        b[data_len++] = wdt_reset_counter.val >> 0;
+
+                        b[data_len++] = wakeup_counter.val >> 24;
+                        b[data_len++] = wakeup_counter.val >> 16;
+                        b[data_len++] = wakeup_counter.val >> 8;
+                        b[data_len++] = wakeup_counter.val >> 0;
+
+                        b[data_len++] = SIM_SRSID_val >> 24;
+                        b[data_len++] = SIM_SRSID_val >> 16;
+                        b[data_len++] = SIM_SRSID_val >> 8;
+                        b[data_len++] = SIM_SRSID_val >> 0;
+                        
+                        len += data_len;
+                        data_len = 0;
+                        break;
+                        
                     case 0x1300:
                         b[data_len++] = IR_Channel_A_data[0] >> 8;
                         b[data_len++] = IR_Channel_A_data[0] >> 0;

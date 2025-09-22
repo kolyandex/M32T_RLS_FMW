@@ -8,6 +8,8 @@
 #include "flash.h"
 #include "low_power.h"
 #include "rtc.h"
+#include "intrinsics.h"
+#include "kinetis_sysinit.h"
 
 #define IS_CAR_RLS 0
 #if (IS_CAR_RLS == 1)
@@ -18,6 +20,18 @@ __root static const unsigned char SCFTRIM @0x000003FE = 0x00;
 __root static const unsigned char SCTRIM @0x000003FF = 0x56;
 #endif
 
+void wdt_reload(void)
+{
+  __disable_interrupt();
+  WDOG_CNT = 0x02A6; // write the 1st refresh word
+  WDOG_CNT = 0x80B4; // write the 2nd refresh word to refresh counter
+  __enable_interrupt();
+}
+
+void WDG_IRQHandler()
+{
+  WDOG_CS2 |= WDOG_CS2_FLG_MASK;
+}
 /***********************************************************************************************
  *
  * @brief    CLK_Init - Initialize the clocks to run at 20 MHz from the 10Mhz external XTAL
@@ -121,7 +135,6 @@ void lin_application_timer_FTM2()
 
 unsigned char BatteryVoltageLin_x10;
 short VehicleSpeed;
-void __init_hardware();
 
 #define TICKS_PERIOD 1000
 uint32_t SystTick = 0;
@@ -218,10 +231,52 @@ void init_rls_data(void)
   a_light_init();
   a_wipe_init();
 }
+
+unsigned int SIM_SRSID_val = 0;
+__no_init s_diag_data_var reset_counter;
+__no_init s_diag_data_var wdt_reset_counter;
+__no_init s_diag_data_var wakeup_counter;
+
+static void check_diag_data(s_diag_data_var *dat)
+{
+  if (dat->val != (dat->xor_val ^ UINT32_MAX))
+  {
+    dat->val = 0;
+    dat->xor_val = dat->val ^ UINT32_MAX;
+  }
+}
+void inc_diag_data(s_diag_data_var *dat)
+{
+  check_diag_data(dat);
+  dat->val++;
+  dat->xor_val = dat->val ^ UINT32_MAX;
+}
+unsigned int get_diag_data(s_diag_data_var *dat)
+{
+  check_diag_data(dat);
+  return dat->val;
+}
+
+void wakeup_event(void)
+{
+  inc_diag_data(&wakeup_counter);
+}
+
 void main(void)
 {
+  get_diag_data(&wdt_reset_counter);
+  get_diag_data(&wakeup_counter);
+
+  SIM_SRSID_val = SIM_SRSID;
+  inc_diag_data(&reset_counter);
+  if (SIM_SRSID_val & SIM_SRSID_WDOG_MASK)
+  {
+    inc_diag_data(&wdt_reset_counter);
+  }
   __init_hardware();
+
   Clk_Init();
+
   flash_init(MCU_BUS_FREQ);
 
   // eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
@@ -236,6 +291,7 @@ void main(void)
   PeriodsInit();
   for (;;)
   {
+    wdt_reload();
     low_power_poll();
     PeriodsPoll();
     if (period & PERIOD_10MS)
