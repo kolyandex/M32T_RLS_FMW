@@ -2,18 +2,25 @@
 #include "intrinsics.h"
 #include "lin.h"
 #include "derivative.h"
+#include "a_wipe.h"
 
+/**
+ * @brief 0-3
+ *
+ */
+unsigned char AutoWipersThresold = 0;
 e_wipers_lever_pos WipersSwPos = W_OFF;
 e_light_sw_pos LightSwPos = LSW_OFF;
 e_ign_state IgnState = IGN_ON;
 bool RainDetectedCloseWindowsRequest = 0;
 bool WipersInOperationNow = false;
+bool WasherInOperationNow = false;
 
+static unsigned char auto_wipers_thresold_prev = 0;
 static e_wipers_lever_pos wipers_sw_pos_prev = W_OFF;
 static unsigned int wipers_mode_counter = 0;
 static e_wipers_mode wipers_mode = WM_OFF;
 static bool a_wipers_enable = true;
-
 
 typedef struct
 {
@@ -36,8 +43,8 @@ static const s_w_mode_relations w_mode_relations[] =
 
 /**
  * @brief lin_wipers_set_mode
- * 
- * @param mode 
+ *
+ * @param mode
  * @param time counts in 100ms intervals
  */
 void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time)
@@ -50,8 +57,11 @@ void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time)
     {
         if (((w_mode_relations[i].current_mode == wipers_mode) && (w_mode_relations[i].new_mode == mode)) || (wipers_mode == mode))
         {
-            wipers_mode = mode;
-            wipers_mode_counter = time;
+            if (mode >= wipers_mode)
+            {
+                wipers_mode = mode;
+                wipers_mode_counter = time;
+            }
             break;
         }
     }
@@ -97,7 +107,15 @@ void lin_proc_data_100ms(void)
     }
     else
     {
-        wipers_mode = WM_OFF;
+        if (wipers_mode == WM_FAST)
+        {
+            wipers_mode = WM_SLOW;
+            wipers_mode_counter = 30;
+        }
+        else
+        {
+            wipers_mode = WM_OFF;
+        }
     }
 
     if (IgnState >= IGN_ON)
@@ -124,6 +142,21 @@ void lin_proc_data_100ms(void)
     l_u8_wr_LI0_RLS_AmbientLightLevel(amb_lvl);
     l_u8_wr_LI0_RLS_AutoLightOn_0(TurnOnLights);
     l_bool_wr_LI0_RLS_AutoLightOn_1(TurnOnLights);
+    if (TurnOnLights)
+    {
+        if (IsTooDark)
+        {
+            l_u8_wr_LI0_RLS_TooDarkOutside(3);
+        }
+        else
+        {
+            l_u8_wr_LI0_RLS_TooDarkOutside(2);
+        }
+    }
+    else
+    {
+        l_u8_wr_LI0_RLS_TooDarkOutside(0);
+    }
 
     BatteryVoltageLin_x10 = l_u8_rd_LI0_BCM_BatteryVoltage();
     VehicleSpeed = l_u16_rd_LI0_BCM_VehicleSpeed() * 3 / 40;
@@ -131,15 +164,22 @@ void lin_proc_data_100ms(void)
     LightSwPos = l_u8_rd_LI0_BCM_LightSwitchPos();
     IgnState = l_u8_rd_LI0_BCM_IgnState();
     WipersInOperationNow = l_bool_rd_LI0_BCM_WipersInOperationNow();
+    AutoWipersThresold = l_u8_rd_LI0_BCM_AutoWipersThreshold();
+    WasherInOperationNow = ((l_u8_rd_LI0_BCM_Washer() & 1) == 1);
 
-    if (wipers_sw_pos_prev != WipersSwPos)
+    if (AutoWipersThresold > (AUTO_WIPERS_THRESOLD_MODES_COUNT - 1))
+    {
+        AutoWipersThresold = (AUTO_WIPERS_THRESOLD_MODES_COUNT - 1);
+    }
+
+    if ((wipers_sw_pos_prev != WipersSwPos) || (auto_wipers_thresold_prev != AutoWipersThresold))
     {
         if ((WipersSwPos == W_AUTO) && (IgnState == IGN_ON))
         {
             lin_wipers_set_mode(WM_1_TIME, 0);
         }
     }
-
+    auto_wipers_thresold_prev = AutoWipersThresold;
     wipers_sw_pos_prev = WipersSwPos;
     __enable_interrupt();
 }

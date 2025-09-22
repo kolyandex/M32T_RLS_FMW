@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Fri Sep 12 14:38:01 NOVT 2025
+* @date      Sun Sep 21 21:29:03 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -105,7 +105,7 @@ typedef enum {
   
    , LI0_RLS_AmbientLightLevel_pow
   
-   , LI0_RLS_AmbientLightDiffRelated
+   , LI0_RLS_TooDarkOutside
   
    , LI0_RLS_RainDetectedCloseWindows
   
@@ -135,7 +135,7 @@ typedef enum {
   
    , LI0_RLS_8E_23_CAN_355_56
   
-   , LI0_RLS_8E_Alw_0
+   , LI0_RLS_Error
   
    , LI0_BCM_IgnState
   
@@ -309,11 +309,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow    1U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    3U
-#define LIN_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
-#define LIN_SIGNAL_SIZE_LI0_RLS_AmbientLightDiffRelated    2U
-#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated    1U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated    7U
+#define LIN_BYTE_OFFSET_LI0_RLS_TooDarkOutside    3U
+#define LIN_BIT_OFFSET_LI0_RLS_TooDarkOutside    1U
+#define LIN_SIGNAL_SIZE_LI0_RLS_TooDarkOutside    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_TooDarkOutside    1U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_TooDarkOutside    7U
 
 
 #define LIN_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows    3U
@@ -414,11 +414,11 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_23_CAN_355_56    5U
 
 
-#define LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0    3U
-#define LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0    0U
-#define LIN_SIGNAL_SIZE_LI0_RLS_8E_Alw_0    1U
-#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0    1U
-#define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0    6U
+#define LIN_BYTE_OFFSET_LI0_RLS_Error    3U
+#define LIN_BIT_OFFSET_LI0_RLS_Error    0U
+#define LIN_SIGNAL_SIZE_LI0_RLS_Error    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_RLS_Error    1U
+#define LIN_FLAG_BIT_OFFSET_LI0_RLS_Error    6U
 
 
 #define LIN_BYTE_OFFSET_LI0_BCM_IgnState    21U
@@ -738,19 +738,19 @@ typedef enum {
 
 
  
-/* static access macros for signal LI0_RLS_AmbientLightDiffRelated */
+/* static access macros for signal LI0_RLS_TooDarkOutside */
  
-#define l_u8_rd_LI0_RLS_AmbientLightDiffRelated() \
-    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated]) >> 1U) & 0x03U))
+#define l_u8_rd_LI0_RLS_TooDarkOutside() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_TooDarkOutside]) >> 1U) & 0x03U))
 
 
-#define l_u8_wr_LI0_RLS_AmbientLightDiffRelated(A) \
+#define l_u8_wr_LI0_RLS_TooDarkOutside(A) \
     { \
-    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated] = \
-    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated] & 0xf9U) | \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_TooDarkOutside] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_TooDarkOutside] & 0xf9U) | \
     (((A) << 1U) & 0x06U)); \
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_TooDarkOutside],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_TooDarkOutside); \
     }
 
 
@@ -998,21 +998,21 @@ typedef enum {
     }
 
 
-/* static access macros for signal LI0_RLS_8E_Alw_0 */
+/* static access macros for signal LI0_RLS_Error */
 
  
-#define l_bool_rd_LI0_RLS_8E_Alw_0() \
-    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
-    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0))
+#define l_bool_rd_LI0_RLS_Error() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Error], \
+    LIN_BIT_OFFSET_LI0_RLS_Error))
 
-#define l_bool_wr_LI0_RLS_8E_Alw_0(A) \
+#define l_bool_wr_LI0_RLS_Error(A) \
     {(A) ? \
-    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
-    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0)):\
-    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_8E_Alw_0], \
-    LIN_BIT_OFFSET_LI0_RLS_8E_Alw_0));\
-    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0);}
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Error], \
+    LIN_BIT_OFFSET_LI0_RLS_Error)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_RLS_Error], \
+    LIN_BIT_OFFSET_LI0_RLS_Error));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Error],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_Error);}
  
 /* static access macros for signal LI0_BCM_IgnState */
  
@@ -1417,12 +1417,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightLevel_pow],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightLevel_pow)
 
-#define l_flg_tst_LI0_RLS_AmbientLightDiffRelated_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated)
-#define l_flg_clr_LI0_RLS_AmbientLightDiffRelated_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_AmbientLightDiffRelated],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_AmbientLightDiffRelated)
+#define l_flg_tst_LI0_RLS_TooDarkOutside_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_TooDarkOutside],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_TooDarkOutside)
+#define l_flg_clr_LI0_RLS_TooDarkOutside_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_TooDarkOutside],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_TooDarkOutside)
 
 #define l_flg_tst_LI0_RLS_RainDetectedCloseWindows_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_RainDetectedCloseWindows],\
@@ -1522,12 +1522,12 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_23_CAN_355_56],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_23_CAN_355_56)
 
-#define l_flg_tst_LI0_RLS_8E_Alw_0_flag() \
-         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0)
-#define l_flg_clr_LI0_RLS_8E_Alw_0_flag() \
-         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_Alw_0],\
-         LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_Alw_0)
+#define l_flg_tst_LI0_RLS_Error_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Error],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_Error)
+#define l_flg_clr_LI0_RLS_Error_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_Error],\
+         LIN_FLAG_BIT_OFFSET_LI0_RLS_Error)
 
 #define l_flg_tst_LI0_BCM_IgnState_flag() \
          LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_BCM_IgnState],\

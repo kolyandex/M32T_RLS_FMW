@@ -6,6 +6,7 @@
  *
  */
 bool TurnOnLights = false;
+bool IsTooDark = false;
 /**
  * @brief Long-time average ambient light data
  *
@@ -24,9 +25,9 @@ static bool a_light_on_request_fast = false;
 static bool a_light_on_request_slow = false;
 
 // TODO: MOVE TO CALIBRATIONS
-static const unsigned short fast_on_thresold = 14000;
+static const unsigned short fast_on_thresold = 14500;
 static const unsigned short fast_off_thresold = 20000;
-static const unsigned short slow_on_thresold = 16500;
+static const unsigned short slow_on_thresold = 17000;
 static const unsigned short slow_off_thresold = 18500;
 
 void a_light_init(void)
@@ -65,6 +66,6 @@ void a_light_poll_500ms(void)
     {
         a_light_on_request_slow = true;
     }
-
-    TurnOnLights = (a_light_on_request_fast || a_light_on_request_slow);
+    IsTooDark = ((AmbientLIghtLevelsScaled[1] <= 4) && (AmbientLIghtLevelsScaled[2] <= 135));
+    TurnOnLights = (a_light_on_request_fast || a_light_on_request_slow) && ((IgnState == IGN_ON) || (IgnState == IGN_ENGINE_START_PROCESS));
 }

@@ -20,7 +20,7 @@ Signals {
   RLS_AutoLightOn_1: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_Unknown_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel_pow: 2, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_AmbientLightDiffRelated: 2, 3, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_TooDarkOutside: 2, 3, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_RainDetectedCloseWindows: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_AmbientLightLevel: 7, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   BCM_WipersSwPos: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
@@ -35,7 +35,7 @@ Signals {
   BCM_11_CLM_SomeTemp_1DE_2: 8, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   RLS_8E_Alw_1: 1, 1, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_8E_23_CAN_355_56: 9, 31, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
-  RLS_8E_Alw_0: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  RLS_Error: 1, 0, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   BCM_IgnState: 3, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_3: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
   BCM_11_Unk_4: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
@@ -99,13 +99,13 @@ Frames {
     RLS_AutoLightOn_1, 4 ;
     RLS_Unknown_1, 7 ;
     RLS_AmbientLightLevel_pow, 12 ;
-    RLS_AmbientLightDiffRelated, 9 ;
+    RLS_TooDarkOutside, 9 ;
     RLS_RainDetectedCloseWindows, 14 ;
     RLS_AmbientLightLevel, 16 ;
     RLS_LinError, 11 ;
     RLS_8E_Alw_1, 15 ;
     RLS_8E_23_CAN_355_56, 23 ;
-    RLS_8E_Alw_0, 8 ;
+    RLS_Error, 8 ;
     RLS_8E_4_CAN_355_4, 32 ;
     RLS_8E_5_CAN_355_3, 40 ;
     RLS_8E_6_CAN_355_1, 48 ;
@@ -205,6 +205,10 @@ Signal_encoding_types {
     logical_value, 2, "IGN_ON" ;
     logical_value, 3, "IGN_ENGINE_START_PROCESS" ;
   }
+  BCM_AllWindowsClosedFlag_Encoding {
+    logical_value, 0, "Any window is opened" ;
+    logical_value, 1, "All windows are closed" ;
+  }
   BCM_BatteryVoltage_Encoding {
     physical_value, 0, 0, 0.1, 0, "V" ;
   }
@@ -213,10 +217,6 @@ Signal_encoding_types {
     logical_value, 1, "WIPERS_1_TIME" ;
     logical_value, 2, "WIPERS_SLOW" ;
     logical_value, 3, "WIPERS_FAST" ;
-  }
-  BCM_AllWindowsClosedFlag_Encoding {
-    logical_value, 0, "Any window is opened" ;
-    logical_value, 1, "All windows are closed" ;
   }
 }
 

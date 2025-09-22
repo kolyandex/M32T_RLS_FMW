@@ -52,13 +52,16 @@ extern unsigned short IR_Channel_B_data[6];
 extern unsigned short Ambient_light_channel_data[TOTAL_AMB_LIGHT_CHANNELS];
 extern unsigned int AmbientLIghtLevelsScaled[TOTAL_AMB_LIGHT_CHANNELS];
 extern bool TurnOnLights;
+extern bool IsTooDark;
 extern unsigned short l_long_avg;
 extern unsigned short l_short_avg;
 extern e_wipers_lever_pos WipersSwPos;
 extern e_light_sw_pos LightSwPos;
+extern e_ign_state IgnState;
+extern unsigned char AutoWipersThresold;
 extern bool RainDetectedCloseWindowsRequest;
 extern bool WipersInOperationNow;
-
+extern bool WasherInOperationNow;
 
 
 void lin_application_timer_FTM2();
