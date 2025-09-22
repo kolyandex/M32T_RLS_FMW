@@ -62,7 +62,7 @@ extern unsigned char AutoWipersThresold;
 extern bool RainDetectedCloseWindowsRequest;
 extern bool WipersInOperationNow;
 extern bool WasherInOperationNow;
-
+extern bool RtcInterruptFare;
 
 void lin_application_timer_FTM2();
 void init_rls_data(void);

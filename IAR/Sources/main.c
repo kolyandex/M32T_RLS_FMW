@@ -7,9 +7,16 @@
 #include "a_wipe.h"
 #include "flash.h"
 #include "low_power.h"
+#include "rtc.h"
 
+#define IS_CAR_RLS 0
+#if (IS_CAR_RLS == 1)
 __root static const unsigned char SCFTRIM @0x000003FE = 0x01;
 __root static const unsigned char SCTRIM @0x000003FF = 0x52;
+#else
+__root static const unsigned char SCFTRIM @0x000003FE = 0x00;
+__root static const unsigned char SCTRIM @0x000003FF = 0x56;
+#endif
 
 /***********************************************************************************************
  *
@@ -200,6 +207,7 @@ static void PeriodsPoll(void)
 }
 
 // static char test_write_string[] = "TEST EEPROM DATA STRING";
+// static char test_write_string[] = "ANOTHER TEST EEPROM STR";
 // static char test_read_string[sizeof(test_write_string)];
 
 void init_rls_data(void)
@@ -219,6 +227,7 @@ void main(void)
   // eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
   // eeprom_program(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
 
+  rtc_init();
   GPIO_Init();
   spi_init();
   wakeup();
@@ -257,7 +266,6 @@ void main(void)
     }
     if (period & PERIOD_1000MS)
     {
-      low_power_poll_1000ms();
       period &= ~PERIOD_1000MS;
       // mlx_calibration();
     }
