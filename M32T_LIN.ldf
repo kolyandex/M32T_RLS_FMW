@@ -187,13 +187,13 @@ Node_attributes {
 
 Schedule_tables {
  ScheduleTable {
-    BCM_11 delay 10 ms ;
-    BCM_85 delay 10 ms ;
+    BCM_11 delay 100 ms ;
+    BCM_85 delay 100 ms ;
     SlaveResp delay 10 ms ;
     MasterReq delay 10 ms ;
-    RLS_8E delay 10 ms ;
-    BCM_D6 delay 10 ms ;
-    BCM_55 delay 10 ms ;
+    RLS_8E delay 100 ms ;
+    BCM_D6 delay 100 ms ;
+    BCM_55 delay 50 ms ;
   }
 }
 

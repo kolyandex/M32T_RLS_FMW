@@ -162,7 +162,7 @@ uint16_t flash_erase_sector(uint32_t addr)
     }
 
     /* check bounds */
-    if (!(addr >= FLASH_START_ADDR && (addr + FLASH_SECTOR_SIZE) <= FLASH_END_ADDR))
+    if (!((addr >= FLASH_START_ADDR) && ((addr + FLASH_SECTOR_SIZE) <= (FLASH_END_ADDR + 1))))
     {
       break;
     }
@@ -186,7 +186,7 @@ uint16_t eeprom_erase_sector(uint32_t addr)
     }
 
     /* check bounds */
-    if (!(addr >= EEPROM_START_ADDR && (addr + EEPROM_SECTOR_SIZE) <= EEPROM_END_ADDR))
+    if (!(addr >= EEPROM_START_ADDR && (addr + EEPROM_SECTOR_SIZE) <= (EEPROM_END_ADDR + 1)))
     {
       break;
     }
@@ -317,7 +317,7 @@ uint16_t flash_write(uint32_t addr, const unsigned char *data, uint16_t len)
     }
 
     /* check bounds */
-    if (!(addr >= FLASH_START_ADDR && (addr + len) <= FLASH_END_ADDR))
+    if (!(addr >= FLASH_START_ADDR && (addr + len) <= (FLASH_END_ADDR + 1)))
     {
       break;
     }
@@ -352,7 +352,7 @@ uint16_t flash_program(uint32_t addr, const unsigned char *data, uint16_t len)
     }
 
     /* check bounds */
-    if (!(addr >= FLASH_START_ADDR && (addr + len) <= FLASH_END_ADDR))
+    if (!((addr >= FLASH_START_ADDR) && ((addr + len) <= (FLASH_END_ADDR + 1))))
     {
       break;
     }
@@ -392,7 +392,7 @@ uint16_t eeprom_program(uint32_t addr, const unsigned char *data, uint16_t len)
     }
 
     /* check bounds */
-    if (!(addr >= EEPROM_START_ADDR && (addr + len) <= EEPROM_END_ADDR))
+    if (!(addr >= EEPROM_START_ADDR && (addr + len) <= (EEPROM_END_ADDR + 1)))
     {
       break;
     }
@@ -432,7 +432,7 @@ uint16_t eeprom_read(uint32_t addr, unsigned char *data, uint16_t len)
     }
 
     /* check bounds */
-    if (!(addr >= EEPROM_START_ADDR && (addr + len) <= EEPROM_END_ADDR))
+    if (!(addr >= EEPROM_START_ADDR && (addr + len) <= (EEPROM_END_ADDR + 1)))
     {
       break;
     }

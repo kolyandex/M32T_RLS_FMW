@@ -11,7 +11,10 @@
 #include "intrinsics.h"
 #include "kinetis_sysinit.h"
 
-#define IS_CAR_RLS 0
+#define TICKS_PERIOD 1000
+uint32_t SystTick = 0;
+
+#define IS_CAR_RLS 1
 #if (IS_CAR_RLS == 1)
 __root static const unsigned char SCFTRIM @0x000003FE = 0x01;
 __root static const unsigned char SCTRIM @0x000003FF = 0x52;
@@ -51,12 +54,12 @@ void Clk_Init()
 }
 /***********************************************************************************************
  *
- * @brief    GPIO_Init - Initialize the pins for input/output
+ * @brief    gpio_init - Initialize the pins for input/output
  * @param    none
  * @return   none
  *
  ************************************************************************************************/
-void GPIO_Init()
+void gpio_init()
 {
   //
   CONFIG_PIN_AS_GPIO(PORT_B, (7 + 8), OUTPUT); // PTB7 - LIN EN
@@ -110,42 +113,34 @@ void GPIO_Init()
 }
 /***********************************************************************************************
  *
- * @brief   lin_application_timer_FTM2 - Initialize the timer for LIN application
+ * @brief   init_systick_timer - Initialize the timer for SystTick 1ms counter
  * @param    none
  * @return   none
  *
  ************************************************************************************************/
-void lin_application_timer_FTM2()
+void init_systick_timer()
 {
-  SIM_SCGC |= SIM_SCGC_FTM2_MASK;  /* Enable Clock for FTM2 */
-  FTM2_SC |= FTM_SC_PS(7);         /* Select Preescaler in this case 128. 20 Mhz /128 =156.25 Khz. */
-                                   /* Counter increase by one every 6.4 us */
-                                   /* Enable Channle 0*/
-  FTM2_C0SC |= FTM_CnSC_CHIE_MASK; /* Enable channel 0 interrupt */
-  FTM2_C0SC |= FTM_CnSC_MSA_MASK;  /* Channel as Output compare mode */
-                                   /*Select interrupt frequency*/
-  FTM2_C0V = FTM_CnV_VAL(391);     /* Interrupt every 2.5ms */
-
-  FTM2_SC |= FTM_SC_CLKS(1); /*FTM2 use system clock*/
-
+  SIM_SCGC |= SIM_SCGC_FTM2_MASK;                                             /* Enable Clock for FTM2 */
+  FTM2_SC |= FTM_SC_PS(7);                                                    /* Select Preescaler in this case 128. 20 Mhz /128 =156.25 Khz. */
+                                                                              /* Counter increase by one every 6.4 us */
+                                                                              /* Enable Channle 0*/
+  FTM2_C0SC |= FTM_CnSC_CHIE_MASK;                                            /* Enable channel 0 interrupt */
+  FTM2_C0SC |= FTM_CnSC_MSA_MASK;                                             /* Channel as Output compare mode */
+                                                                              /*Select interrupt frequency*/
+  FTM2_C0V = (uint32_t)((MCU_BUS_FREQ / 1000000.0) * (TICKS_PERIOD / 128.0)); /* Interrupt every 1ms */
+  FTM2_SC |= FTM_SC_CLKS(1);                                                  /*FTM2 use system clock*/
   /* Set the ICPR and ISER registers accordingly */
   NVIC_ICPR |= 1 << ((INT_FTM2 - 16) % 32);
   NVIC_ISER |= 1 << ((INT_FTM2 - 16) % 32);
 }
 
-unsigned char BatteryVoltageLin_x10;
-short VehicleSpeed;
-
-#define TICKS_PERIOD 1000
-uint32_t SystTick = 0;
 void FTM2_IRQHandler()
 {
-  if (1 == ((FTM2_C0SC & FTM_CnSC_CHF_MASK) >> FTM_CnSC_CHF_SHIFT)) /* If the CHF of the channel is equal to 0 */
+  if (FTM2_C0SC & FTM_CnSC_CHF_MASK) /* If the CHF of the channel is equal to 0 */
   {
     SystTick++;
     (void)FTM2_C0SC;                /* Read to clear flag */
     FTM2_C0SC ^= FTM_CnSC_CHF_MASK; /* Clear flag */
-    // FTM2_C0V = FTM2_C0V + 391;      /* Refresh interrupt period */
     FTM2_C0V += (uint32_t)((MCU_BUS_FREQ / 1000000.0) * (TICKS_PERIOD / 128.0));
   }
 }
@@ -283,9 +278,10 @@ void main(void)
   // eeprom_program(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
 
   rtc_init();
-  GPIO_Init();
+  gpio_init();
   spi_init();
-  wakeup();
+  init_lin();
+  init_systick_timer();
   mlx_init();
   init_rls_data();
   PeriodsInit();

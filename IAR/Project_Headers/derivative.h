@@ -62,8 +62,10 @@ extern bool RainDetectedCloseWindowsRequest;
 extern bool WipersInOperationNow;
 extern bool WasherInOperationNow;
 extern bool RtcInterruptFare;
+extern unsigned char AllWindowsAreClosed;
+extern unsigned int LinLastActiveTime;
 
-void lin_application_timer_FTM2();
+void init_systick_timer();
 void init_rls_data(void);
 void wdt_reload(void);
 void wakeup_event(void);
@@ -73,8 +75,8 @@ void wakeup_event(void);
  */
 typedef struct
 {
-  unsigned int val;
-  unsigned int xor_val;
+    unsigned int val;
+    unsigned int xor_val;
 } s_diag_data_var;
 
 extern unsigned int SIM_SRSID_val;

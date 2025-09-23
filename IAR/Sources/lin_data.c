@@ -12,9 +12,12 @@ unsigned char AutoWipersThresold = 0;
 e_wipers_lever_pos WipersSwPos = W_OFF;
 e_light_sw_pos LightSwPos = LSW_OFF;
 e_ign_state IgnState = IGN_ON;
-bool RainDetectedCloseWindowsRequest = 0;
+bool RainDetectedCloseWindowsRequest = false;
 bool WipersInOperationNow = false;
 bool WasherInOperationNow = false;
+unsigned char AllWindowsAreClosed = 0;
+short VehicleSpeed = 0;
+unsigned char BatteryVoltageLin_x10;
 
 static unsigned char auto_wipers_thresold_prev = 0;
 static e_wipers_lever_pos wipers_sw_pos_prev = W_OFF;
@@ -117,15 +120,15 @@ void lin_proc_data_100ms(void)
             wipers_mode = WM_OFF;
         }
     }
-
-    if (IgnState >= IGN_ON)
+    // RainDetectedCloseWindowsRequest flag works ony if IGN_OFF (why, chery, why?)
+    if (IgnState != IGN_OFF)
     {
-        RainDetectedCloseWindowsRequest = 0;
+        RainDetectedCloseWindowsRequest = false;
     }
 
-    if (l_u8_rd_LI0_BCM_AllWindowsClosedFlag())
+    if (AllWindowsAreClosed)
     {
-        RainDetectedCloseWindowsRequest = 0;
+        RainDetectedCloseWindowsRequest = false;
     }
 
     if (WipersSwPos != W_AUTO)
@@ -160,12 +163,13 @@ void lin_proc_data_100ms(void)
 
     BatteryVoltageLin_x10 = l_u8_rd_LI0_BCM_BatteryVoltage();
     VehicleSpeed = l_u16_rd_LI0_BCM_VehicleSpeed() * 3 / 40;
-    WipersSwPos = l_u8_rd_LI0_BCM_WipersSwPos();
-    LightSwPos = l_u8_rd_LI0_BCM_LightSwitchPos();
-    IgnState = l_u8_rd_LI0_BCM_IgnState();
+    WipersSwPos = (e_wipers_lever_pos)l_u8_rd_LI0_BCM_WipersSwPos();
+    LightSwPos = (e_light_sw_pos)l_u8_rd_LI0_BCM_LightSwitchPos();
+    IgnState = (e_ign_state)l_u8_rd_LI0_BCM_IgnState();
     WipersInOperationNow = l_bool_rd_LI0_BCM_WipersInOperationNow();
     AutoWipersThresold = l_u8_rd_LI0_BCM_AutoWipersThreshold();
     WasherInOperationNow = ((l_u8_rd_LI0_BCM_Washer() & 1) == 1);
+    AllWindowsAreClosed = l_u8_rd_LI0_BCM_AllWindowsClosedFlag();
 
     if (AutoWipersThresold > (AUTO_WIPERS_THRESOLD_MODES_COUNT - 1))
     {

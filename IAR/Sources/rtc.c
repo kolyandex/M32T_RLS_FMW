@@ -11,6 +11,7 @@ void rtc_init(void)
     NVIC_ICPR |= 1 << ((INT_RTC - 16) % 32);
     NVIC_ISER |= 1 << ((INT_RTC - 16) % 32);
     rtc_set_interrupt(false);
+    RtcInterruptFare = false;
 }
 
 void rtc_set_interrupt(bool enable)
