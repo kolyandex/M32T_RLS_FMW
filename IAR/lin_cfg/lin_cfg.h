@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Sun Sep 21 21:29:03 NOVT 2025
+* @date      Wed Sep 24 08:36:33 NOVT 2025
 *
 * @brief     Hardware configuration file
 *
@@ -67,8 +67,8 @@
 #define _TL_FRAME_SUPPORT_      _TL_MULTI_FRAME_
 
 /* frame buffer size */
-#define LIN_FRAME_BUF_SIZE          34
-#define LIN_FLAG_BUF_SIZE           8
+#define LIN_FRAME_BUF_SIZE          42
+#define LIN_FLAG_BUF_SIZE           10
 
 /**********************************************************************/
 /***************               Interfaces           *******************/
@@ -81,7 +81,7 @@ typedef enum {
 /***************               Signals              *******************/
 /**********************************************************************/
 /* Number of signals */
-#define LIN_NUM_OF_SIGS  46
+#define LIN_NUM_OF_SIGS  58
 /* List of signals */
 typedef enum {
 
@@ -179,12 +179,36 @@ typedef enum {
   
    , LI0_RLS_8E_7_CAN_355_2
   
+   , LI0_IBS_01_3F
+  
+   , LI0_IBS_1_C0
+  
+   , LI0_IBS_23
+  
+   , LI0_IBS_4
+  
+   , LI0_IBS_5
+  
+   , LI0_IBS_6_03
+  
+   , LI0_IBS_6_0C
+  
+   , LI0_IBS_6_30
+  
+   , LI0_IBS_6_40
+  
+   , LI0_IBS_6_80
+  
+   , LI0_IBS_7_01
+  
+   , LI0_IBS_7_02
+  
 } l_signal_handle;
 /**********************************************************************/
 /*****************               Frame             ********************/
 /**********************************************************************/
 /* Number of frames */
-#define LIN_NUM_OF_FRMS  7
+#define LIN_NUM_OF_FRMS  8
 /* List of frames */
 typedef enum {
 /* All frames for master node */
@@ -201,6 +225,8 @@ typedef enum {
   
    , LI0_BCM_11
   
+   , LI0_IBS_B4
+  
    , LI0_MasterReq
   
    , LI0_SlaveResp
@@ -210,8 +236,8 @@ typedef enum {
 /***************             Configuration          *******************/
 /**********************************************************************/
 /* Size of configuration in ROM and RAM used for interface: LI1 */
-#define LIN_SIZE_OF_CFG  9
-#define LIN_CFG_FRAME_NUM  5
+#define LIN_SIZE_OF_CFG  10
+#define LIN_CFG_FRAME_NUM  6
 /*********************************************************************
  * global macros
  *********************************************************************/
@@ -568,6 +594,90 @@ typedef enum {
 #define LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_7_CAN_355_2    1U
 
 
+#define LIN_BYTE_OFFSET_LI0_IBS_01_3F    34U
+#define LIN_BIT_OFFSET_LI0_IBS_01_3F    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_01_3F    14U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_01_3F    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_01_3F    0U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_1_C0    35U
+#define LIN_BIT_OFFSET_LI0_IBS_1_C0    6U
+#define LIN_SIGNAL_SIZE_LI0_IBS_1_C0    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_1_C0    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_1_C0    1U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_23    36U
+#define LIN_BIT_OFFSET_LI0_IBS_23    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_23    16U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_23    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_23    2U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_4    38U
+#define LIN_BIT_OFFSET_LI0_IBS_4    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_4    8U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_4    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_4    3U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_5    39U
+#define LIN_BIT_OFFSET_LI0_IBS_5    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_5    8U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_5    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_5    4U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_6_03    40U
+#define LIN_BIT_OFFSET_LI0_IBS_6_03    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_6_03    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_03    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_6_03    5U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_6_0C    40U
+#define LIN_BIT_OFFSET_LI0_IBS_6_0C    2U
+#define LIN_SIGNAL_SIZE_LI0_IBS_6_0C    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_0C    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_6_0C    6U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_6_30    40U
+#define LIN_BIT_OFFSET_LI0_IBS_6_30    4U
+#define LIN_SIGNAL_SIZE_LI0_IBS_6_30    2U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_30    8U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_6_30    7U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_6_40    40U
+#define LIN_BIT_OFFSET_LI0_IBS_6_40    6U
+#define LIN_SIGNAL_SIZE_LI0_IBS_6_40    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_40    9U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_6_40    0U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_6_80    40U
+#define LIN_BIT_OFFSET_LI0_IBS_6_80    7U
+#define LIN_SIGNAL_SIZE_LI0_IBS_6_80    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_80    9U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_6_80    1U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_7_01    41U
+#define LIN_BIT_OFFSET_LI0_IBS_7_01    0U
+#define LIN_SIGNAL_SIZE_LI0_IBS_7_01    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_01    9U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_7_01    2U
+
+
+#define LIN_BYTE_OFFSET_LI0_IBS_7_02    41U
+#define LIN_BIT_OFFSET_LI0_IBS_7_02    1U
+#define LIN_SIGNAL_SIZE_LI0_IBS_7_02    1U
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_02    9U
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_7_02    3U
+
+
 
 
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_55             0
@@ -584,6 +694,9 @@ typedef enum {
 
 #define LIN_FLAG_BYTE_OFFSET_LI0_BCM_11             6
 #define LIN_FLAG_BIT_OFFSET_LI0_BCM_11              0
+
+#define LIN_FLAG_BYTE_OFFSET_LI0_IBS_B4             8
+#define LIN_FLAG_BIT_OFFSET_LI0_IBS_B4              0
 
 
 /**********************************************************************/
@@ -1350,6 +1463,218 @@ typedef enum {
     }
 
 
+ 
+/* static access macros for signal LI0_IBS_01_3F */
+ 
+#define l_u16_rd_LI0_IBS_01_3F() \
+    ((l_u16)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F] + (lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F + 1U] << 8U)) >> 0U) & 0x3fffU))
+
+
+#define l_u16_wr_LI0_IBS_01_3F(A) \
+    { \
+    buffer_backup_data[0U] =  lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F]; \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] |= (1U << 0); \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F] & 0x00U) | \
+    (((A) << 0U) & 0xffU)); \
+    buffer_backup_data[0U + 1U] =  lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F + 1U]; \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] |= (1U << (0 + 1U)); \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F + 1U] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_01_3F + 1U] & 0xc0U) | \
+    (((A) >> 8U) & 0x3fU)); \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] &= (~(0x03 << 0)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_01_3F],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_01_3F); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_1_C0 */
+ 
+#define l_u8_rd_LI0_IBS_1_C0() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_1_C0]) >> 6U) & 0x03U))
+
+
+#define l_u8_wr_LI0_IBS_1_C0(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_1_C0] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_1_C0] & 0x3fU) | \
+    (((A) << 6U) & 0xc0U)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_1_C0],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_1_C0); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_23 */
+ 
+#define l_u16_rd_LI0_IBS_23() \
+    ((l_u16)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23] + (lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23 + 1U] << 8U)) >> 0U) & 0xffffU))
+
+
+#define l_u16_wr_LI0_IBS_23(A) \
+    { \
+    buffer_backup_data[2U] =  lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23]; \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] |= (1U << 2); \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23] & 0x00U) | \
+    (((A) << 0U) & 0xffU)); \
+    buffer_backup_data[2U + 1U] =  lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23 + 1U]; \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] |= (1U << (2 + 1U)); \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23 + 1U] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_23 + 1U] & 0x00U) | \
+    (((A) >> 8U) & 0xffU)); \
+    lin_frame_updating_flag_tbl[LI0_IBS_B4] &= (~(0x03 << 2)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_23],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_23); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_4 */
+ 
+#define l_u8_rd_LI0_IBS_4() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_4]) >> 0U) & 0xffU))
+
+
+#define l_u8_wr_LI0_IBS_4(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_4] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_4] & 0x00U) | \
+    (((A) << 0U) & 0xffU)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_4],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_4); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_5 */
+ 
+#define l_u8_rd_LI0_IBS_5() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_5]) >> 0U) & 0xffU))
+
+
+#define l_u8_wr_LI0_IBS_5(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_5] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_5] & 0x00U) | \
+    (((A) << 0U) & 0xffU)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_5],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_5); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_6_03 */
+ 
+#define l_u8_rd_LI0_IBS_6_03() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_03]) >> 0U) & 0x03U))
+
+
+#define l_u8_wr_LI0_IBS_6_03(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_03] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_03] & 0xfcU) | \
+    (((A) << 0U) & 0x03U)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_03],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_03); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_6_0C */
+ 
+#define l_u8_rd_LI0_IBS_6_0C() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_0C]) >> 2U) & 0x03U))
+
+
+#define l_u8_wr_LI0_IBS_6_0C(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_0C] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_0C] & 0xf3U) | \
+    (((A) << 2U) & 0x0cU)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_0C],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_0C); \
+    }
+
+
+ 
+/* static access macros for signal LI0_IBS_6_30 */
+ 
+#define l_u8_rd_LI0_IBS_6_30() \
+    ((l_u8)  (((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_30]) >> 4U) & 0x03U))
+
+
+#define l_u8_wr_LI0_IBS_6_30(A) \
+    { \
+    lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_30] = \
+    (l_u8)((lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_30] & 0xcfU) | \
+    (((A) << 4U) & 0x30U)); \
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_30],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_30); \
+    }
+
+
+/* static access macros for signal LI0_IBS_6_40 */
+
+ 
+#define l_bool_rd_LI0_IBS_6_40() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_40], \
+    LIN_BIT_OFFSET_LI0_IBS_6_40))
+
+#define l_bool_wr_LI0_IBS_6_40(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_40], \
+    LIN_BIT_OFFSET_LI0_IBS_6_40)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_40], \
+    LIN_BIT_OFFSET_LI0_IBS_6_40));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_40],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_40);}
+/* static access macros for signal LI0_IBS_6_80 */
+
+ 
+#define l_bool_rd_LI0_IBS_6_80() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_80], \
+    LIN_BIT_OFFSET_LI0_IBS_6_80))
+
+#define l_bool_wr_LI0_IBS_6_80(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_80], \
+    LIN_BIT_OFFSET_LI0_IBS_6_80)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_6_80], \
+    LIN_BIT_OFFSET_LI0_IBS_6_80));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_80],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_80);}
+/* static access macros for signal LI0_IBS_7_01 */
+
+ 
+#define l_bool_rd_LI0_IBS_7_01() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_01], \
+    LIN_BIT_OFFSET_LI0_IBS_7_01))
+
+#define l_bool_wr_LI0_IBS_7_01(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_01], \
+    LIN_BIT_OFFSET_LI0_IBS_7_01)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_01], \
+    LIN_BIT_OFFSET_LI0_IBS_7_01));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_01],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_01);}
+/* static access macros for signal LI0_IBS_7_02 */
+
+ 
+#define l_bool_rd_LI0_IBS_7_02() \
+    (LIN_TEST_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_02], \
+    LIN_BIT_OFFSET_LI0_IBS_7_02))
+
+#define l_bool_wr_LI0_IBS_7_02(A) \
+    {(A) ? \
+    (LIN_SET_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_02], \
+    LIN_BIT_OFFSET_LI0_IBS_7_02)):\
+    (LIN_CLEAR_BIT(lin_pFrameBuf[LIN_BYTE_OFFSET_LI0_IBS_7_02], \
+    LIN_BIT_OFFSET_LI0_IBS_7_02));\
+    LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_02],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_02);}
 
 
 /* Signal flag APIs */
@@ -1676,6 +2001,90 @@ typedef enum {
          LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_RLS_8E_7_CAN_355_2],\
          LIN_FLAG_BIT_OFFSET_LI0_RLS_8E_7_CAN_355_2)
 
+#define l_flg_tst_LI0_IBS_01_3F_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_01_3F],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_01_3F)
+#define l_flg_clr_LI0_IBS_01_3F_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_01_3F],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_01_3F)
+
+#define l_flg_tst_LI0_IBS_1_C0_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_1_C0],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_1_C0)
+#define l_flg_clr_LI0_IBS_1_C0_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_1_C0],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_1_C0)
+
+#define l_flg_tst_LI0_IBS_23_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_23],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_23)
+#define l_flg_clr_LI0_IBS_23_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_23],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_23)
+
+#define l_flg_tst_LI0_IBS_4_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_4],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_4)
+#define l_flg_clr_LI0_IBS_4_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_4],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_4)
+
+#define l_flg_tst_LI0_IBS_5_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_5],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_5)
+#define l_flg_clr_LI0_IBS_5_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_5],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_5)
+
+#define l_flg_tst_LI0_IBS_6_03_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_03],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_03)
+#define l_flg_clr_LI0_IBS_6_03_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_03],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_03)
+
+#define l_flg_tst_LI0_IBS_6_0C_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_0C],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_0C)
+#define l_flg_clr_LI0_IBS_6_0C_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_0C],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_0C)
+
+#define l_flg_tst_LI0_IBS_6_30_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_30],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_30)
+#define l_flg_clr_LI0_IBS_6_30_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_30],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_30)
+
+#define l_flg_tst_LI0_IBS_6_40_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_40],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_40)
+#define l_flg_clr_LI0_IBS_6_40_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_40],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_40)
+
+#define l_flg_tst_LI0_IBS_6_80_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_80],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_80)
+#define l_flg_clr_LI0_IBS_6_80_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_6_80],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_6_80)
+
+#define l_flg_tst_LI0_IBS_7_01_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_01],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_01)
+#define l_flg_clr_LI0_IBS_7_01_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_01],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_01)
+
+#define l_flg_tst_LI0_IBS_7_02_flag() \
+         LIN_TEST_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_02],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_02)
+#define l_flg_clr_LI0_IBS_7_02_flag() \
+         LIN_CLEAR_BIT(lin_flag_handle_tbl[LIN_FLAG_BYTE_OFFSET_LI0_IBS_7_02],\
+         LIN_FLAG_BIT_OFFSET_LI0_IBS_7_02)
+
 
 
 /* Frame flag APIs */
@@ -1706,6 +2115,11 @@ typedef enum {
           lin_frame_flag_tbl[LI0_BCM_11]
  #define l_flg_clr_LI0_BCM_11_flag() \
           lin_frame_flag_tbl[LI0_BCM_11] = 0
+
+ #define l_flg_tst_LI0_IBS_B4_flag() \
+          lin_frame_flag_tbl[LI0_IBS_B4]
+ #define l_flg_clr_LI0_IBS_B4_flag() \
+          lin_frame_flag_tbl[LI0_IBS_B4] = 0
 
  #define l_flg_tst_LI0_MasterReq_flag() \
           lin_frame_flag_tbl[LI0_MasterReq]

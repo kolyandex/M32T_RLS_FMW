@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Sun Sep 21 21:29:03 NOVT 2025
+* @date      Wed Sep 24 08:36:33 NOVT 2025
 *
 * @brief     Hardware configuration file
 *

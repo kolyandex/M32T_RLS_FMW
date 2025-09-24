@@ -57,6 +57,18 @@ Signals {
   RLS_8E_5_CAN_355_3: 8, 255, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_8E_6_CAN_355_1: 8, 255, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
   RLS_8E_7_CAN_355_2: 8, 255, RLS_SLAVE_NODE, BCM_MASTER_NODE ;
+  IBS_01_3F: 14, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_1_C0: 2, 3, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_23: 16, 65535, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_4: 8, 255, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_5: 8, 255, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_6_03: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_6_0C: 2, 1, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_6_30: 2, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_6_40: 1, 1, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_6_80: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_7_01: 1, 1, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
+  IBS_7_02: 1, 0, BCM_MASTER_NODE, RLS_SLAVE_NODE ;
 }
 
 Diagnostic_signals {
@@ -137,6 +149,20 @@ Frames {
     BCM_11_CAN_304_0x40, 45 ;
     BCM_11_CAN_304_0x80, 46 ;
   }
+  IBS_B4: 52, BCM_MASTER_NODE, 8 {
+    IBS_01_3F, 0 ;
+    IBS_1_C0, 14 ;
+    IBS_23, 16 ;
+    IBS_4, 32 ;
+    IBS_5, 40 ;
+    IBS_6_03, 48 ;
+    IBS_6_0C, 50 ;
+    IBS_6_30, 52 ;
+    IBS_6_40, 54 ;
+    IBS_6_80, 55 ;
+    IBS_7_01, 56 ;
+    IBS_7_02, 57 ;
+  }
 }
 
 
@@ -181,6 +207,7 @@ Node_attributes {
       BCM_D6 ;
       BCM_85 ;
       BCM_11 ;
+      IBS_B4 ;
     }
   }
 }
@@ -194,6 +221,7 @@ Schedule_tables {
     RLS_8E delay 100 ms ;
     BCM_D6 delay 100 ms ;
     BCM_55 delay 50 ms ;
+    IBS_B4 delay 10 ms ;
   }
 }
 

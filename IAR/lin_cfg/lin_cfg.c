@@ -13,7 +13,7 @@
 *
 * @version   1.0
 *
-* @date      Sun Sep 21 21:29:03 NOVT 2025
+* @date      Wed Sep 24 08:36:33 NOVT 2025
 *
 * @brief     Common LIN configuration, data structure
 *
@@ -112,6 +112,23 @@ l_u8    lin_pFrameBuf[LIN_FRAME_BUF_SIZE] =
   
   ,0xff /* 33 : 11111111 */
   
+
+  ,0x00 /* 34 : 00000000 */ /* start of frame LI0_IBS_B4 */
+
+  ,0xc0 /* 35 : 11000000 */
+  
+  ,0xff /* 36 : 11111111 */
+  
+  ,0xff /* 37 : 11111111 */
+  
+  ,0xff /* 38 : 11111111 */
+  
+  ,0xff /* 39 : 11111111 */
+  
+  ,0x44 /* 40 : 01000100 */
+  
+  ,0xfd /* 41 : 11111101 */
+  
 };
 
 /* definition and initialization of signal array */
@@ -140,6 +157,11 @@ l_u8    lin_flag_handle_tbl[LIN_FLAG_BUF_SIZE] =
 
   ,0xFF /* 7: */
   
+
+  ,0xFF /* 8: start of flag frame LI0_IBS_B4 */
+
+  ,0xFF /* 9: */
+  
 };
 
 /*************************** Flag set when signal is updated ******************/
@@ -160,6 +182,8 @@ const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
   
    ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 26, 6, 2 , (l_u8*)0 }
   
+   ,{ LIN_FRM_UNCD, 8, LIN_RES_SUB, 34, 8, 2 , (l_u8*)0 }
+  
    ,{ LIN_FRM_DIAG, 8, LIN_RES_SUB, 0, 0, 0 , (l_u8*)0 }
   
    ,{ LIN_FRM_DIAG, 8, LIN_RES_PUB, 0, 0, 0 , (l_u8*)0 }
@@ -168,9 +192,9 @@ const lin_frame_struct lin_frame_tbl[LIN_NUM_OF_FRMS] ={
 
 /*********************************** Frame flag Initialization **********************/
 /*************************** Frame flag for send/receive successfully ***************/
-l_bool lin_frame_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
+l_bool lin_frame_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
 /*************************** Frame flag for updating signal in frame ****************/
-volatile l_u8 lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0};
+volatile l_u8 lin_frame_updating_flag_tbl[LIN_NUM_OF_FRMS] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 
 /**************************** Lin configuration Initialization ***********************/
@@ -183,10 +207,10 @@ const l_u16 lin_max_frame_res_timeout_val[8]={
 };
 
 
-l_u8 lin_configuration_RAM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x3C, 0x3D ,0xFF};
+l_u8 lin_configuration_RAM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x34, 0x3C, 0x3D ,0xFF};
 
 
-const l_u16  lin_configuration_ROM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x3C, 0x3D ,0xFFFF};
+const l_u16  lin_configuration_ROM[LIN_SIZE_OF_CFG]= {0x00, 0x15, 0x0E, 0x16, 0x05, 0x11, 0x34, 0x3C, 0x3D ,0xFFFF};
 
 /***************************************** Node Attribute*****************************************/
 
