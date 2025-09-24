@@ -657,11 +657,22 @@ void lin_lld_uart_rx_isr
                 case RECV_DATA:
                     ptr++;
                     *(ptr) = tmp_byte;
+                    
+#warning We can ignore CRC to be able to receive even damaged frame after zero inter-frame timing (help me)
+                    
+#ifdef __PASS_LIN_DATA_WO_CRC__
+                    /* Check bytes received fully */
+                    if (cnt_byte == (response_buffer[0]) - 1)
+                    {
+                        /* checksum checking */
+                        if (/*lin_checksum(response_buffer, pid) == tmp_byte ||*/ 1)
+#else
                     /* Check bytes received fully */
                     if (cnt_byte == (response_buffer[0]))
                     {
                         /* checksum checking */
-                        if (lin_checksum(response_buffer, pid) == tmp_byte)
+                        if (lin_checksum(response_buffer, pid) == tmp_byte)                          
+#endif
                         {
                             /*******************************************/
                             /***  RX Buffer Full - Checksum OK       ***/
