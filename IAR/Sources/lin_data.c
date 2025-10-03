@@ -21,55 +21,44 @@ unsigned char BatteryVoltageLin_x10;
 
 static unsigned char auto_wipers_thresold_prev = 0;
 static e_wipers_lever_pos wipers_sw_pos_prev = W_OFF;
-static unsigned int wipers_mode_counter = 0;
 static e_wipers_mode wipers_mode = WM_OFF;
 static bool a_wipers_enable = true;
-
-typedef struct
-{
-    e_wipers_mode current_mode;
-    e_wipers_mode new_mode;
-} s_w_mode_relations;
-
-static const s_w_mode_relations w_mode_relations[] =
-    {
-        {.current_mode = WM_OFF, .new_mode = WM_1_TIME},
-        {.current_mode = WM_OFF, .new_mode = WM_SLOW},
-        {.current_mode = WM_OFF, .new_mode = WM_FAST},
-        {.current_mode = WM_1_TIME, .new_mode = WM_SLOW},
-        {.current_mode = WM_1_TIME, .new_mode = WM_FAST},
-        {.current_mode = WM_SLOW, .new_mode = WM_FAST},
-        {.current_mode = WM_FAST, .new_mode = WM_SLOW},
-        {.current_mode = WM_SLOW, .new_mode = WM_OFF},
-        {.current_mode = WM_FAST, .new_mode = WM_OFF},
-};
+static unsigned int one_time_period_ms = 0;
+static unsigned int one_time_start_time_ms = 0;
 
 /**
- * @brief lin_wipers_set_mode
+ * @brief lin_wipers_enable
  *
- * @param mode
- * @param time counts in 100ms intervals
+ * @param percent (0-60% - 10 sec - 4 sec, 60-80 - slow, 80-100 - fast)
  */
-void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time)
+void lin_wipers_enable(int percent)
 {
-    if (mode == WM_1_TIME)
+    one_time_period_ms = 0;
+    if (percent < 0)
     {
-        time = 5;
+        percent = 0;
     }
-    for (int i = 0; i < SIZEOF_ARR(w_mode_relations); i++)
+    if (percent > 100)
     {
-        if (((w_mode_relations[i].current_mode == wipers_mode) && (w_mode_relations[i].new_mode == mode)) || (wipers_mode == mode))
-        {
-            if (mode >= wipers_mode)
-            {
-                wipers_mode = mode;
-                wipers_mode_counter = time;
-            }
-            break;
-        }
+        percent = 100;
+    }
+    if (percent > 90)
+    {
+        wipers_mode = WM_FAST;
+    }
+    else if (percent > 70)
+    {
+        wipers_mode = WM_SLOW;
+    }
+    else if (percent >= 5)
+    {
+        one_time_period_ms = 10000 - (percent * 100); // 10000 (10sec) - 3000 (3sec)
+    }
+    else
+    {
+        wipers_mode = WM_OFF;
     }
 }
-
 void lin_proc_data_100ms(void)
 {
     __disable_interrupt();
@@ -104,22 +93,26 @@ void lin_proc_data_100ms(void)
         }
     }
 
-    if (wipers_mode_counter)
+    if (one_time_period_ms != 0)
     {
-        wipers_mode_counter--;
-    }
-    else
-    {
-        if (wipers_mode == WM_FAST)
+        if (one_time_start_time_ms == 0)
         {
-            wipers_mode = WM_SLOW;
-            wipers_mode_counter = 30;
+            one_time_start_time_ms = SystTick;
+        }
+        if ((SystTick - one_time_start_time_ms) < 500)
+        {
+            wipers_mode = WM_1_TIME;
         }
         else
         {
             wipers_mode = WM_OFF;
         }
+        if (SystTick > (one_time_start_time_ms + one_time_period_ms))
+        {
+            one_time_start_time_ms = 0;
+        }
     }
+
     // RainDetectedCloseWindowsRequest flag works ony if IGN_OFF (why, chery, why?)
     if (IgnState != IGN_OFF)
     {
@@ -131,9 +124,8 @@ void lin_proc_data_100ms(void)
         RainDetectedCloseWindowsRequest = false;
     }
 
-    if (WipersSwPos != W_AUTO)
+    if ((WipersSwPos != W_AUTO) || (IgnState != IGN_ON))
     {
-        wipers_mode_counter = 0;
         wipers_mode = WM_OFF;
     }
 
@@ -178,12 +170,19 @@ void lin_proc_data_100ms(void)
 
     if ((wipers_sw_pos_prev != WipersSwPos) || (auto_wipers_thresold_prev != AutoWipersThresold))
     {
-        if ((WipersSwPos == W_AUTO) && (IgnState == IGN_ON))
+        if ((WipersSwPos == W_AUTO) && (IgnState == IGN_ON) && (wipers_mode == WM_OFF))
         {
-            lin_wipers_set_mode(WM_1_TIME, 0);
+          l_u8_wr_LI0_RLS_FrontWipersMode(WM_1_TIME);
+            //lin_wipers_set_mode(WM_1_TIME, 0);
         }
     }
     auto_wipers_thresold_prev = AutoWipersThresold;
     wipers_sw_pos_prev = WipersSwPos;
+
+    l_u8_wr_LI0_RLS_8E_4_CAN_355_4(IR_Channel_A_data >> 8);
+    l_u8_wr_LI0_RLS_8E_5_CAN_355_3(IR_Channel_A_data >> 0);
+    l_u8_wr_LI0_RLS_8E_6_CAN_355_1(IR_Channel_B_data >> 8);
+    l_u8_wr_LI0_RLS_8E_7_CAN_355_2(IR_Channel_B_data >> 0);
+
     __enable_interrupt();
 }

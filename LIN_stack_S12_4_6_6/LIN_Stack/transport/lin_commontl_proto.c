@@ -155,10 +155,10 @@ void lin_tl_make_slaveres_pdu
                         break;
                         
                     case 0x1300:
-                        b[data_len++] = IR_Channel_A_data[0] >> 8;
-                        b[data_len++] = IR_Channel_A_data[0] >> 0;
-                        b[data_len++] = IR_Channel_B_data[0] >> 8;
-                        b[data_len++] = IR_Channel_B_data[0] >> 0;
+                        b[data_len++] = IR_Channel_A_data >> 8;
+                        b[data_len++] = IR_Channel_A_data >> 0;
+                        b[data_len++] = IR_Channel_B_data >> 8;
+                        b[data_len++] = IR_Channel_B_data >> 0;
                         for (int i = 0; i < TOTAL_AMB_LIGHT_CHANNELS; i++)
                         {
                           b[data_len++] = Ambient_light_channel_data[i] >> 8;
@@ -183,13 +183,13 @@ void lin_tl_make_slaveres_pdu
                         len++;
                         break;
                     case 0x130A:
-                        lin_tl_pdu[5] = IR_Channel_A_data[0] >> 0;
-                        lin_tl_pdu[6] = IR_Channel_A_data[0] >> 8;
+                        lin_tl_pdu[5] = IR_Channel_A_data >> 0;
+                        lin_tl_pdu[6] = IR_Channel_A_data >> 8;
                         len += 2;
                         break;
                     case 0x130B:
-                        lin_tl_pdu[5] = IR_Channel_B_data[0] >> 0;
-                        lin_tl_pdu[6] = IR_Channel_B_data[0] >> 8;
+                        lin_tl_pdu[5] = IR_Channel_B_data >> 0;
+                        lin_tl_pdu[6] = IR_Channel_B_data >> 8;
                         len += 2;
                         break;
                     case 0xF10A:

@@ -224,7 +224,7 @@ void init_rls_data(void)
   mlx_read_data_by_id(LED_A, 8, 1000);
   mlx_read_data_by_id(LED_B, 8, 1000);
   a_light_init();
-  a_wipe_init();
+  //a_wipe_init();
 }
 
 unsigned int SIM_SRSID_val = 0;
@@ -284,6 +284,7 @@ void main(void)
   init_systick_timer();
   mlx_init();
   init_rls_data();
+  a_wipe_init();
   PeriodsInit();
   for (;;)
   {

@@ -16,35 +16,26 @@ enum
 typedef struct
 {
     s_sma_flt rain_long_time_average;
-    s_sma_flt rain_short_time_average;
     int rain_long_time_average_val;
-    int rain_short_time_average_val;
-    int rain_long_time_average_val_difference;
     int rain_immediately_average_val_difference;
-    int rain_max_value_during_wipers_in_operation;
-    int rain_max_value_during_wipers_in_operation_final;
     int min_val_for_last_10_sec;
     int max_val_for_last_10_sec;
     int val_for_last_10_sec_counter;
     int diff_val_for_last_10_sec;
-    int wipers_one_time_counter;
     int abs_diff; // tmp
     cbuff_t cbuff;
     unsigned short cbuff_buff[16];
     int min_val_for_cbuff;
     int max_val_for_cbuff;
+
+    cbuff_t wio_cbuff;
+    unsigned short wio_cbuff_buff[32];
+    s_sma_flt wio_max_average;
+    int wio_avg_max_val;
 } s_ir_ch_ctx;
 
 static s_ir_ch_ctx ir_ch[IR_CH_TOTAL];
 static unsigned char washer_last_op_counter = 0;
-static const int a_wipe_thresold[AUTO_WIPERS_THRESOLD_MODES_COUNT][4] =
-    {
-        {400, 2000, 5000, 10000},
-        {300, 1500, 4000, 7000},
-        {200, 1000, 3000, 5000},
-        {100, 500, 2000, 4000},
-};
-
 typedef enum
 {
     WKUP_IDLE,
@@ -61,8 +52,8 @@ static unsigned int last_lin_active_time = 0;
 
 void a_wipe_sleep(void)
 {
-    BeforeSleepIrData[IR_CH_A] = IR_Channel_A_data[0];
-    BeforeSleepIrData[IR_CH_B] = IR_Channel_B_data[0];
+    BeforeSleepIrData[IR_CH_A] = IR_Channel_A_data;
+    BeforeSleepIrData[IR_CH_B] = IR_Channel_B_data;
     before_sleep_data_present = true;
 }
 void a_wipe_rtc_wakeup(void)
@@ -83,12 +74,17 @@ static void ir_ch_init(s_ir_ch_ctx *ctx, float val)
     if (ctx)
     {
         memset(ctx, 0x00, sizeof(*ctx));
-        SMA_InitFlt(&ctx->rain_long_time_average, val, (3 * 60 * 10)); // 3 minutes
-        SMA_InitFlt(&ctx->rain_short_time_average, val, (3 * 10));     // 3 sec
+        SMA_InitFlt(&ctx->rain_long_time_average, val, (3 * 15 * 10)); // ~3 minutes
         cbuff_init(&ctx->cbuff, (uint8_t *)ctx->cbuff_buff, sizeof(ctx->cbuff_buff));
+        cbuff_init(&ctx->wio_cbuff, (uint8_t *)ctx->wio_cbuff_buff, sizeof(ctx->wio_cbuff_buff));
+        SMA_InitFlt(&ctx->wio_max_average, val, 1 * 15 * 10); // ~1 minute
         for (int i = 0; i < SIZEOF_ARR(ctx->cbuff_buff); i++)
         {
             ctx->cbuff_buff[i] = (unsigned short)val;
+        }
+        for (int i = 0; i < SIZEOF_ARR(ctx->wio_cbuff_buff); i++)
+        {
+            ctx->wio_cbuff_buff[i] = (unsigned short)val;
         }
     }
 }
@@ -128,22 +124,26 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
         }
         if (WipersInOperationNow)
         {
-            if ((int)val > ctx->rain_max_value_during_wipers_in_operation)
-            {
-                ctx->rain_max_value_during_wipers_in_operation = (int)val;
-            }
+            unsigned short cbuff_val = (unsigned short)val;
+            write_to_cbuff(&ctx->wio_cbuff, (uint8_t *)&cbuff_val, sizeof(cbuff_val));
         }
         else
         {
-            ctx->rain_max_value_during_wipers_in_operation_final = ctx->rain_max_value_during_wipers_in_operation;
-            ctx->rain_max_value_during_wipers_in_operation = 0;
+            unsigned short wio_max_val = 0;
+            for (int i = 0; i < SIZEOF_ARR(ctx->wio_cbuff_buff); i++)
+            {
+                if (ctx->wio_cbuff_buff[i] > wio_max_val)
+                {
+                    wio_max_val = ctx->wio_cbuff_buff[i];
+                }
+            }
+            ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)wio_max_val, 1);
         }
-        ctx->rain_short_time_average_val = (int)SMA_GetFlt(&ctx->rain_short_time_average, val, 1);
+
         if (ctx->rain_long_time_average_val == 0)
         {
             ctx->rain_long_time_average_val = (int)val;
         }
-        ctx->rain_long_time_average_val_difference = ctx->rain_long_time_average_val - ctx->rain_short_time_average_val;
         ctx->rain_immediately_average_val_difference = ctx->rain_long_time_average_val - (int)val;
 
         if (ctx->rain_immediately_average_val_difference < 800)
@@ -177,61 +177,27 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
             }
         }
 
-        ctx->abs_diff = abs(ctx->max_val_for_cbuff - ctx->min_val_for_cbuff);
-        // ctx->abs_diff = abs(ctx->rain_long_time_average_val - ctx->rain_short_time_average_val);
-        int const *th = a_wipe_thresold[AutoWipersThresold];
-        RainDetectedCloseWindowsRequest = true;
-        if (ctx->abs_diff > th[0] && ctx->abs_diff < th[1])
+        if (ctx->max_val_for_cbuff > ctx->wio_avg_max_val)
         {
-            ctx->wipers_one_time_counter = 0;
-            if (WipersInOperationNow == false)
-            {
-                lin_wipers_set_mode(WM_1_TIME, 0);
-            }
+            ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)ctx->max_val_for_cbuff, 1);
         }
-        else if (ctx->abs_diff >= th[1] && ctx->abs_diff < th[2])
-        {
-            ctx->wipers_one_time_counter = 0;
-            int time = (ctx->abs_diff - th[1]) * 100 / (th[2] - th[1]);
-            time = (50 * time / 100) + 10;
-            lin_wipers_set_mode(WM_SLOW, time);
-        }
-        else if (ctx->abs_diff >= th[2])
-        {
-            int time = (ctx->abs_diff - th[2]) * 100 / (th[3] - th[2]);
-            time = (50 * time / 100) + 10;
-            ctx->wipers_one_time_counter = 0;
-            lin_wipers_set_mode(WM_FAST, time);
-        }
-        else
-        {
-            if (abs(ctx->rain_long_time_average_val_difference) > 1000)
-            {
-                if (ctx->wipers_one_time_counter == 0)
-                {
-                    lin_wipers_set_mode(WM_1_TIME, 0);
-                }
-                ctx->wipers_one_time_counter++;
-                if (ctx->wipers_one_time_counter >= 100)
-                {
-                    ctx->wipers_one_time_counter = 0;
-                }
-            }
-            else
-            {
-                RainDetectedCloseWindowsRequest = false;
-                ctx->wipers_one_time_counter = 0;
-                lin_wipers_set_mode(WM_OFF, 0);
-            }
-        }
+        //ctx->abs_diff = ctx->wio_avg_max_val - ctx->min_val_for_cbuff;
+        ctx->abs_diff = ctx->rain_long_time_average_val - ctx->min_val_for_cbuff;        
     }
 }
 
+static s_sma_flt val_diff_sma;
+
 void a_wipe_init(void)
 {
-    ir_ch_init(&ir_ch[IR_CH_A], (float)IR_Channel_A_data[0]);
-    ir_ch_init(&ir_ch[IR_CH_B], (float)IR_Channel_B_data[0]);
+    ir_ch_init(&ir_ch[IR_CH_A], (float)IR_Channel_A_data);
+    ir_ch_init(&ir_ch[IR_CH_B], (float)IR_Channel_B_data);
+    SMA_InitFlt(&val_diff_sma, 0.f, 1 * 15 * 10); // ~1 minute
 }
+
+static int avg_diff = 0;
+static const int a_wipe_thresold_divider[AUTO_WIPERS_THRESOLD_MODES_COUNT] = 
+{60, 50, 40, 30};
 void a_wipe_poll_100ms(void)
 {
     switch (wkup_step)
@@ -249,16 +215,32 @@ void a_wipe_poll_100ms(void)
         }
         else
         {
-            ir_ch_process(&ir_ch[IR_CH_A], (float)IR_Channel_A_data[0]);
-            ir_ch_process(&ir_ch[IR_CH_B], (float)IR_Channel_B_data[0]);
+            ir_ch_process(&ir_ch[IR_CH_A], (float)IR_Channel_A_data);
+            ir_ch_process(&ir_ch[IR_CH_B], (float)IR_Channel_B_data);
+            int max_diff = ir_ch[IR_CH_B].abs_diff;
+            if (ir_ch[IR_CH_A].abs_diff > ir_ch[IR_CH_B].abs_diff)
+            {
+                max_diff = ir_ch[IR_CH_A].abs_diff;
+            }
+            // Dousing detection
+            if (abs(max_diff - avg_diff) > 4000)
+            {
+                val_diff_sma.val = (float)(a_wipe_thresold_divider[AutoWipersThresold] * 100);
+            }
+            avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 1);
+            if (avg_diff > 500)
+            {
+                RainDetectedCloseWindowsRequest = true;
+            }
+            lin_wipers_enable(avg_diff / a_wipe_thresold_divider[AutoWipersThresold]);
         }
         break;
     }
     case WKUP_CHK_COND:
     {
         if (
-            (abs((int)BeforeSleepIrData[IR_CH_A] - (int)IR_Channel_A_data[0]) > 500) ||
-            (abs((int)BeforeSleepIrData[IR_CH_B] - (int)IR_Channel_B_data[0]) > 500))
+            (abs((int)BeforeSleepIrData[IR_CH_A] - (int)IR_Channel_A_data) > 500) ||
+            (abs((int)BeforeSleepIrData[IR_CH_B] - (int)IR_Channel_B_data) > 500))
         {
             init_lin();
             wkup_step = WKUP_SEND_BREAK;

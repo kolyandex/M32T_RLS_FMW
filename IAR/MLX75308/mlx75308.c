@@ -9,8 +9,8 @@ extern const s_table_2d_uint16_uint32 *TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_C
 unsigned char dac_level_ir_ch_a = 128;
 unsigned char dac_level_ir_ch_b = 128;
 
-unsigned short IR_Channel_A_data[6];
-unsigned short IR_Channel_B_data[6];
+unsigned short IR_Channel_A_data;
+unsigned short IR_Channel_B_data;
 unsigned short Ambient_light_channel_data[TOTAL_AMB_LIGHT_CHANNELS];
 unsigned int AmbientLIghtLevelsScaled[TOTAL_AMB_LIGHT_CHANNELS];
 static unsigned short IR_Channel_data_SRC;
@@ -385,12 +385,7 @@ int mlx_read_data_by_id(e_read_data_type data, int probes, int max_diff)
         dc_meas_ch_a_prev[1] = ir_ch_a.dc_meas_after;
         if (threshold >= dc_meas_diff_ch_a[0] && threshold >= dc_meas_diff_ch_a[1])
         {
-            IR_Channel_A_data[5] = IR_Channel_A_data[4];
-            IR_Channel_A_data[4] = IR_Channel_A_data[3];
-            IR_Channel_A_data[3] = IR_Channel_A_data[2];
-            IR_Channel_A_data[2] = IR_Channel_A_data[1];
-            IR_Channel_A_data[1] = IR_Channel_A_data[0];
-            IR_Channel_A_data[0] = ir_ch_a.rain_burst_meas;
+            IR_Channel_A_data = ir_ch_a.rain_burst_meas;
             return ir_ch_a.rain_burst_meas;
         }
     }
@@ -405,12 +400,7 @@ int mlx_read_data_by_id(e_read_data_type data, int probes, int max_diff)
         dc_meas_ch_b_prev[1] = ir_ch_b.dc_meas_after;
         if (threshold >= dc_meas_diff_ch_b[0] && threshold >= dc_meas_diff_ch_b[1])
         {
-            IR_Channel_B_data[5] = IR_Channel_B_data[4];
-            IR_Channel_B_data[4] = IR_Channel_B_data[3];
-            IR_Channel_B_data[3] = IR_Channel_B_data[2];
-            IR_Channel_B_data[2] = IR_Channel_B_data[1];
-            IR_Channel_B_data[1] = IR_Channel_B_data[0];
-            IR_Channel_B_data[0] = ir_ch_b.rain_burst_meas;
+            IR_Channel_B_data = ir_ch_b.rain_burst_meas;
             return ir_ch_b.rain_burst_meas;
         }
     }
@@ -494,12 +484,7 @@ void mlx_calibration(void)
         }
         regs_proc(11, dac_level_ir_ch_a);
     }
-    IR_Channel_A_data[0] = IR_Channel_data_SRC;
-    IR_Channel_A_data[1] = IR_Channel_data_SRC;
-    IR_Channel_A_data[2] = IR_Channel_data_SRC;
-    IR_Channel_A_data[3] = IR_Channel_data_SRC;
-    IR_Channel_A_data[4] = IR_Channel_data_SRC;
-    IR_Channel_A_data[5] = IR_Channel_data_SRC;
+    IR_Channel_A_data = IR_Channel_data_SRC;
 
     IR_Channel_data_SRC = 0;
     for (int i = 0; i < 20; i++)
@@ -542,12 +527,7 @@ void mlx_calibration(void)
         }
         regs_proc(12, dac_level_ir_ch_b);
     }
-    IR_Channel_B_data[0] = IR_Channel_data_SRC;
-    IR_Channel_B_data[1] = IR_Channel_data_SRC;
-    IR_Channel_B_data[2] = IR_Channel_data_SRC;
-    IR_Channel_B_data[3] = IR_Channel_data_SRC;
-    IR_Channel_B_data[4] = IR_Channel_data_SRC;
-    IR_Channel_B_data[5] = IR_Channel_data_SRC;
+    IR_Channel_B_data = IR_Channel_data_SRC;
 
     is_mlx_calibrated = 1;
 }
@@ -588,18 +568,8 @@ void mlx_init(void)
     regs_proc(19, 1);
     regs_proc(14, 1);
     wdt_reload();
-    IR_Channel_A_data[0] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[0] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
-    IR_Channel_A_data[1] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[1] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
-    IR_Channel_A_data[2] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[2] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
-    IR_Channel_A_data[3] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[3] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
-    IR_Channel_A_data[4] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[4] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
-    IR_Channel_A_data[5] = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
-    IR_Channel_B_data[5] = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
+    IR_Channel_A_data = mlx_read_data_by_id(LED_A, 3u, 0x3E8u);
+    IR_Channel_B_data = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
     if (is_mlx_calibrated == 0)
     {
         for (int i = 0; i < 128; i++)

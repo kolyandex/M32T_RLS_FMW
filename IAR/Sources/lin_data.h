@@ -31,4 +31,4 @@ typedef enum
 } e_wipers_mode;
 
 void lin_proc_data_100ms(void);
-void lin_wipers_set_mode(e_wipers_mode mode, unsigned int time);
+void lin_wipers_enable(int percent);
