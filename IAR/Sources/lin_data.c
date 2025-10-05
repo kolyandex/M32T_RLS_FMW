@@ -29,7 +29,7 @@ static unsigned int one_time_start_time_ms = 0;
 /**
  * @brief lin_wipers_enable
  *
- * @param percent (0-60% - 10 sec - 4 sec, 60-80 - slow, 80-100 - fast)
+ * @param percent (0-40% - 8 sec - 2 sec, 40-80 - slow, 80-100 - fast)
  */
 void lin_wipers_enable(int percent)
 {
@@ -42,17 +42,17 @@ void lin_wipers_enable(int percent)
     {
         percent = 100;
     }
-    if (percent > 90)
+    if (percent > 80)
     {
         wipers_mode = WM_FAST;
     }
-    else if (percent > 70)
+    else if (percent > 40)
     {
         wipers_mode = WM_SLOW;
     }
     else if (percent >= 5)
     {
-        one_time_period_ms = 10000 - (percent * 100); // 10000 (10sec) - 3000 (3sec)
+        one_time_period_ms = 8000 - (percent * 15 / 10 * 100); // 8000 (8sec) - 2000 (2sec)
     }
     else
     {
@@ -172,8 +172,7 @@ void lin_proc_data_100ms(void)
     {
         if ((WipersSwPos == W_AUTO) && (IgnState == IGN_ON) && (wipers_mode == WM_OFF))
         {
-          l_u8_wr_LI0_RLS_FrontWipersMode(WM_1_TIME);
-            //lin_wipers_set_mode(WM_1_TIME, 0);
+            l_u8_wr_LI0_RLS_FrontWipersMode(WM_1_TIME);
         }
     }
     auto_wipers_thresold_prev = AutoWipersThresold;

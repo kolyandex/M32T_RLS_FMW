@@ -113,11 +113,11 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
         {
             ctx->max_val_for_last_10_sec = (int)val;
         }
-        if (ctx->val_for_last_10_sec_counter >= 100)
+        if (ctx->val_for_last_10_sec_counter >= 300)
         {
             ctx->val_for_last_10_sec_counter = 0;
             ctx->diff_val_for_last_10_sec = ctx->max_val_for_last_10_sec - ctx->min_val_for_last_10_sec;
-            if (ctx->diff_val_for_last_10_sec <= 20)
+            if (ctx->diff_val_for_last_10_sec <= 30)
             {
                 avg_counts += 100;
             }
@@ -132,12 +132,21 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
             unsigned short wio_max_val = 0;
             for (int i = 0; i < SIZEOF_ARR(ctx->wio_cbuff_buff); i++)
             {
+                if (ctx->wio_cbuff_buff[i] == 0)
+                {
+                    continue;
+                }
                 if (ctx->wio_cbuff_buff[i] > wio_max_val)
                 {
                     wio_max_val = ctx->wio_cbuff_buff[i];
                 }
             }
+            memset(ctx->wio_cbuff_buff, 0, sizeof(ctx->wio_cbuff_buff));
             ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)wio_max_val, 1);
+            if (wio_max_val > ctx->rain_long_time_average_val)
+            {
+                SMA_GetFlt(&ctx->rain_long_time_average, (float)wio_max_val, 1);
+            }
         }
 
         if (ctx->rain_long_time_average_val == 0)
@@ -181,8 +190,8 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
         {
             ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)ctx->max_val_for_cbuff, 1);
         }
-        //ctx->abs_diff = ctx->wio_avg_max_val - ctx->min_val_for_cbuff;
-        ctx->abs_diff = ctx->rain_long_time_average_val - ctx->min_val_for_cbuff;        
+        // ctx->abs_diff = ctx->wio_avg_max_val - ctx->min_val_for_cbuff;
+        ctx->abs_diff = ctx->rain_long_time_average_val - ctx->min_val_for_cbuff;
     }
 }
 
@@ -192,12 +201,13 @@ void a_wipe_init(void)
 {
     ir_ch_init(&ir_ch[IR_CH_A], (float)IR_Channel_A_data);
     ir_ch_init(&ir_ch[IR_CH_B], (float)IR_Channel_B_data);
-    SMA_InitFlt(&val_diff_sma, 0.f, 1 * 15 * 10); // ~1 minute
+    SMA_InitFlt(&val_diff_sma, 0.f, 2 * 15 * 10); // ~2 minute
 }
 
+static unsigned char dousing_detection_counter = 0;
 static int avg_diff = 0;
-static const int a_wipe_thresold_divider[AUTO_WIPERS_THRESOLD_MODES_COUNT] = 
-{60, 50, 40, 30};
+static const int a_wipe_thresold_divider[AUTO_WIPERS_THRESOLD_MODES_COUNT] =
+    {60, 50, 40, 30};
 void a_wipe_poll_100ms(void)
 {
     switch (wkup_step)
@@ -223,11 +233,30 @@ void a_wipe_poll_100ms(void)
                 max_diff = ir_ch[IR_CH_A].abs_diff;
             }
             // Dousing detection
-            if (abs(max_diff - avg_diff) > 4000)
+            if (abs(max_diff - avg_diff) > 5000)
             {
-                val_diff_sma.val = (float)(a_wipe_thresold_divider[AutoWipersThresold] * 100);
+                if (dousing_detection_counter < 10)
+                {
+                    dousing_detection_counter++;
+                }
+                else
+                {
+                    val_diff_sma.val = (float)(a_wipe_thresold_divider[AutoWipersThresold] * 100);
+                }
             }
-            avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 1);
+            else
+            {
+                dousing_detection_counter = 0;
+            }
+            if (avg_diff < max_diff)
+            {
+                avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 2);
+            }
+            else
+            {
+                avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 1);
+            }
+
             if (avg_diff > 500)
             {
                 RainDetectedCloseWindowsRequest = true;
