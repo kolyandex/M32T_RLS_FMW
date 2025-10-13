@@ -24,7 +24,7 @@ typedef struct
     int diff_val_for_last_10_sec;
     int abs_diff; // tmp
     cbuff_t cbuff;
-    unsigned short cbuff_buff[16];
+    unsigned short cbuff_buff[8];
     int min_val_for_cbuff;
     int max_val_for_cbuff;
 
@@ -169,7 +169,10 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
         }
 
         unsigned short cbuff_val = (unsigned short)val;
-        write_to_cbuff(&ctx->cbuff, (uint8_t *)&cbuff_val, sizeof(cbuff_val));
+        if (WipersInOperationNow == false)
+        {
+            write_to_cbuff(&ctx->cbuff, (uint8_t *)&cbuff_val, sizeof(cbuff_val));
+        }
 
         ctx->max_val_for_cbuff = INT32_MIN;
         ctx->min_val_for_cbuff = INT32_MAX;
@@ -233,7 +236,7 @@ void a_wipe_poll_100ms(void)
                 max_diff = ir_ch[IR_CH_A].abs_diff;
             }
             // Dousing detection
-            if (abs(max_diff - avg_diff) > 5000)
+            if ((ir_ch[IR_CH_A].abs_diff > 5000) && (ir_ch[IR_CH_B].abs_diff > 5000))
             {
                 if (dousing_detection_counter < 10)
                 {

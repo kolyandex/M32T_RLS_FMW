@@ -29,6 +29,7 @@
 #include "derivative.h"
 #include "lin_commontl_proto.h"
 #include "lin_diagnostic_service.h"
+#include "eeprom_data.h"
 
 /* multi frame support */
 #if (_TL_FRAME_SUPPORT_ == _TL_MULTI_FRAME_)
@@ -118,6 +119,7 @@ void lin_tl_make_slaveres_pdu
                 }
                 else
                 {
+                    s_mlx_adc_calibs *c = mlx_adc_calibs();
                     /* SID */
                     lin_tl_pdu[2] = RES_POSITIVE + sid;
                     lin_tl_pdu[3] = error_code >> 8;
@@ -175,11 +177,11 @@ void lin_tl_make_slaveres_pdu
                         break;
                         
                     case 0x1301:
-                        lin_tl_pdu[5] = dac_level_ir_ch_a;
+                        lin_tl_pdu[5] = c->dac_level_ir_ch_a;
                         len++;
                         break;
                     case 0x1302:
-                        lin_tl_pdu[5] = dac_level_ir_ch_b;
+                        lin_tl_pdu[5] = c->dac_level_ir_ch_b;
                         len++;
                         break;
                     case 0x130A:

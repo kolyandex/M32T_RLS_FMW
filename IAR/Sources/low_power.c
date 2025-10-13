@@ -4,6 +4,7 @@
 #include "mlx75308.h"
 #include "rtc.h"
 #include "a_wipe.h"
+#include "eeprom_data.h"
 
 unsigned int LinLastActiveTime = 0;
 static bool we_need_to_check_rain = false;
@@ -21,6 +22,7 @@ static void go_to_sleep(void)
     NVIC_ICPR |= 1 << ((INT_FTM2 - 16) % 32);
     a_wipe_sleep();
     mlx_sleep();
+    eeprom_data_save();
     if (AllWindowsAreClosed || (IgnState != IGN_OFF))
     {
         we_need_to_check_rain = false;
@@ -63,7 +65,7 @@ void wakeup(void)
     {
         // Wakeup from LIN. This is "kostyl" because in some cases we
         // can't receive 0x11 LIN frame, if it goes after damaged 0x55 frame. THIS IS AUTOMOTIVE, BLEAT'
-#warning Check what's wrong later with logic analyzer
+//#warning Check what's wrong later with logic analyzer - Checked: Chery BCM sucks
         l_u8_wr_LI0_BCM_AllWindowsClosedFlag(0);
         init_lin();
     }

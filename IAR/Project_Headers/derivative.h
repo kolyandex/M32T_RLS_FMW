@@ -8,6 +8,10 @@
 #include "mlx75308.h"
 #include "lin_data.h"
 #include "stdbool.h"
+
+#define CALIB_EEPROM_ADDRESS 0x10000080
+
+
 #define SIZEOF_ARR(X) (sizeof(X) / sizeof(X[0]))
 
 #define OUTPUT 1
@@ -44,8 +48,6 @@
 extern uint32_t SystTick;
 extern unsigned char BatteryVoltageLin_x10;
 extern short VehicleSpeed;
-extern unsigned char dac_level_ir_ch_a;
-extern unsigned char dac_level_ir_ch_b;
 extern unsigned short IR_Channel_A_data;
 extern unsigned short IR_Channel_B_data;
 extern unsigned short Ambient_light_channel_data[TOTAL_AMB_LIGHT_CHANNELS];

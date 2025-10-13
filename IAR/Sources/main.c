@@ -10,6 +10,7 @@
 #include "rtc.h"
 #include "intrinsics.h"
 #include "kinetis_sysinit.h"
+#include "eeprom_data.h"
 
 #define TICKS_PERIOD 1000
 uint32_t SystTick = 0;
@@ -229,6 +230,7 @@ void init_rls_data(void)
 
 unsigned int SIM_SRSID_val = 0;
 __no_init s_diag_data_var reset_counter;
+__no_init s_diag_data_var reset_pin_counter; //counts TJA1028 reset
 __no_init s_diag_data_var wdt_reset_counter;
 __no_init s_diag_data_var wakeup_counter;
 
@@ -259,6 +261,8 @@ void wakeup_event(void)
 
 void main(void)
 {
+  __disable_interrupt();
+  get_diag_data(&reset_pin_counter);
   get_diag_data(&wdt_reset_counter);
   get_diag_data(&wakeup_counter);
 
@@ -268,6 +272,10 @@ void main(void)
   {
     inc_diag_data(&wdt_reset_counter);
   }
+  if (SIM_SRSID_val & SIM_SRSID_PIN_MASK)
+  {
+    inc_diag_data(&reset_pin_counter);
+  }
   __init_hardware();
 
   Clk_Init();
@@ -276,7 +284,7 @@ void main(void)
 
   // eeprom_read(0x10000080, test_read_string, sizeof(test_read_string) & ~1);
   // eeprom_program(0x10000080, test_write_string, sizeof(test_write_string) & ~1);
-
+  eeprom_data_init();
   rtc_init();
   gpio_init();
   spi_init();
@@ -286,6 +294,7 @@ void main(void)
   init_rls_data();
   a_wipe_init();
   PeriodsInit();
+  __enable_interrupt();
   for (;;)
   {
     wdt_reload();

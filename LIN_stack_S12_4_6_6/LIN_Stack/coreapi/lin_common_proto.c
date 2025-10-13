@@ -364,7 +364,7 @@ void lin_handle_error
             /* do nothing here */
             break;
         /* Frame error */
-#warning FIND WHY //LIN_LLD_FRAME_ERR - error happens all time
+//#warning FIND WHY //LIN_LLD_FRAME_ERR - error happens all time
             //reason found - wrong dlc in 0x15 frame
         case LIN_LLD_FRAME_ERR:
         case LIN_LLD_CHECKSUM_ERR:

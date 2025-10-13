@@ -1,5 +1,6 @@
 #include "a_light.h"
 #include "sma.h"
+#include "eeprom_data.h"
 
 /**
  * @brief Final variable txed to car
@@ -24,12 +25,6 @@ unsigned short l_short_avg = 0;
 static bool a_light_on_request_fast = false;
 static bool a_light_on_request_slow = false;
 
-// TODO: MOVE TO CALIBRATIONS
-static const unsigned short fast_on_thresold = 14500;
-static const unsigned short fast_off_thresold = 20000;
-static const unsigned short slow_on_thresold = 17000;
-static const unsigned short slow_off_thresold = 18500;
-
 void a_light_init(void)
 {
     float initial_val = (float)Ambient_light_channel_data[1];
@@ -45,25 +40,27 @@ void a_light_poll_500ms(void)
     l_long_avg = (unsigned short)long_time_avg;
     l_short_avg = (unsigned short)short_time_avg;
 
+    s_autologht_calibs *c = autolight_calibs();
+
     // In case of ambient light level is higher than fast_off_thresold no need to hold lights on according light_long_time_average
-    if ((l_short_avg >= fast_off_thresold) && a_light_on_request_slow)
+    if ((l_short_avg >= c->fast_off_thresold) && a_light_on_request_slow)
     {
         SMA_SetFlt(&light_long_time_average, v);
     }
-    if (a_light_on_request_fast && (l_short_avg >= fast_off_thresold))
+    if (a_light_on_request_fast && (l_short_avg >= c->fast_off_thresold))
     {
         a_light_on_request_fast = false;
     }
-    if (!a_light_on_request_fast && (l_short_avg <= fast_on_thresold))
+    if (!a_light_on_request_fast && (l_short_avg <= c->fast_on_thresold))
     {
         a_light_on_request_fast = true;
     }
-    if (a_light_on_request_slow && (l_long_avg >= slow_off_thresold))
+    if (a_light_on_request_slow && (l_long_avg >= c->slow_off_thresold))
     {
         a_light_on_request_fast = false;
         a_light_on_request_slow = false;
     }
-    if (!a_light_on_request_slow && (l_long_avg <= slow_on_thresold))
+    if (!a_light_on_request_slow && (l_long_avg <= c->slow_on_thresold))
     {
         a_light_on_request_slow = true;
     }

@@ -3,11 +3,9 @@
 #include "spi.h"
 #include "derivative.h" /* include peripheral declarations */
 #include "table_lookup.h"
+#include "eeprom_data.h"
 
 extern const s_table_2d_uint16_uint32 *TBL_RawAmbientLightData[TOTAL_AMB_LIGHT_CHANNELS];
-
-unsigned char dac_level_ir_ch_a = 128;
-unsigned char dac_level_ir_ch_b = 128;
 
 unsigned short IR_Channel_A_data;
 unsigned short IR_Channel_B_data;
@@ -452,37 +450,38 @@ void mlx_calibration(void)
             break;
         }
     }
+    s_mlx_adc_calibs *c = mlx_adc_calibs();
     if (IR_Channel_data_SRC < 44500)
     {
         for (int i = 0; i < 254; i++)
         {
-            regs_proc(11, ++dac_level_ir_ch_a);
+            regs_proc(11, ++c->dac_level_ir_ch_a);
             delay_soft(5);
             IR_Channel_data_SRC = mlx_read_data_by_id(LED_A, 3, 1000);
-            if (((IR_Channel_data_SRC - 44500) <= 1000) || (dac_level_ir_ch_a >= 240))
+            if (((IR_Channel_data_SRC - 44500) <= 1000) || (c->dac_level_ir_ch_a >= 240))
                 break;
         }
-        if (dac_level_ir_ch_a > 240)
+        if (c->dac_level_ir_ch_a > 240)
         {
-            dac_level_ir_ch_a = 240;
+            c->dac_level_ir_ch_a = 240;
         }
-        regs_proc(11, dac_level_ir_ch_a);
+        regs_proc(11, c->dac_level_ir_ch_a);
     }
     else if (IR_Channel_data_SRC >= 45500)
     {
         for (int i = 0; i < 254; i++)
         {
-            regs_proc(11, --dac_level_ir_ch_a);
+            regs_proc(11, --c->dac_level_ir_ch_a);
             delay_soft(5);
             IR_Channel_data_SRC = mlx_read_data_by_id(LED_A, 3, 1000);
-            if (((IR_Channel_data_SRC - 44500) <= 1000) || (dac_level_ir_ch_a <= 16))
+            if (((IR_Channel_data_SRC - 44500) <= 1000) || (c->dac_level_ir_ch_a <= 16))
                 break;
         }
-        if (dac_level_ir_ch_a < 16)
+        if (c->dac_level_ir_ch_a < 16)
         {
-            dac_level_ir_ch_a = 16;
+            c->dac_level_ir_ch_a = 16;
         }
-        regs_proc(11, dac_level_ir_ch_a);
+        regs_proc(11, c->dac_level_ir_ch_a);
     }
     IR_Channel_A_data = IR_Channel_data_SRC;
 
@@ -499,33 +498,33 @@ void mlx_calibration(void)
     {
         for (int i = 0; i < 254; i++)
         {
-            regs_proc(12, ++dac_level_ir_ch_b);
+            regs_proc(12, ++c->dac_level_ir_ch_b);
             delay_soft(5);
             IR_Channel_data_SRC = mlx_read_data_by_id(LED_B, 3, 1000);
-            if (((IR_Channel_data_SRC - 44500) <= 1000) || (dac_level_ir_ch_b >= 240))
+            if (((IR_Channel_data_SRC - 44500) <= 1000) || (c->dac_level_ir_ch_b >= 240))
                 break;
         }
-        if (dac_level_ir_ch_b > 240)
+        if (c->dac_level_ir_ch_b > 240)
         {
-            dac_level_ir_ch_b = 240;
+            c->dac_level_ir_ch_b = 240;
         }
-        regs_proc(12, dac_level_ir_ch_b);
+        regs_proc(12, c->dac_level_ir_ch_b);
     }
     else if (IR_Channel_data_SRC >= 45500)
     {
         for (int i = 0; i < 254; i++)
         {
-            regs_proc(12, --dac_level_ir_ch_b);
+            regs_proc(12, --c->dac_level_ir_ch_b);
             delay_soft(5);
             IR_Channel_data_SRC = mlx_read_data_by_id(LED_B, 3, 1000);
-            if (((IR_Channel_data_SRC - 44500) <= 1000) || (dac_level_ir_ch_b <= 16))
+            if (((IR_Channel_data_SRC - 44500) <= 1000) || (c->dac_level_ir_ch_b <= 16))
                 break;
         }
-        if (dac_level_ir_ch_b < 16)
+        if (c->dac_level_ir_ch_b < 16)
         {
-            dac_level_ir_ch_b = 16;
+            c->dac_level_ir_ch_b = 16;
         }
-        regs_proc(12, dac_level_ir_ch_b);
+        regs_proc(12, c->dac_level_ir_ch_b);
     }
     IR_Channel_B_data = IR_Channel_data_SRC;
 
@@ -533,6 +532,7 @@ void mlx_calibration(void)
 }
 void mlx_init(void)
 {
+    s_mlx_adc_calibs *c = mlx_adc_calibs();
     wdt_reload();
     wait_dr();
     CS_SET;
@@ -555,10 +555,10 @@ void mlx_init(void)
     regs_proc(5, 0);
     regs_proc(6, 0);
     regs_proc(7, 3);
-    regs_proc(11, /*212*/ dac_level_ir_ch_a);
+    regs_proc(11, /*212*/ c->dac_level_ir_ch_a);
     regs_proc(3, 0);
     regs_proc(8, 3);
-    regs_proc(12, /*197*/ dac_level_ir_ch_b);
+    regs_proc(12, /*197*/ c->dac_level_ir_ch_b);
     regs_proc(4, 0);
     regs_proc(10, 4);
     regs_proc(15, 3);
@@ -572,7 +572,7 @@ void mlx_init(void)
     IR_Channel_B_data = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
     if (is_mlx_calibrated == 0)
     {
-        for (int i = 0; i < 128; i++)
+        for (int i = 0; i < 2 /*128*/; i++)
         {
             wdt_reload();
             mlx_calibration();

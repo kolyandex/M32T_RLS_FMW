@@ -26,6 +26,7 @@ static bool a_wipers_enable = true;
 static unsigned int one_time_period_ms = 0;
 static unsigned int one_time_start_time_ms = 0;
 
+volatile static int percent_debug_view = 0;
 /**
  * @brief lin_wipers_enable
  *
@@ -33,6 +34,7 @@ static unsigned int one_time_start_time_ms = 0;
  */
 void lin_wipers_enable(int percent)
 {
+    percent_debug_view = percent;
     one_time_period_ms = 0;
     if (percent < 0)
     {

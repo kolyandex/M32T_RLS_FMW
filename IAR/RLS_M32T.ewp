@@ -1207,6 +1207,12 @@
             <name>$PROJ_DIR$\Sources\cbuff.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\Sources\eeprom_data.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Sources\eeprom_data.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Sources\flash.c</name>
         </file>
         <file>
