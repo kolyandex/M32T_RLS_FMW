@@ -27,7 +27,9 @@ typedef enum
     WM_OFF = 0,
     WM_1_TIME = 1,
     WM_SLOW = 2,
-    WM_FAST = 3
+    WM_FAST = 3,
+    //----------------
+    WM_TOTAL
 } e_wipers_mode;
 
 void lin_proc_data_100ms(void);

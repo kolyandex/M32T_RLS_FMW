@@ -26,6 +26,27 @@ static bool a_wipers_enable = true;
 static unsigned int one_time_period_ms = 0;
 static unsigned int one_time_start_time_ms = 0;
 
+static unsigned short wm_counters[WM_TOTAL] = {0};
+
+static void inc_wm_counter(unsigned short *c)
+{
+    if (*c < UINT16_MAX)
+    {
+        (*c)++;
+    }
+}
+static void dec_wm_counter(unsigned short *c, int val)
+{
+    if (*c >= val)
+    {
+        *c -= val;
+    }
+    else
+    {
+        *c = 0;
+    }
+}
+
 volatile static int percent_debug_view = 0;
 /**
  * @brief lin_wipers_enable
@@ -47,18 +68,46 @@ void lin_wipers_enable(int percent)
     if (percent > 80)
     {
         wipers_mode = WM_FAST;
+        inc_wm_counter(&wm_counters[WM_FAST]);
     }
     else if (percent > 40)
     {
         wipers_mode = WM_SLOW;
+        inc_wm_counter(&wm_counters[WM_SLOW]);
     }
     else if (percent >= 5)
     {
         one_time_period_ms = 8000 - (percent * 15 / 10 * 100); // 8000 (8sec) - 2000 (2sec)
+        inc_wm_counter(&wm_counters[WM_1_TIME]);
     }
     else
     {
         wipers_mode = WM_OFF;
+    }
+    if ((wm_counters[WM_FAST] > 0) && (wipers_mode != WM_FAST))
+    {
+        dec_wm_counter(&wm_counters[WM_FAST], 10);
+        wipers_mode = WM_FAST;
+        one_time_period_ms = 0;
+    }
+    else if ((wm_counters[WM_SLOW] > 0) && (wipers_mode < WM_SLOW))
+    {
+        if (wm_counters[WM_SLOW] > 300)
+        {
+            wm_counters[WM_SLOW] = 300;
+        }
+        dec_wm_counter(&wm_counters[WM_SLOW], 2);
+        wipers_mode = WM_SLOW;
+        one_time_period_ms = 0;
+    }
+    else if ((wm_counters[WM_1_TIME] > 0) && (one_time_period_ms == 0) && (wipers_mode != WM_FAST) && (wipers_mode != WM_SLOW))
+    {
+        if (wm_counters[WM_1_TIME] > 400)
+        {
+            wm_counters[WM_1_TIME] = 400;
+        }
+        dec_wm_counter(&wm_counters[WM_1_TIME], 1);
+        one_time_period_ms = 8000;
     }
 }
 void lin_proc_data_100ms(void)

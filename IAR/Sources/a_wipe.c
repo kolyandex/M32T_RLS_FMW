@@ -142,10 +142,13 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
                 }
             }
             memset(ctx->wio_cbuff_buff, 0, sizeof(ctx->wio_cbuff_buff));
-            ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)wio_max_val, 1);
-            if (wio_max_val > ctx->rain_long_time_average_val)
+            if (wio_max_val != 0)
             {
-                SMA_GetFlt(&ctx->rain_long_time_average, (float)wio_max_val, 1);
+                ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)wio_max_val, 1);
+                if (wio_max_val > ctx->rain_long_time_average_val)
+                {
+                    SMA_GetFlt(&ctx->rain_long_time_average, (float)wio_max_val, 1);
+                }
             }
         }
 
@@ -236,7 +239,7 @@ void a_wipe_poll_100ms(void)
                 max_diff = ir_ch[IR_CH_A].abs_diff;
             }
             // Dousing detection
-            if ((ir_ch[IR_CH_A].abs_diff > 5000) && (ir_ch[IR_CH_B].abs_diff > 5000))
+            if ((ir_ch[IR_CH_A].abs_diff > 6000) && (ir_ch[IR_CH_B].abs_diff > 6000))
             {
                 if (dousing_detection_counter < 10)
                 {
@@ -257,7 +260,7 @@ void a_wipe_poll_100ms(void)
             }
             else
             {
-                avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 1);
+                avg_diff = (int)SMA_GetFlt(&val_diff_sma, (float)max_diff, 2);
             }
 
             if (avg_diff > 500)

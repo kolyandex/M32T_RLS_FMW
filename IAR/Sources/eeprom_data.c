@@ -33,10 +33,10 @@ static void eeprom_data_reset_and_save(void)
 {
     ep_data.mlx_calibs.dac_level_ir_ch_a = 170;
     ep_data.mlx_calibs.dac_level_ir_ch_b = 170;
-    ep_data.autolight_calibs.fast_on_thresold = 15000;
+    ep_data.autolight_calibs.fast_on_thresold = 16000;
     ep_data.autolight_calibs.fast_off_thresold = 20000;
-    ep_data.autolight_calibs.slow_on_thresold = 17500;
-    ep_data.autolight_calibs.slow_off_thresold = 18500;
+    ep_data.autolight_calibs.slow_on_thresold = 18000;
+    ep_data.autolight_calibs.slow_off_thresold = 19000;
     eeprom_data_store();
 }
 

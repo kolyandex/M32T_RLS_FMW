@@ -85,3 +85,4 @@ extern unsigned int SIM_SRSID_val;
 extern s_diag_data_var reset_counter;
 extern s_diag_data_var wdt_reset_counter;
 extern s_diag_data_var wakeup_counter;
+extern s_diag_data_var reset_pin_counter;

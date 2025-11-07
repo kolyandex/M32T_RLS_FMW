@@ -146,11 +146,16 @@ void lin_tl_make_slaveres_pdu
                         b[data_len++] = wakeup_counter.val >> 16;
                         b[data_len++] = wakeup_counter.val >> 8;
                         b[data_len++] = wakeup_counter.val >> 0;
+                        
+                        b[data_len++] = reset_pin_counter.val >> 24;
+                        b[data_len++] = reset_pin_counter.val >> 16;
+                        b[data_len++] = reset_pin_counter.val >> 8;
+                        b[data_len++] = reset_pin_counter.val >> 0;
 
-                        b[data_len++] = SIM_SRSID_val >> 24;
-                        b[data_len++] = SIM_SRSID_val >> 16;
-                        b[data_len++] = SIM_SRSID_val >> 8;
-                        b[data_len++] = SIM_SRSID_val >> 0;
+                        //b[data_len++] = SIM_SRSID_val >> 24;
+                        //b[data_len++] = SIM_SRSID_val >> 16;
+                        //b[data_len++] = SIM_SRSID_val >> 8;
+                        //b[data_len++] = SIM_SRSID_val >> 0;
                         
                         len += data_len;
                         data_len = 0;
