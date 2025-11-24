@@ -8,8 +8,8 @@ void rtc_init(void)
     RTC_SC |= RTC_SC_RTCLKS(1); // Real-time clock source is 1 kHz (LPOCLK)
     RTC_SC |= RTC_SC_RTCPS(6);  // Real-Time Clock Prescaler Select if RTCLKS = x1, it is 100
     RTC_MOD = RTC_MOD_MOD(140);
-    NVIC_ICPR |= 1 << ((INT_RTC - 16) % 32);
-    NVIC_ISER |= 1 << ((INT_RTC - 16) % 32);
+    __CLEAR_PENDING_INTERRUPT(INT_RTC);
+    __ENABLE_INTERRUPT(INT_RTC);
     rtc_set_interrupt(false);
     RtcInterruptFare = false;
 }

@@ -11,6 +11,24 @@
 
 #define CALIB_EEPROM_ADDRESS 0x10000080
 
+/**
+ * @brief disable the associated interrupt
+ * 
+ */
+#define __DISABLE_INTERRUPT(X) (NVIC_ICER |= 1 << (((X) - 16) % 32))
+
+/**
+ * @brief change the state of the associated interrupt to not pending
+ * 
+ */
+#define __CLEAR_PENDING_INTERRUPT(X) (NVIC_ICPR |= 1 << (((X) - 16) % 32))
+
+/**
+ * @brief enable the associated interrupt
+ * 
+ */
+#define __ENABLE_INTERRUPT(X) (NVIC_ISER |= 1 << (((X) - 16) % 32))
+
 
 #define SIZEOF_ARR(X) (sizeof(X) / sizeof(X[0]))
 
@@ -63,6 +81,8 @@ extern unsigned char AutoWipersThresold;
 extern bool RainDetectedCloseWindowsRequest;
 extern bool WipersInOperationNow;
 extern bool WasherInOperationNow;
+extern bool WasherShortPressed;
+extern bool WasherLongPressed;
 extern bool RtcInterruptFare;
 extern unsigned char AllWindowsAreClosed;
 extern unsigned int LinLastActiveTime;

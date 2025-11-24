@@ -572,7 +572,7 @@ void mlx_init(void)
     IR_Channel_B_data = mlx_read_data_by_id(LED_B, 3u, 0x3E8u);
     if (is_mlx_calibrated == 0)
     {
-        for (int i = 0; i < 2 /*128*/; i++)
+        for (int i = 0; i < 128; i++)
         {
             wdt_reload();
             mlx_calibration();

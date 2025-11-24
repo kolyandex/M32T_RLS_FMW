@@ -15,7 +15,7 @@
 #define TICKS_PERIOD 1000
 uint32_t SystTick = 0;
 
-#define IS_CAR_RLS 1
+#define IS_CAR_RLS 0
 #if (IS_CAR_RLS == 1)
 __root static const unsigned char SCFTRIM @0x000003FE = 0x01;
 __root static const unsigned char SCTRIM @0x000003FF = 0x52;
@@ -131,8 +131,8 @@ void init_systick_timer()
   FTM2_C0V = (uint32_t)((MCU_BUS_FREQ / 1000000.0) * (TICKS_PERIOD / 128.0)); /* Interrupt every 1ms */
   FTM2_SC |= FTM_SC_CLKS(1);                                                  /*FTM2 use system clock*/
   /* Set the ICPR and ISER registers accordingly */
-  NVIC_ICPR |= 1 << ((INT_FTM2 - 16) % 32);
-  NVIC_ISER |= 1 << ((INT_FTM2 - 16) % 32);
+  __CLEAR_PENDING_INTERRUPT(INT_FTM2);
+  __ENABLE_INTERRUPT(INT_FTM2);
 }
 
 void FTM2_IRQHandler()

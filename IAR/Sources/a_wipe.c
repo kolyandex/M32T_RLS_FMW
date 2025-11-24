@@ -213,7 +213,7 @@ void a_wipe_init(void)
 static unsigned char dousing_detection_counter = 0;
 static int avg_diff = 0;
 static const int a_wipe_thresold_divider[AUTO_WIPERS_THRESOLD_MODES_COUNT] =
-    {60, 50, 40, 30};
+    {50, 40, 30, 20};
 void a_wipe_poll_100ms(void)
 {
     switch (wkup_step)
@@ -221,8 +221,9 @@ void a_wipe_poll_100ms(void)
     case WKUP_IDLE:
     {
         RtcInterruptFare = false;
-        if (WasherInOperationNow)
+        if (WasherLongPressed)
         {
+            WasherLongPressed = false;
             washer_last_op_counter = 80;
         }
         if (washer_last_op_counter)

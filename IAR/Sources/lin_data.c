@@ -15,6 +15,8 @@ e_ign_state IgnState = IGN_ON;
 bool RainDetectedCloseWindowsRequest = false;
 bool WipersInOperationNow = false;
 bool WasherInOperationNow = false;
+bool WasherShortPressed = false;
+bool WasherLongPressed = false;
 unsigned char AllWindowsAreClosed = 0;
 short VehicleSpeed = 0;
 unsigned char BatteryVoltageLin_x10;
@@ -27,6 +29,8 @@ static unsigned int one_time_period_ms = 0;
 static unsigned int one_time_start_time_ms = 0;
 
 static unsigned short wm_counters[WM_TOTAL] = {0};
+
+static unsigned char washer_press_time_counter = 0;
 
 static void inc_wm_counter(unsigned short *c)
 {
@@ -102,9 +106,9 @@ void lin_wipers_enable(int percent)
     }
     else if ((wm_counters[WM_1_TIME] > 0) && (one_time_period_ms == 0) && (wipers_mode != WM_FAST) && (wipers_mode != WM_SLOW))
     {
-        if (wm_counters[WM_1_TIME] > 400)
+        if (wm_counters[WM_1_TIME] > 500)
         {
-            wm_counters[WM_1_TIME] = 400;
+            wm_counters[WM_1_TIME] = 500;
         }
         dec_wm_counter(&wm_counters[WM_1_TIME], 1);
         one_time_period_ms = 8000;
@@ -179,7 +183,11 @@ void lin_proc_data_100ms(void)
     {
         wipers_mode = WM_OFF;
     }
-
+    if (WasherShortPressed)
+    {
+        WasherShortPressed = false;
+        wipers_mode = WM_1_TIME;
+    }
     l_u8_wr_LI0_RLS_FrontWipersMode(wipers_mode);
     l_bool_wr_LI0_RLS_FrontWipersAutoModeEnabled(a_wipers_enable);
 
@@ -213,6 +221,29 @@ void lin_proc_data_100ms(void)
     AutoWipersThresold = l_u8_rd_LI0_BCM_AutoWipersThreshold();
     WasherInOperationNow = ((l_u8_rd_LI0_BCM_Washer() & 1) == 1);
     AllWindowsAreClosed = l_u8_rd_LI0_BCM_AllWindowsClosedFlag();
+
+    if (WasherInOperationNow)
+    {
+        if (washer_press_time_counter < UINT8_MAX)
+        {
+            washer_press_time_counter++;
+        }
+    }
+    else
+    {
+        if (washer_press_time_counter)
+        {
+            if (washer_press_time_counter < 3)
+            {
+                WasherShortPressed = true;
+            }
+            if (washer_press_time_counter > 10)
+            {
+                WasherLongPressed = true;
+            }
+        }
+        washer_press_time_counter = 0;
+    }
 
     if (AutoWipersThresold > (AUTO_WIPERS_THRESOLD_MODES_COUNT - 1))
     {

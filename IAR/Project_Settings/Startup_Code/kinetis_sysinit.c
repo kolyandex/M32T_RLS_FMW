@@ -118,6 +118,11 @@ void __init_hardware()
     SCB_VTOR = (uint32_t)__vector_table; /* Set the interrupt vector table position */
     WDOG_CNT = 0x20C5;
     WDOG_CNT = 0x28D9;
+    
+    //WDOG_TOVAL = 0xE803; // setting timeout value
+    //WDOG_CS2 = WDOG_CS2_CLK_MASK; // setting 1-kHz clock source
+    //WDOG_CS1 = 0x23; // Watchdog disabled, 
+        
     WDOG_CS1 = WDOG_CS1_DBG_MASK | WDOG_CS1_EN_MASK | WDOG_CS1_UPDATE_MASK | WDOG_CS1_STOP_MASK; // Debug Enable, Watchdog Enable, Allow updates, Stop Enable
     WDOG_CS2 = WDOG_CS2_CLK(1);                                                                  // 1 kHz internal low-power oscillator (LPOCLK)
     WDOG_TOVALH = (15000 >> 8) & 0xFF;                                                           // 15 second wdt
