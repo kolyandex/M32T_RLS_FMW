@@ -32,6 +32,7 @@ typedef struct
     unsigned short wio_cbuff_buff[32];
     s_sma_flt wio_max_average;
     int wio_avg_max_val;
+    int wio_max_diff_abs;
 } s_ir_ch_ctx;
 
 static s_ir_ch_ctx ir_ch[IR_CH_TOTAL];
@@ -126,10 +127,12 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
         {
             unsigned short cbuff_val = (unsigned short)val;
             write_to_cbuff(&ctx->wio_cbuff, (uint8_t *)&cbuff_val, sizeof(cbuff_val));
+            ctx->wio_max_diff_abs = 0;
         }
         else
         {
-            unsigned short wio_max_val = 0;
+            int wio_max_val = 0;
+            int wio_min_val = INT32_MAX;
             for (int i = 0; i < SIZEOF_ARR(ctx->wio_cbuff_buff); i++)
             {
                 if (ctx->wio_cbuff_buff[i] == 0)
@@ -140,10 +143,15 @@ static void ir_ch_process(s_ir_ch_ctx *ctx, float val)
                 {
                     wio_max_val = ctx->wio_cbuff_buff[i];
                 }
+                if (ctx->wio_cbuff_buff[i] < wio_min_val)
+                {
+                    wio_min_val = ctx->wio_cbuff_buff[i];
+                }
             }
             memset(ctx->wio_cbuff_buff, 0, sizeof(ctx->wio_cbuff_buff));
-            if (wio_max_val != 0)
+            if ((wio_max_val != 0) && (wio_min_val != INT32_MAX))
             {
+                ctx->wio_max_diff_abs = abs(wio_max_val - wio_min_val);
                 ctx->wio_avg_max_val = (int)SMA_GetFlt(&ctx->wio_max_average, (float)wio_max_val, 1);
                 if (wio_max_val > ctx->rain_long_time_average_val)
                 {
@@ -278,7 +286,7 @@ void a_wipe_poll_100ms(void)
             (abs((int)BeforeSleepIrData[IR_CH_A] - (int)IR_Channel_A_data) > 500) ||
             (abs((int)BeforeSleepIrData[IR_CH_B] - (int)IR_Channel_B_data) > 500))
         {
-            init_lin();
+            // init_lin();
             wkup_step = WKUP_SEND_BREAK;
         }
         else

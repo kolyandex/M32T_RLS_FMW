@@ -37,7 +37,7 @@ static void go_to_sleep(void)
     __ENABLE_INTERRUPT(INT_UART0);
     __CLEAR_PENDING_INTERRUPT(INT_RTC);
     __ENABLE_INTERRUPT(INT_RTC);
-    UART0_S2 |= UART_S2_RXEDGIF_MASK;          // RxD Pin Active Edge Interrupt Flag
+    UART0_S2 |= UART_S2_RXEDGIF_MASK; // RxD Pin Active Edge Interrupt Flag
     UART0_BDH |= UART_BDH_RXEDGIE_MASK;
     OUTPUT_CLEAR(PORT_B, (7 + 8)); // LIN DIS
     do
@@ -50,7 +50,7 @@ static void go_to_sleep(void)
         SCB_SCR |= SCB_SCR_SLEEPDEEP_MASK;
         __WFI();
         __enable_interrupt();
-        //wakeup_event();
+        // wakeup_event();
     } while ((RtcInterruptFare == true) && (we_need_to_check_rain == false));
 }
 void init_lin(void)
@@ -65,13 +65,15 @@ void init_lin(void)
 
 void wakeup(void)
 {
+    OUTPUT_SET(PORT_B, (7 + 8)); // LIN EN
+    l_sys_init();                // Only timer init
     if (RtcInterruptFare == false)
     {
         // Wakeup from LIN. This is "kostyl" because in some cases we
         // can't receive 0x11 LIN frame, if it goes after damaged 0x55 frame. THIS IS AUTOMOTIVE, BLEAT'
         // #warning Check what's wrong later with logic analyzer - Checked: Chery BCM sucks
         l_u8_wr_LI0_BCM_AllWindowsClosedFlag(0);
-        init_lin();
+        // init_lin();
     }
     else
     {
